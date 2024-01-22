@@ -86,9 +86,10 @@ public class ChessPiece {
 //        else if (board.getPiece(myPosition).getPieceType() == PieceType.PAWN) {
 //            return pawnMove(board, myPosition);
 //        }
-//        else if (board.getPiece(myPosition).getPieceType() == PieceType.KING) {
-//            return kingMove(board, myPosition);
-//        }
+//        else
+        if (board.getPiece(myPosition).getPieceType() == PieceType.KING) {
+            return kingMove(board, myPosition);
+        }
 //        else if (board.getPiece(myPosition).getPieceType() == PieceType.QUEEN) {
 //            return queenMove(board, myPosition);
 //        }
@@ -112,9 +113,23 @@ public class ChessPiece {
 //        //return list of all options myPosition +1 column;
 //    }
 //
-//    public Collection<ChessMove> kingMove(ChessBoard board, ChessPosition myPosition) {
-//        //return list of all options myPosition +/-1 row &/or column ;
-//    }
+    public Collection<ChessMove> kingMove(ChessBoard board, ChessPosition myPosition) {
+        Collection<ChessMove> king = new ArrayList<>();
+        ChessPiece p = board.getPiece(new ChessPosition(myPosition.getRow(),myPosition.getColumn()));
+
+        for (int i = -1; i<2; i++) {
+            for (int j=-1; j<2; j++) {
+                if (!(i == 0 & j == 0)) {
+                    ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() + j));
+                    if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                        king.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+i,myPosition.getColumn()+j), null));
+                    }
+                }
+            }
+        }
+        return king;
+        //return list of all options myPosition +/-1 row &/or column ;
+    }
 //
 //    public Collection<ChessMove> queenMove(ChessBoard board, ChessPosition myPosition) {
 //        //return list of all options myPosition +/- row & column row and column adding or subtracting equal #s;
