@@ -73,10 +73,10 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-//        if (board.getPiece(myPosition).getPieceType() == PieceType.BISHOP)
-//        {
-//            return bishopMove(board, myPosition);
-//        }
+        if (board.getPiece(myPosition).getPieceType() == PieceType.BISHOP)
+        {
+            return bishopMove(board, myPosition);
+        }
 //        else if (board.getPiece(myPosition).getPieceType() == PieceType.ROOK) {
 //            return rookMove(board, myPosition);
 //        }
@@ -87,7 +87,7 @@ public class ChessPiece {
 //            return pawnMove(board, myPosition);
 //        }
 //        else
-        if (board.getPiece(myPosition).getPieceType() == PieceType.KING) {
+        else if (board.getPiece(myPosition).getPieceType() == PieceType.KING) {
             return kingMove(board, myPosition);
         }
 //        else if (board.getPiece(myPosition).getPieceType() == PieceType.QUEEN) {
@@ -96,10 +96,52 @@ public class ChessPiece {
         return new ArrayList<>();
     }
 //
-//    public Collection<ChessMove> bishopMove(ChessBoard board, ChessPosition myPosition) {
-//        //for loop of all valid moves, check if no piece already there break
-//        //return list of all options myPosition +/- row & column row and column adding or subtracting equal #s;
-//    }
+    public Collection<ChessMove> bishopMove(ChessBoard board, ChessPosition myPosition) {
+        Collection<ChessMove> bishop = new ArrayList<>();
+        ChessPiece p = board.getPiece(new ChessPosition(myPosition.getRow(),myPosition.getColumn()));
+
+        //for loop of all valid moves, check if no piece already there break
+        for (int i = 1; i<8; i++){
+            //check if in bounds
+            if ((myPosition.getRow()+i >=0 & myPosition.getRow()+i <8) &
+                    (myPosition.getColumn()+i >=0 & myPosition.getColumn()+i <8)) {
+                ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() + i));
+                //check if moving to empty space or enemy piece
+                if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                    bishop.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() + i), null));
+                }
+            }
+
+            if ((myPosition.getRow()+i >=0 & myPosition.getRow()+i <8) &
+                    (myPosition.getColumn()-i >=0 & myPosition.getColumn()-i <8)) {
+                ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() - i));
+                //check if moving to empty space or enemy piece
+                if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                    bishop.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() - i), null));
+                }
+            }
+
+            if ((myPosition.getRow()-i >=0 & myPosition.getRow()-i <8) &
+                    (myPosition.getColumn()+i >=0 & myPosition.getColumn()+i <8)) {
+                ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() - i, myPosition.getColumn() + i));
+                //check if moving to empty space or enemy piece
+                if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                    bishop.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - i, myPosition.getColumn() + i), null));
+                }
+            }
+
+            if ((myPosition.getRow()-i >=0 & myPosition.getRow()-i <8) &
+                    (myPosition.getColumn()-i >=0 & myPosition.getColumn()-i <8)) {
+                ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() - i, myPosition.getColumn() - i));
+                //check if moving to empty space or enemy piece
+                if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                    bishop.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - i, myPosition.getColumn() - i), null));
+                }
+            }
+        }
+        //return list of all options myPosition +/- row & column row and column adding or subtracting equal #s;
+    return bishop;
+    }
 //
 //    public Collection<ChessMove> rookMove(ChessBoard board, ChessPosition myPosition) {
 //        //return list of all options myPosition +/- row or +/- column;
