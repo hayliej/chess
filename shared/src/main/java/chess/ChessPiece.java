@@ -294,10 +294,40 @@ public class ChessPiece {
 
 
     //PAWN MOVEMENT
-//    public Collection<ChessMove> pawnMove(ChessBoard board, ChessPosition myPosition) {
-//        //return list of all options myPosition +1 column;
-//    }
-//
+    boolean pawnFirstMove = true;
+    public Collection<ChessMove> pawnMove(ChessBoard board, ChessPosition myPosition) {
+        Collection<ChessMove> pawn = new ArrayList<>();
+        ChessPiece p = board.getPiece(new ChessPosition(myPosition.getRow(),myPosition.getColumn()));
+
+        if (pawnFirstMove == true) {
+            //2 spaces
+            if ((myPosition.getRow()+2 >=0 & myPosition.getRow()+2 <8) & (myPosition.getColumn() >=0 & myPosition.getColumn() <8)){
+                ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow()+2, myPosition.getColumn()));
+                if (p1 == null) {
+                    pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+2, myPosition.getColumn()), null));
+                }
+            }
+            pawnFirstMove = false;
+        } else {
+            //1 space
+            if ((myPosition.getRow()+1 >=0 & myPosition.getRow()+1 <8) & (myPosition.getColumn() >=0 & myPosition.getColumn() <8)){
+                ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()));
+                if (p1 == null) {
+                    pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()), null));
+                }
+            }
+        }
+        //check for attacking
+//        if (opponent at forward diagonal 1) {
+//            attack
+//        }
+
+        //promotion piece, if it gets to other side change type
+
+        //return list of all options myPosition +1 column;
+        return pawn;
+    }
+
 
 
     //KING MOVEMENT
