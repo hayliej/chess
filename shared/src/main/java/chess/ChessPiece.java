@@ -208,6 +208,85 @@ public class ChessPiece {
         Collection<ChessMove> knight = new ArrayList<>();
         ChessPiece p = board.getPiece(new ChessPosition(myPosition.getRow(), myPosition.getColumn()));
 
+        //row +2, col +1
+        //check if in bounds
+        if ((myPosition.getRow()+2 >=0 & myPosition.getRow()+2 <8) & (myPosition.getColumn()+1 >=0 & myPosition.getColumn()+1 <8)) {
+            ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow()+2, myPosition.getColumn()+1));
+            //check if moving to empty space or enemy piece
+            if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+2, myPosition.getColumn()+1), null));
+            }
+        }
+
+        //row +2, col -1
+        //check if in bounds
+        if ((myPosition.getRow()+2 >=0 & myPosition.getRow()+2 <8) & (myPosition.getColumn()-1 >=0 & myPosition.getColumn()-1 <8)) {
+            ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow()+2, myPosition.getColumn()-1));
+            //check if moving to empty space or enemy piece
+            if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+2, myPosition.getColumn()-1), null));
+            }
+        }
+
+        //row -2, col +1
+        //check if in bounds
+        if ((myPosition.getRow()-2 >=0 & myPosition.getRow()-2 <8) & (myPosition.getColumn()+1 >=0 & myPosition.getColumn()+1 <8)) {
+            ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow()-2, myPosition.getColumn()+1));
+            //check if moving to empty space or enemy piece
+            if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-2, myPosition.getColumn()+1), null));
+            }
+        }
+
+        //row -2, col -1
+        //check if in bounds
+        if ((myPosition.getRow()-2 >=0 & myPosition.getRow()-2 <8) & (myPosition.getColumn()-1 >=0 & myPosition.getColumn()-1 <8)) {
+            ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow()-2, myPosition.getColumn()-1));
+            //check if moving to empty space or enemy piece
+            if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-2, myPosition.getColumn()-1), null));
+            }
+        }
+
+        //row +1, col +2
+        //check if in bounds
+        if ((myPosition.getRow()+1 >=0 & myPosition.getRow()+1 <8) & (myPosition.getColumn()+2 >=0 & myPosition.getColumn()+2 <8)) {
+            ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()+2));
+            //check if moving to empty space or enemy piece
+            if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()+2), null));
+            }
+        }
+
+        //row +1, col -2
+        //check if in bounds
+        if ((myPosition.getRow()+1 >=0 & myPosition.getRow()+1 <8) & (myPosition.getColumn()-2 >=0 & myPosition.getColumn()-2 <8)) {
+            ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-2));
+            //check if moving to empty space or enemy piece
+            if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-2), null));
+            }
+        }
+
+        //row -1, col +2
+        //check if in bounds
+        if ((myPosition.getRow()-1 >=0 & myPosition.getRow()-1 <8) & (myPosition.getColumn()+2 >=0 & myPosition.getColumn()+2 <8)) {
+            ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+2));
+            //check if moving to empty space or enemy piece
+            if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+2), null));
+            }
+        }
+
+        //row -1, col -2
+        //check if in bounds
+        if ((myPosition.getRow()-1 >=0 & myPosition.getRow()-1 <8) & (myPosition.getColumn()-2 >=0 & myPosition.getColumn()-2 <8)) {
+            ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()-2));
+            //check if moving to empty space or enemy piece
+            if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()-2), null));
+            }
+        }
 
         //return list of all options myPosition +/- row & column row and column adding or subtracting equal 2 in one direction and 1 in the others;
         return knight;
