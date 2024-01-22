@@ -120,9 +120,12 @@ public class ChessPiece {
         for (int i = -1; i<2; i++) {
             for (int j=-1; j<2; j++) {
                 if (!(i == 0 & j == 0)) {
-                    ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() + j));
-                    if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
-                        king.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+i,myPosition.getColumn()+j), null));
+                    //check if in bounds
+                    if ((myPosition.getRow()+i >=0 & myPosition.getRow()+i <8) & (myPosition.getColumn()+j >=0 & myPosition.getColumn()+j <8)) {
+                        ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() + j));
+                        if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
+                            king.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() + j), null));
+                        }
                     }
                 }
             }
