@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -9,6 +10,20 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessPiece {
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return "ChessPiece{}";
+    }
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
     }
@@ -47,6 +62,50 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+//        if (board.getPiece(myPosition).getPieceType() == PieceType.BISHOP)
+//        {
+//            return bishopMove(board, myPosition);
+//        }
+//        else if (board.getPiece(myPosition).getPieceType() == PieceType.ROOK) {
+//            return rookMove(board, myPosition);
+//        }
+//        else if (board.getPiece(myPosition).getPieceType() == PieceType.KNIGHT) {
+//            return knightMove(board, myPosition);
+//        }
+//        else if (board.getPiece(myPosition).getPieceType() == PieceType.PAWN) {
+//            return pawnMove(board, myPosition);
+//        }
+//        else if (board.getPiece(myPosition).getPieceType() == PieceType.KING) {
+//            return kingMove(board, myPosition);
+//        }
+//        else if (board.getPiece(myPosition).getPieceType() == PieceType.QUEEN) {
+//            return queenMove(board, myPosition);
+//        }
+        return new ArrayList<>();
     }
+//
+//    public Collection<ChessMove> bishopMove(ChessBoard board, ChessPosition myPosition) {
+//        //for loop of all valid moves, check if no piece already there break
+//        //return list of all options myPosition +/- row & column row and column adding or subtracting equal #s;
+//    }
+//
+//    public Collection<ChessMove> rookMove(ChessBoard board, ChessPosition myPosition) {
+//        //return list of all options myPosition +/- row or +/- column;
+//    }
+//
+//    public Collection<ChessMove> knightMove(ChessBoard board, ChessPosition myPosition) {
+//        //return list of all options myPosition +/- row & column row and column adding or subtracting equal 2 in one direction and 1 in the others;
+//    }
+//
+//    public Collection<ChessMove> pawnMove(ChessBoard board, ChessPosition myPosition) {
+//        //return list of all options myPosition +1 column;
+//    }
+//
+//    public Collection<ChessMove> kingMove(ChessBoard board, ChessPosition myPosition) {
+//        //return list of all options myPosition +/-1 row &/or column ;
+//    }
+//
+//    public Collection<ChessMove> queenMove(ChessBoard board, ChessPosition myPosition) {
+//        //return list of all options myPosition +/- row & column row and column adding or subtracting equal #s;
+//    }
 }
