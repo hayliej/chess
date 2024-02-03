@@ -18,6 +18,12 @@ public class ChessGame {
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
+        //set team turn to white initially and then each time it's called
+        //if color == white, call setTeamTurn, set to/return black
+        //if color == black, call setTeamTurn, set to/return white
+
+        //maybe don't set stuff here? Maybe set new team turn after move?
+
         throw new RuntimeException("Not implemented");
     }
 
@@ -27,6 +33,8 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
+        //set team turn to input color
+
         throw new RuntimeException("Not implemented");
     }
 
@@ -46,6 +54,12 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
+        //call ChessPiece.pieceMoves(startPosition) and check if each possible move is valid,
+        //no pieces in the way,
+        //not putting yourself in check
+        //return collection of valid moves
+        //return null if no piece at that position
+
         throw new RuntimeException("Not implemented");
     }
 
@@ -56,6 +70,9 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
+        //if move is legal, move the piece
+        //if illegal move throw exception
+
         throw new RuntimeException("Not implemented");
     }
 
@@ -66,6 +83,9 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
+        //if teamColor team's king can be captured by an opposing piece return true
+        //for loop of all opposing team's valid moves, return true once one can move to king
+
         throw new RuntimeException("Not implemented");
     }
 
@@ -76,6 +96,11 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
+        //call isInCheck, if true check
+        //can king be defended, if false
+        //isInCheckmate returns true
+        //if king can be defended, return false
+
         throw new RuntimeException("Not implemented");
     }
 
@@ -87,6 +112,9 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+        //check if it is that team's turn & check all teamColor team's moves
+            //if none are valid, return true
+
         throw new RuntimeException("Not implemented");
     }
 
