@@ -14,17 +14,13 @@ public class ChessGame {
 
     }
 
+    private TeamColor teamTurn = TeamColor.WHITE;
+
     /**
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
-        //set team turn to white initially and then each time it's called
-        //if color == white, call setTeamTurn, set to/return black
-        //if color == black, call setTeamTurn, set to/return white
-
-        //maybe don't set stuff here? Maybe set new team turn after move?
-
-        throw new RuntimeException("Not implemented");
+        return teamTurn;
     }
 
     /**
@@ -33,9 +29,19 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        //set team turn to input color
-
-        throw new RuntimeException("Not implemented");
+        //set team turn to input color if not already that team's turn
+        if (team != teamTurn) {
+            if (team == TeamColor.WHITE) {
+                teamTurn = TeamColor.BLACK;
+            }
+            if
+            (teamTurn == TeamColor.BLACK) {
+                teamTurn = TeamColor.WHITE;
+            }
+        }
+        else {
+            throw new RuntimeException("Already team's turn");
+        }
     }
 
     /**
