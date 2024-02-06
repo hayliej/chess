@@ -141,9 +141,28 @@ public class ChessGame {
         //if king can be defended, return false
 
         if (isInCheck(teamColor)) {
-
-            //can it be defended: return false;
-            //can't be defended? return true;
+            //if it is in check, go through whole board looking for same team's pieces
+            for (int i = 1; i <=8; i++) {
+                for (int j = 1; j<=8; j++) {
+                    ChessPiece p = board.getPiece(new ChessPosition(i,j));
+                    if (p != null) {
+                        //check same team
+                        if (p.getTeamColor().equals(teamColor)) {
+                            //for each piece check each move
+                            for (ChessMove  move : p.pieceMoves(board, new ChessPosition(i,j))){
+                                board.addPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()), p);
+                                //for each move call if it is in check still
+                                //if for a move it is no longer in check return false
+                                if (!(isInCheck(teamColor))) {
+                                    board.addPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()), null);
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
         return false;
     }
