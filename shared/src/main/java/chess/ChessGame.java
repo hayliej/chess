@@ -113,9 +113,11 @@ public class ChessGame {
                             for (ChessMove  move : p.pieceMoves(board, new ChessPosition(i,j))){
                                 ChessPiece p1 = board.getPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()));
                                 //check if it's the other team's king
-                                if (p1.getPieceType()== ChessPiece.PieceType.KING) {
-                                    if (p1.getTeamColor().equals(teamColor)){
-                                        return true;
+                                if (p1 != null) {
+                                    if (p1.getPieceType() == ChessPiece.PieceType.KING) {
+                                        if (p1.getTeamColor().equals(teamColor)) {
+                                            return true;
+                                        }
                                     }
                                 }
                             }
@@ -138,20 +140,12 @@ public class ChessGame {
         //isInCheckmate returns true
         //if king can be defended, return false
 
-//        if (teamColor == TeamColor.WHITE) {
-//            for (int i = 1; i <=8; i++) {
-//                for (int j = 1; j<=8; j++) {
-//                    ChessPiece p = ChessBoard.getPiece(new ChessPosition(i,j));
-//                    if (p != null) {
-//                        if (p.getTeamColor() == TeamColor.BLACK) {
-//                            ChessPiece.pieceMoves()
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        if (isInCheck(teamColor)) {
 
-        throw new RuntimeException("Not implemented");
+            //can it be defended: return false;
+            //can't be defended? return true;
+        }
+        return false;
     }
 
     /**
