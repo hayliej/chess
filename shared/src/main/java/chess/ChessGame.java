@@ -229,27 +229,21 @@ public class ChessGame {
     public boolean isInStalemate(TeamColor teamColor) {
         //check if it is that team's turn & check all teamColor team's moves
             //if none are valid, return true
-//        for (int i = 1; i <=8; i++) {
-//            for (int j = 1; j<=8; j++) {
-//                ChessPiece p = board.getPiece(new ChessPosition(i,j));
-//                if (p != null) {
-//                    if (p.getTeamColor() != teamColor) {
-//                        for (ChessMove  move : p.pieceMoves(board, new ChessPosition(i,j))){
-//                            ChessPiece p1 = board.getPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()));
-//                            //check if it's the other team's king
-//                            if (p1 != null) {
-//                                if (p1.getPieceType() == ChessPiece.PieceType.KING) {
-//                                    if (p1.getTeamColor().equals(teamColor)) {
-//                                        return true;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-        return false;
+        for (int i = 1; i <=8; i++) {
+            for (int j = 1; j<=8; j++) {
+                ChessPiece p = board.getPiece(new ChessPosition(i,j));
+                if (p != null) {
+                    if (p.getTeamColor().equals(teamColor)) {
+                        for (ChessMove  move : p.pieceMoves(board, new ChessPosition(i,j))){
+                            if (validMoves(move.getStartPosition())!=null){
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /**
