@@ -78,8 +78,10 @@ public class ChessGame {
 //                validMvs.add(move);
 //            }
 //        }
+        //return validMvs;
 
-        return validMvs;
+        //if no valid moves
+        return null;
     }
 
     /**
@@ -136,9 +138,9 @@ public class ChessGame {
      */
     public boolean isInCheckmate(TeamColor teamColor) {
         //call isInCheck, if true check
-        //can king be defended, if false
-        //isInCheckmate returns true
-        //if king can be defended, return false
+            //can king be defended, if false
+                //isInCheckmate returns true
+            //if king can be defended, return false
 
         if (isInCheck(teamColor)) {
             //if it is in check, go through whole board looking for same team's pieces
