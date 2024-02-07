@@ -212,6 +212,8 @@ public class ChessGame {
                                     board.addPiece(move.getStartPosition(), p);
                                     return false;
                                 }
+                                board.addPiece(move.getEndPosition(), p1);
+                                board.addPiece(move.getStartPosition(), p);
                             }
                         }
                     }
