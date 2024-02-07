@@ -235,29 +235,28 @@ public class ChessGame {
                 for (int j = 1; j <= 8; j++) {
                     ChessPiece p = board.getPiece(new ChessPosition(i, j));
                     if (p != null) {
-                        if (p.getTeamColor().equals(getTeamTurn())) {
+                        if (p.getTeamColor().equals(teamColor)) {
                             for (ChessMove move : p.pieceMoves(board, new ChessPosition(i, j))) {
+                                ChessPiece p1 = board.getPiece(move.getEndPosition());
                                 //make move
                                 //isInCheck
                                 //put both pieces back
                                 board.addPiece(move.getStartPosition(), null);
                                 board.addPiece(move.getEndPosition(), p);
-                                if (!isInCheck(teamColor())) {
+                                if (!isInCheck(teamColor)) {
                                     return false;
                                     }
-                                }
                                 board.addPiece(move.getEndPosition(), p1);
                                 board.addPiece(move.getStartPosition(), p);
+                                }
                         }
-//                                if (validMoves(move.getStartPosition()) != null) {
-//                                    return false;
-//                                }
                             }
                         }
                     }
+            return true;
                 }
 
-            return true;
+            return false;
         }
 
 
