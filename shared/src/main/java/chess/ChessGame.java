@@ -203,11 +203,13 @@ public class ChessGame {
                         if (p.getTeamColor().equals(teamColor)) {
                             //for each piece check each move
                             for (ChessMove  move : p.pieceMoves(board, new ChessPosition(i,j))){
-                                board.addPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()), p);
-                                //for each move call if it is in check still
+                                ChessPiece p1 = board.getPiece(move.getEndPosition());
+                                board.addPiece(move.getStartPosition(), null);
+                                board.addPiece(move.getEndPosition(), p);                                //for each move call if it is in check still
                                 //if for a move it is no longer in check return false
                                 if (!(isInCheck(teamColor))) {
-                                    board.addPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()), null);
+                                    board.addPiece(move.getEndPosition(), p1);
+                                    board.addPiece(move.getStartPosition(), p);
                                     return false;
                                 }
                             }
