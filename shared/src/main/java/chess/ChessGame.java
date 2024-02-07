@@ -65,23 +65,48 @@ public class ChessGame {
         //not putting yourself in check
         //return collection of valid moves
         //return null if no piece at that position
-
+        //IMPLEMENT CHECK/CHECKMATE FIRST SO CAN CHECK THOSE CONDITIONS
 
         Collection<ChessMove> validMvs = new ArrayList<>();
-        //IMPLEMENT CHECK/CHECKMATE FIRST SO CAN CHECK THOSE CONDITIONS
-//        ChessPiece p = ChessBoard.getPiece(startPosition.getRow(), startPosition.getColumn());
-//        Collection<ChessMove> possibleMoves = ChessPiece.pieceMoves(startPosition);
-//
-//        for (ChessMove move : possibleMoves) {
-//            if (move.getEndPosition() == null |
-//                    ChessBoard.getPiece(move.getEndPosition().getRow(), move.getEndPosition().getColumn())) {
-//                validMvs.add(move);
-//            }
-//        }
-        //return validMvs;
+        ChessPiece p = board.getPiece(new ChessPosition(startPosition.getRow(), startPosition.getColumn()));
+        if (p==null){
+            return null;
+        }
 
-        //if no valid moves
-        return null;
+        boolean vld = false;
+
+        //iterate through its moves, add to validMvs if valid
+        for (ChessMove  move : p.pieceMoves(board, new ChessPosition(startPosition.getRow(), startPosition.getColumn()))){
+            ChessPiece p1 = board.getPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()));
+            //check if it's the other team
+            if (p1 != null) {
+                    if (!(p1.getTeamColor().equals(p.getTeamColor()))) {
+                        board.addPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()), p);
+                        if (!isInCheck(p.getTeamColor())){
+                            if (!isInCheckmate(p.getTeamColor())){
+                                validMvs.add(move);
+                                vld = true;
+                            }
+                        }
+                        board.addPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()), null);
+                    }
+            }
+            if (p1 == null){
+                board.addPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()), p);
+                if (!isInCheck(p.getTeamColor())){
+                    if (!isInCheckmate(p.getTeamColor())){
+                        validMvs.add(move);
+                        vld = true;
+                    }
+                }
+                board.addPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()), null);            }
+        }
+
+        if (vld) {
+            return validMvs;
+        } else {
+            return null;
+        }
     }
 
     /**
