@@ -31,17 +31,6 @@ public class ChessGame {
      */
     public void setTeamTurn(TeamColor team) {
         teamTurn = team;
-        //set team turn to input color if not already that team's turn
-//        if (team != teamTurn) {
-//            if (team == TeamColor.WHITE) {
-//                teamTurn = TeamColor.BLACK;
-//            }
-//            if
-//            (teamTurn == TeamColor.BLACK) {
-//                teamTurn = TeamColor.WHITE;
-//            }
-//        }
-
     }
 
     /**
@@ -125,25 +114,38 @@ public class ChessGame {
         }
 
         //check team's turn (throw exception if not)
-        if (!(board.getPiece(move.getStartPosition()).getTeamColor().equals(teamTurn))){
-            throw new InvalidMoveException("Not team's turn");
-        }
+        if (board.getPiece(move.getStartPosition()).getTeamColor().equals(teamTurn)) {
+            //check in valid moves for that piece (throw exception if not)
+            if (!(validMoves(move.getStartPosition()).contains(move))) {
+                throw new InvalidMoveException("Invalid Move");
+            }
+            //make the move
+            else {
+                //make the move, set start to null and end to that piece
+                if (p.getPieceType() != ChessPiece.PieceType.PAWN) {
+                    board.addPiece(move.getStartPosition(), null);
+                    board.addPiece(move.getEndPosition(), p);
+                }
+                if (p.getPieceType().equals(ChessPiece.PieceType.PAWN)) {
+                    if (move.getEndPosition().getRow() == 8 | move.getEndPosition().getRow() == 1) {
+                        board.addPiece(move.getStartPosition(), null);
+                        board.addPiece(move.getEndPosition(), new ChessPiece(p.getTeamColor(), move.getPromotionPiece()));
+                    } else {
+                        board.addPiece(move.getStartPosition(), null);
+                        board.addPiece(move.getEndPosition(), p);
+                    }
+                }
 
-        //check in valid moves for that piece (throw exception if not)
-        if (!(validMoves(move.getStartPosition()).contains(move))){
-            throw new InvalidMoveException("Invalid Move");
+                //change teamTurn
+                if (teamTurn.equals(TeamColor.WHITE)) {
+                    setTeamTurn(TeamColor.BLACK);
+                }
+                if (teamTurn.equals(TeamColor.BLACK)) {
+                    setTeamTurn(TeamColor.WHITE);
+                }
+            }
         } else {
-            //make the move, set start to null and end to that piece
-            board.addPiece(move.getStartPosition(), null);
-            board.addPiece(move.getEndPosition(), p);
-
-            //change teamTurn
-            if (teamTurn.equals(TeamColor.WHITE)){
-                teamTurn = TeamColor.BLACK;
-            }
-            if (teamTurn.equals(TeamColor.BLACK)){
-                teamTurn = TeamColor.WHITE;
-            }
+            throw new InvalidMoveException("Not team's turn");
         }
 
     }
