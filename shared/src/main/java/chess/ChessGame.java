@@ -114,7 +114,7 @@ public class ChessGame {
         }
 
         //check team's turn (throw exception if not)
-        if (board.getPiece(move.getStartPosition()).getTeamColor().equals(teamTurn)) {
+        if (p.getTeamColor().equals(getTeamTurn())) {
             //check in valid moves for that piece (throw exception if not)
             if (!(validMoves(move.getStartPosition()).contains(move))) {
                 throw new InvalidMoveException("Invalid Move");
@@ -137,10 +137,9 @@ public class ChessGame {
                 }
 
                 //change teamTurn
-                if (teamTurn.equals(TeamColor.WHITE)) {
+                if (getTeamTurn().equals(TeamColor.WHITE)) {
                     setTeamTurn(TeamColor.BLACK);
-                }
-                if (teamTurn.equals(TeamColor.BLACK)) {
+                } else if (getTeamTurn().equals(TeamColor.BLACK)) {
                     setTeamTurn(TeamColor.WHITE);
                 }
             }
@@ -231,22 +230,37 @@ public class ChessGame {
     public boolean isInStalemate(TeamColor teamColor) {
         //check if it is that team's turn & check all teamColor team's moves
             //if none are valid, return true
-        for (int i = 1; i <=8; i++) {
-            for (int j = 1; j<=8; j++) {
-                ChessPiece p = board.getPiece(new ChessPosition(i,j));
-                if (p != null) {
-                    if (p.getTeamColor().equals(teamColor)) {
-                        for (ChessMove  move : p.pieceMoves(board, new ChessPosition(i,j))){
-                            if (validMoves(move.getStartPosition())!=null){
-                                return false;
+        if (getTeamTurn().equals(teamColor)) {
+            for (int i = 1; i <= 8; i++) {
+                for (int j = 1; j <= 8; j++) {
+                    ChessPiece p = board.getPiece(new ChessPosition(i, j));
+                    if (p != null) {
+                        if (p.getTeamColor().equals(getTeamTurn())) {
+                            for (ChessMove move : p.pieceMoves(board, new ChessPosition(i, j))) {
+                                //make move
+                                //isInCheck
+                                //put both pieces back
+                                board.addPiece(move.getStartPosition(), null);
+                                board.addPiece(move.getEndPosition(), p);
+                                if (!isInCheck(teamColor())) {
+                                    return false;
+                                    }
+                                }
+                                board.addPiece(move.getEndPosition(), p1);
+                                board.addPiece(move.getStartPosition(), p);
+                        }
+//                                if (validMoves(move.getStartPosition()) != null) {
+//                                    return false;
+//                                }
                             }
                         }
                     }
                 }
-            }
+
+            return true;
         }
-        return true;
-    }
+
+
 
     /**
      * Sets this game's chessboard with a given board
