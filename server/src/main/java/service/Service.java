@@ -1,4 +1,7 @@
 package service;
+import dataAccess.GameDAO;
+import dataAccess.UserDAO;
+import dataAccess.AuthDAO;
 import server.Server;
 import dataAccess.DataAccessException;
 
@@ -21,7 +24,9 @@ public class Service {
     //createGame
     //clearDB
     public void clear(){
-        //UserDAO.clear();
+        UserDAO.clear();
+        GameDAO.clear();
+        AuthDAO.clear();
     }
 
     //^NEED TO THROW EXCEPTIONS?
