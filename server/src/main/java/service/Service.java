@@ -20,6 +20,9 @@ public class Service {
     //getGame
     //createGame
     //clearDB
+    public void clear(){
+        //UserDAO.clear();
+    }
 
     //^NEED TO THROW EXCEPTIONS?
 }
