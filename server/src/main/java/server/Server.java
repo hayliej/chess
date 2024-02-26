@@ -1,5 +1,6 @@
 package server;
 
+import passoffTests.testClasses.TestException;
 import spark.*;
 
 public class Server {
@@ -9,13 +10,13 @@ public class Server {
         Spark.staticFiles.location("web");
 
         // Register your endpoints and handle exceptions here.
+        Spark.delete("/db", this::clear);
         //Spark.post("/user", this::register);
         //Spark.post("/session", this::login);
         //Spark.delete("/session", this::logout);
         //Spark.get("/game", this::listGames);
-        //Spark.post("/game", this::newGame);
+        //Spark.post("/game", this::createGame);
         //Spark.put("/game", this::joinGame);
-        Spark.delete("/db", this::clear);
 
         Spark.awaitInitialization();
         return Spark.port();
@@ -23,6 +24,7 @@ public class Server {
 
     private Object clear(Request req, Response res) {
         //clear db
+        req.();
         return ""; //return cleared db
     }
 
