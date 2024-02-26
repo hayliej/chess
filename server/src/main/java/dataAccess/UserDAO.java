@@ -1,5 +1,10 @@
 package dataAccess;
 
 public interface UserDAO {
-    //add user data access & clear
+    //make  map of users
+    //clear
+
+    //createUser
+
+    //getUser
 }

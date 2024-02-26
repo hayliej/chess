@@ -1,5 +1,15 @@
 package dataAccess;
 
 public interface GameDAO {
-    //add game data access & clear
+    //make a map of games
+
+    //clear
+
+    //createGame
+
+    //getGame
+
+    //listGames
+
+    //updateGame
 }

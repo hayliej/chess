@@ -1,5 +1,11 @@
 package dataAccess;
 
 public interface AuthDAO {
-    //add auth data access & clear
+    //make map of auths
+
+    //createAuth
+
+    //getAuth
+
+    //deleteAuth
 }
