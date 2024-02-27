@@ -1,18 +1,23 @@
 package server;
 
-import passoffTests.testClasses.TestException;
+import dataAccess.MemGameDAO;
+import dataAccess.MemUserDAO;
+import service.AuthService;
+import service.GameService;
 import spark.*;
-import service.Service;
+import service.UserService;
 import dataAccess.DataAccessException;
 
 public class Server {
-    private final Service service;
-    //websocket??
-
-    public Server(DataAccessException dataAccess){
-        service = new Service(dataAccess);
-        //websocket??
-    }
+//    private final UserService userService;
+//    private final GameService gameService;
+//    private final AuthService authService;
+////3 of these
+//    public Server(){
+//        this.userService = userService;
+//        this.gameService = gameService;
+//        this.authService = authService;
+//    }
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
@@ -35,8 +40,9 @@ public class Server {
 
     private Object clear(Request req, Response res) {
         //clear db
-        req.clear();
-        return ""; //return cleared db
+        service.clear();
+        //need to add exceptions/errors??
+        return "{}";
     }
 
 //    private Object login(Request req, Response res) {
