@@ -15,5 +15,5 @@ public interface UserDAO {
     //getUser
 
     //return map
-    Map<Object, Object> returnUsers();
+    Map<String, UserData> returnUsers();
 }

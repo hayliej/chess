@@ -69,13 +69,18 @@ public class Server {
         LoginRequest loginReq = new Gson().fromJson(req.body(), LoginRequest.class);
         RegisterResult response = null;
         try {
-            response = UserService.login(loginReq); //make login function in service
+            response = AuthService.login(loginReq); //make login function in service
         } catch (DataAccessException e) {
             res.status(500);
             response = new RegisterResult("Error: error occurred", null, null);
             return new Gson().toJson(response);
         }
-        return "";
+        if (response.message().equals("Error: unauthorized")){
+            res.status(401);
+            return new Gson().toJson(response);
+        }
+        res.status(200);//set this for corresponding message that you get back from service
+        return new Gson().toJson(response);
     }
 
 //    private Object logout(Request req, Response res) {

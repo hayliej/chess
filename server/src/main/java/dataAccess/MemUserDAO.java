@@ -7,13 +7,13 @@ import java.util.Map;
 
 public class MemUserDAO implements UserDAO {
     //make  map of users
-    private static Map<String,String> users = new HashMap<>();
+    private static Map<String,UserData> users = new HashMap<>();
     //clear
     public void clear() { Map<String,String> users = new HashMap<>(); }
 
     @Override
     public void addUser(UserData userdata) throws DataAccessException {
-        users.put(userdata.getUsername(), String.valueOf(userdata));
+        users.put(userdata.getUsername(), userdata);
     }
 
     //return map
