@@ -1,7 +1,9 @@
 package server;
 
+import com.google.gson.Gson;
 import service.*;
 import spark.*;
+import requests.*;
 
 public class Server {
     private UserService userService = new UserService();
@@ -19,7 +21,7 @@ public class Server {
 
         // Register your endpoints and handle exceptions here.
         Spark.delete("/db", this::clear);
-        //Spark.post("/user", this::register);
+        Spark.post("/user", this::register);
         //Spark.post("/session", this::login);
         //Spark.delete("/session", this::logout);
         //Spark.get("/game", this::listGames);
@@ -39,6 +41,17 @@ public class Server {
         authService.clear();
         //need to add exceptions/errors??
         return "{}";
+    }
+
+    private Object register(Request req, Response res){
+        UserData user = new Gson().fromJson(req.body(), UserData.class);
+        Object response = UserService.getUser(user.getUsername());
+//        if (user.equals(null)) {
+//            UserService.createUser(user);
+//            Object response = UserService.getUser(user.getUsername());
+//        }
+        res.status();//set this for corresponding message that you get back from service
+        return new Gson().toJson(response);
     }
 
 //    private Object login(Request req, Response res) {
