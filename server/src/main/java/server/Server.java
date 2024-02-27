@@ -45,11 +45,8 @@ public class Server {
 
     private Object register(Request req, Response res){
         UserData user = new Gson().fromJson(req.body(), UserData.class);
-        Object response = UserService.getUser(user.getUsername());
-//        if (user.equals(null)) {
-//            UserService.createUser(user);
-//            Object response = UserService.getUser(user.getUsername());
-//        }
+        Object response = UserService.getUser(user);
+//
         res.status();//set this for corresponding message that you get back from service
         return new Gson().toJson(response);
     }

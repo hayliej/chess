@@ -5,10 +5,16 @@ import java.util.Map;
 
 public class MemAuthDAO implements AuthDAO {
     //make map of auths
-    Map<String,String> games = new HashMap<>();
+    public static Map<String,String> auths = new HashMap<>();
 
     //clear
     public void clear() {
-        Map<String,String> games = new HashMap<>();
+        Map<String,String> auths = new HashMap<>();
     }
+
+    //return map
+    public Map returnAuths(){
+        return auths;
+    }
+
 }
