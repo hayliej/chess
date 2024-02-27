@@ -1,15 +1,18 @@
 package server;
 
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import dataAccess.DataAccessException;
 import service.*;
 import spark.*;
 import requests.*;
 
+import java.io.Reader;
+
 public class Server {
-    private UserService userService = new UserService();
-    private GameService gameService = new GameService();
-    private AuthService authService = new AuthService();
+    private static UserService userService = new UserService();
+    private static GameService gameService = new GameService();
+    private static AuthService authService = new AuthService();
     public Server(){
         this.userService = userService;
         this.gameService = gameService;
@@ -48,7 +51,7 @@ public class Server {
         UserData user = new Gson().fromJson(req.body(), UserData.class);
         RegisterResult response = null;
         try {
-            response = UserService.getUser(user);
+            response = userService.getUser(user);
         } catch (DataAccessException e) {
             res.status(500);
             response = new RegisterResult("Error: error occurred", null, null);
@@ -69,7 +72,7 @@ public class Server {
         LoginRequest loginReq = new Gson().fromJson(req.body(), LoginRequest.class);
         RegisterResult response = null;
         try {
-            response = AuthService.login(loginReq); //make login function in service
+            response = authService.login(loginReq); //make login function in service
         } catch (DataAccessException e) {
             res.status(500);
             response = new RegisterResult("Error: error occurred", null, null);
@@ -84,10 +87,10 @@ public class Server {
     }
 
     private Object logout(Request req, Response res) {
-        AuthToken auth = new Gson().fromJson(req.body(), AuthToken.class);
+        AuthToken auth = new Gson().fromJson(req.body(), AuthToken.class); //should this be .headers() ??
         LogoutResult response = null;
         try {
-            response = AuthService.logout(auth); //make login function in service
+            response = authService.logout(auth);
         } catch (DataAccessException e) {
             res.status(500);
             response = new LogoutResult("Error: error occurred");
@@ -101,10 +104,24 @@ public class Server {
         return new Gson().toJson(response);
     }
 
-//    private Object listGames(Request req, Response res) {
-//        return "";
-//    }
-//
+    private Object listGames(Request req, Response res) {
+        AuthToken auth = new Gson().fromJson(req.body(), AuthToken.class); //should this be .headers() ??
+        ListGamesResult response = null;
+        try {
+            response = gameService.listGames(auth); //make listgames function in service
+        } catch (DataAccessException e) {
+            res.status(500);
+            response = new ListGamesResult("Error: error occurred", null);
+            return new Gson().toJson(response);
+        }
+        if (response.message().equals("Error: unauthorized")){
+            res.status(401);
+            return new Gson().toJson(response);
+        }
+        res.status(200);
+        return new Gson().toJson(response);
+    }
+
 //    private Object createGame(Request req, Response res) {
 //        return "";
 //    }
