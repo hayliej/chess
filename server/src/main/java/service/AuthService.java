@@ -1,9 +1,6 @@
 package service;
 import dataAccess.*;
-import requests.AuthData;
-import requests.LoginRequest;
-import requests.RegisterResult;
-import requests.UserData;
+import requests.*;
 
 import java.util.UUID;
 
@@ -31,6 +28,14 @@ public class AuthService {
         String authToken = UUID.randomUUID().toString();
         ADataAccess.addAuth(new AuthData(authToken, logReq.username()));
         return new RegisterResult(null, logReq.username(), authToken);
+    }
+
+    public static LogoutResult logout(AuthToken authTok) throws DataAccessException {
+        if (!(ADataAccess.returnAuths().containsKey(authTok))){
+            return new LogoutResult("Error: unauthorized");
+        }
+        ADataAccess.returnAuths().remove(authTok);
+        return new LogoutResult("");
     }
 
     //THINGS SERVICE NEEDS TO DO:
