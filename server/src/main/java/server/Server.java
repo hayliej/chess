@@ -1,6 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
+import dataAccess.DataAccessException;
 import service.*;
 import spark.*;
 import requests.*;
@@ -45,15 +46,19 @@ public class Server {
 
     private Object register(Request req, Response res){
         UserData user = new Gson().fromJson(req.body(), UserData.class);
-        Object response = UserService.getUser(user);
-        if (response.equals(new Result("{ \"message\": \"Error: already taken\" }"))) {
+        RegisterResult response = null;
+        try {
+            response = UserService.getUser(user);
+        } catch (DataAccessException e) {
+            res.status(500);
+            response = new RegisterResult("Error: error occurred", null, null);
+            return new Gson().toJson(response);
+        }
+        if (response.equals(new RegisterResult("Error: already taken", null, null))) {
             res.status(403);
             return new Gson().toJson(response);
-        } else if (response.equals(new Result("{ \"message\": \"Error: bad request\" }"))){
+        } else if (response.message().equals("Error: bad request")){
             res.status(400);
-            return new Gson().toJson(response);
-        } else if (response.equals(new Result("{ \"message\": \"Error: error occurred\" }"))){
-            res.status(500);
             return new Gson().toJson(response);
         }
         res.status(200);//set this for corresponding message that you get back from service

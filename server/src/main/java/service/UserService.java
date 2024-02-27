@@ -7,8 +7,8 @@ import java.util.UUID;
 
 public class UserService {
     //what do we do with this??
-    private static MemUserDAO UDataAccess = new MemUserDAO();
-    private static MemAuthDAO ADataAccess = new MemAuthDAO();
+    private static UserDAO UDataAccess = new MemUserDAO();
+    private static AuthDAO ADataAccess = new MemAuthDAO();
 
 
     public UserService() {
@@ -18,23 +18,31 @@ public class UserService {
 
     //THINGS SERVICE NEEDS TO DO: ???
     //getUser
-    public static Object getUser(UserData u){
+    public static RegisterResult getUser(UserData u) throws DataAccessException {
         String username = u.getUsername();
 //        Object user = UDataAccess.returnUsers().get(username);
-        if (!(UDataAccess.users.containsKey(username))) {
+        if (u.username() ==null || u.password()==null || u.email()==null){
+            return new RegisterResult("Error: bad request", null, null);
+        }
+        else if (!(UDataAccess.returnUsers().containsKey(username))) {
             createUser(u);
-            ADataAccess.auths.put(username, UUID.randomUUID().toString());
-            String authToken = ADataAccess.auths.get(username);
-            return new Result("{ \"username\":\""+username +"\", \"authToken\":\""+authToken+"\" }");
-        } else if (UDataAccess.users.containsKey(username)) {
-            return new Result("{ \"message\": \"Error: already taken\" }");
+            String authToken = UUID.randomUUID().toString();
+            ADataAccess.addAuth(new AuthData(authToken, username));
+//            String authToken = ADataAccess.returnAuths().get(username);
+            return new RegisterResult(null, username, authToken);
+        } else if (UDataAccess.returnUsers().containsKey(username)) {
+            return new RegisterResult("Error: already taken", null, null);
         } //else if ()
-        return "";
+        return new RegisterResult(null, null, null);
     }
 
     //createUser
     public static Object createUser(UserData userData){
-        UDataAccess.users.put(userData.getUsername(), String.valueOf(userData));
+        try {
+            UDataAccess.addUser(userData);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
         return "";
     }
 
