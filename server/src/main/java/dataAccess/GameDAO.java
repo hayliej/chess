@@ -1,5 +1,7 @@
 package dataAccess;
 
+import requests.GameData;
+
 import java.util.Map;
 
 public interface GameDAO {
@@ -9,7 +11,7 @@ public interface GameDAO {
     public void clear();
 
     //createGame
-    //public void addGame(GameData gamedata) throws DataAccessException;
+    public void addGame(int id, GameData gamedata) throws DataAccessException;
 
     //getGame
 
@@ -17,6 +19,10 @@ public interface GameDAO {
 
     //updateGame
 
+
+    //length map
+    int getSize();
+
     //return map
-    Map<Object, Object> returnGames();
+    Map<Integer, GameData> returnGames();
 }

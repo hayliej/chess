@@ -29,14 +29,14 @@ public class Server {
         Spark.post("/session", this::login);
         Spark.delete("/session", this::logout);
         //Spark.get("/game", this::listGames);
-        //Spark.post("/game", this::createGame);
+        Spark.post("/game", this::createGame);
         //Spark.put("/game", this::joinGame);
 
         Spark.awaitInitialization();
         return Spark.port();
     }
 
-    //FOR ALL OF THE ABOVE, TAKE INPUT JSON CONVERT TO GSON, CALL SERVICE METHOD ON IT, RETURN TO CLIENT ???
+    //FOR ALL OF THE ABOVE, TAKE INPUT JSON CONVERT TO GSON, CALL SERVICE METHOD ON IT, RETURN TO CLIENT
 
     private Object clear(Request req, Response res) {
         //clear db
@@ -104,27 +104,43 @@ public class Server {
         return new Gson().toJson(response);
     }
 
-    private Object listGames(Request req, Response res) {
-        AuthToken auth = new Gson().fromJson(req.body(), AuthToken.class); //should this be .headers() ??
-        ListGamesResult response = null;
+//    private Object listGames(Request req, Response res) {
+//        AuthToken auth = new Gson().fromJson(req.body(), AuthToken.class); //should this be .headers() ??
+//        ListGamesResult response = null;
+//        try {
+//            response = gameService.listGames(auth); //make listgames function in service
+//        } catch (DataAccessException e) {
+//            res.status(500);
+//            response = new ListGamesResult("Error: error occurred", null);
+//            return new Gson().toJson(response);
+//        }
+//        if (response.message().equals("Error: unauthorized")){
+//            res.status(401);
+//            return new Gson().toJson(response);
+//        }
+//        res.status(200);
+//        return new Gson().toJson(response);
+//    }
+
+    private Object createGame(Request req, Response res) {
+        AuthNewGame auth = new Gson().fromJson(req.body(), AuthNewGame.class); //should this be .headers() ??
+        CreateGameResult response = null;
         try {
-            response = gameService.listGames(auth); //make listgames function in service
+            response = gameService.createGame(auth);
         } catch (DataAccessException e) {
             res.status(500);
-            response = new ListGamesResult("Error: error occurred", null);
+            response = new CreateGameResult("Error: error occurred", 0);
             return new Gson().toJson(response);
         }
         if (response.message().equals("Error: unauthorized")){
             res.status(401);
             return new Gson().toJson(response);
+        } else if (response.message().equals("Error: bad request")){
+            res.status(400);
+            return new Gson().toJson(response);
         }
         res.status(200);
-        return new Gson().toJson(response);
-    }
-
-//    private Object createGame(Request req, Response res) {
-//        return "";
-//    }
+        return new Gson().toJson(response);    }
 //
 //    private Object joinGame(Request req, Response res) {
 //        return "";
