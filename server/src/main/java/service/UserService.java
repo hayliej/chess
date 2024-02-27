@@ -20,14 +20,16 @@ public class UserService {
     //getUser
     public static Object getUser(UserData u){
         String username = u.getUsername();
-        Object user = UDataAccess.returnUsers().get(username);
-        if (user.equals(null)) {
+//        Object user = UDataAccess.returnUsers().get(username);
+        if (!(UDataAccess.users.containsKey(username))) {
             createUser(u);
             ADataAccess.auths.put(username, UUID.randomUUID().toString());
             String authToken = ADataAccess.auths.get(username);
             return new Result("{ \"username\":\""+username +"\", \"authToken\":\""+authToken+"\" }");
-        } //put ifs in service class
-        return user;
+        } else if (UDataAccess.users.containsKey(username)) {
+            return new Result("{ \"message\": \"Error: already taken\" }");
+        } //else if ()
+        return "";
     }
 
     //createUser

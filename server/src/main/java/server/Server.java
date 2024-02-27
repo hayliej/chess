@@ -46,8 +46,17 @@ public class Server {
     private Object register(Request req, Response res){
         UserData user = new Gson().fromJson(req.body(), UserData.class);
         Object response = UserService.getUser(user);
-//
-        res.status();//set this for corresponding message that you get back from service
+        if (response.equals(new Result("{ \"message\": \"Error: already taken\" }"))) {
+            res.status(403);
+            return new Gson().toJson(response);
+        } else if (response.equals(new Result("{ \"message\": \"Error: bad request\" }"))){
+            res.status(400);
+            return new Gson().toJson(response);
+        } else if (response.equals(new Result("{ \"message\": \"Error: error occurred\" }"))){
+            res.status(500);
+            return new Gson().toJson(response);
+        }
+        res.status(200);//set this for corresponding message that you get back from service
         return new Gson().toJson(response);
     }
 
