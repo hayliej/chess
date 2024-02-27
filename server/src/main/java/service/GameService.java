@@ -3,10 +3,10 @@ import dataAccess.*;
 
 public class GameService {
     //what do we do with this??
-    private final MemGameDAO dataAccess;
+    private MemGameDAO dataAccess = new MemGameDAO();
 
-    public GameService(MemGameDAO dataAc) {
-        this.dataAccess = dataAc;
+    public GameService() {
+        this.dataAccess = dataAccess;
     }
 
     //THINGS SERVICE NEEDS TO DO:
@@ -14,7 +14,7 @@ public class GameService {
     //getGame
     //createGame
     //clearDB
-    public void clear(){ MemGameDAO.clear(); }
+    public void clear(){ dataAccess.clear(); }
 
     //^NEED TO THROW EXCEPTIONS?
 }

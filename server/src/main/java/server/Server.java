@@ -1,23 +1,17 @@
 package server;
 
-import dataAccess.MemGameDAO;
-import dataAccess.MemUserDAO;
-import service.AuthService;
-import service.GameService;
+import service.*;
 import spark.*;
-import service.UserService;
-import dataAccess.DataAccessException;
 
 public class Server {
-//    private final UserService userService;
-//    private final GameService gameService;
-//    private final AuthService authService;
-////3 of these
-//    public Server(){
-//        this.userService = userService;
-//        this.gameService = gameService;
-//        this.authService = authService;
-//    }
+    private UserService userService = new UserService();
+    private GameService gameService = new GameService();
+    private AuthService authService = new AuthService();
+    public Server(){
+        this.userService = userService;
+        this.gameService = gameService;
+        this.authService = authService;
+    }
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
@@ -40,7 +34,9 @@ public class Server {
 
     private Object clear(Request req, Response res) {
         //clear db
-        service.clear();
+        userService.clear();
+        gameService.clear();
+        authService.clear();
         //need to add exceptions/errors??
         return "{}";
     }

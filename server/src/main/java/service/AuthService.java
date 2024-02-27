@@ -3,17 +3,17 @@ import dataAccess.*;
 
 public class AuthService {
     //what do we do with this??
-    private final MemAuthDAO dataAccess;
+    private MemAuthDAO dataAccess = new MemAuthDAO();
 
-    public AuthService(MemAuthDAO dataAc) {
-        this.dataAccess = dataAc;
+    public AuthService() {
+        this.dataAccess = dataAccess;
     }
 
     //THINGS SERVICE NEEDS TO DO:
     //createAuth
     //getAuth
     //clearDB
-    public void clear(){ MemAuthDAO.clear(); }
+    public void clear(){ dataAccess.clear(); }
 
     //^NEED TO THROW EXCEPTIONS?
 }
