@@ -38,10 +38,6 @@ public class AuthService {
         return new LogoutResult("");
     }
 
-    //THINGS SERVICE NEEDS TO DO:
-    //createAuth
-    //getAuth
-    //clearDB
     public void clear() {
         UDataAccess.clear();
         ADataAccess.clear();
