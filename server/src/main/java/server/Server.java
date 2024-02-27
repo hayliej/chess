@@ -23,7 +23,7 @@ public class Server {
         // Register your endpoints and handle exceptions here.
         Spark.delete("/db", this::clear);
         Spark.post("/user", this::register);
-        //Spark.post("/session", this::login);
+        Spark.post("/session", this::login);
         //Spark.delete("/session", this::logout);
         //Spark.get("/game", this::listGames);
         //Spark.post("/game", this::createGame);
@@ -65,7 +65,32 @@ public class Server {
         return new Gson().toJson(response);
     }
 
-//    private Object login(Request req, Response res) {
+    private Object login(Request req, Response res) {
+        LoginRequest loginReq = new Gson().fromJson(req.body(), LoginRequest.class);
+        RegisterResult response = null;
+        try {
+            response = UserService.login(loginReq); //make login function in service
+        } catch (DataAccessException e) {
+            res.status(500);
+            response = new RegisterResult("Error: error occurred", null, null);
+            return new Gson().toJson(response);
+        }
+        return "";
+    }
+
+//    private Object logout(Request req, Response res) {
+//        return "";
+//    }
+//
+//    private Object listGames(Request req, Response res) {
+//        return "";
+//    }
+//
+//    private Object createGame(Request req, Response res) {
+//        return "";
+//    }
+//
+//    private Object joinGame(Request req, Response res) {
 //        return "";
 //    }
 
