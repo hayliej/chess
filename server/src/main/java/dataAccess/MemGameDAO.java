@@ -8,10 +8,10 @@ import java.util.Map;
 
 public class MemGameDAO implements GameDAO {
     //make a map of games should it be <String, GSON>??
-    private static Map<Integer, GameData> games = new HashMap<>();
+    private static Map<String, GameData> games = new HashMap<>();
 
     public void clear() {
-        Map<Integer,GameData> games = new HashMap<>();
+        Map<String,GameData> games = new HashMap<>();
     }
 
     @Override
@@ -20,7 +20,7 @@ public class MemGameDAO implements GameDAO {
     }
 
     @Override
-    public void addGame(int id, GameData gamedata) {
+    public void addGame(String id, GameData gamedata) {
         games.put(gamedata.gameID(), gamedata);
     }
 

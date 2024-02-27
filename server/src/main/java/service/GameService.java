@@ -23,11 +23,11 @@ public class GameService {
     //createGame
     public CreateGameResult createGame(AuthNewGame newAuth) throws DataAccessException {
         if (!(ADataAccess.returnAuths().containsKey(newAuth.authToken()))){
-            return new CreateGameResult("Error: unauthorized", 0);
+            return new CreateGameResult("Error: unauthorized", null);
         } else if (newAuth.authToken()==null || newAuth.gameName()==null){
-            return new CreateGameResult("Error: bad request", 0);
+            return new CreateGameResult("Error: bad request", null);
         }
-        int id = GDataAccess.getSize()+1;
+        String id = Integer.toString(GDataAccess.getSize()+1);
         GDataAccess.addGame(id, new GameData(id, null, null, newAuth.gameName()));
         return new CreateGameResult(null, id);
     }

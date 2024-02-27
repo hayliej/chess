@@ -11,7 +11,7 @@ public interface GameDAO {
     public void clear();
 
     //createGame
-    public void addGame(int id, GameData gamedata) throws DataAccessException;
+    public void addGame(String id, GameData gamedata) throws DataAccessException;
 
     //getGame
 

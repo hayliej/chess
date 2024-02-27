@@ -129,7 +129,7 @@ public class Server {
             response = gameService.createGame(auth);
         } catch (DataAccessException e) {
             res.status(500);
-            response = new CreateGameResult("Error: error occurred", 0);
+            response = new CreateGameResult("Error: error occurred", null);
             return new Gson().toJson(response);
         }
         if (response.message().equals("Error: unauthorized")){
