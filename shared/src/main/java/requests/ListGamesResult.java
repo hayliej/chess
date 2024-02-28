@@ -1,5 +1,5 @@
 package requests;
-import java.util.Map;
+import java.util.List;
 
-public record ListGamesResult(String message, Map<String, GameData> games) {
+public record ListGamesResult(String message, List games) {
 }

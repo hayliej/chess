@@ -3,6 +3,9 @@ import dataAccess.*;
 import org.eclipse.jetty.util.log.Log;
 import requests.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameService {
     private static UserDAO UDataAccess = new MemUserDAO();
     private static AuthDAO ADataAccess = new MemAuthDAO();
@@ -20,7 +23,11 @@ public class GameService {
         if (!(ADataAccess.returnAuths().containsKey(auth))){
             return new ListGamesResult("Error: unauthorized", null);
         }
-        return new ListGamesResult(null, GDataAccess.returnGames());
+        List games = new ArrayList();
+        for (Integer i=1;i<=GDataAccess.getSize(); i++){
+            games.add(GDataAccess.returnGames().get(Integer.toString(i)));
+        }
+        return new ListGamesResult(null, games);
     }
 
     //createGame
