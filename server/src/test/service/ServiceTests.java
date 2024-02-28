@@ -3,8 +3,15 @@ import chess.*;
 import dataAccess.*;
 import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import requests.UserData;
 import service.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class ServiceTests {
     static GameService gService = new GameService();
     static UserService uService = new UserService();
@@ -19,4 +26,35 @@ public class ServiceTests {
         UserData user = new UserData("username", "password", "email@byu.edu");
         uService.createUser(user);
     }
+
+    //CLEAR positive
+    @Test
+    public void clearCheck(){
+        uService.clear();
+        Map<String, UserData> umap = uService.getMap();
+        Map<String, UserData> test = new HashMap<String, UserData>();
+        assertEquals(umap, test);
+    }
+
+    //USER SERVICE
+    //getUser positive
+    //getUser negative
+
+    //don't need these: ??
+    //createUser positive
+    //createUser negative
+
+    //AUTH SERVICE
+    //login positive
+    //login negative
+    //logout positive
+    //logout negative
+
+    //GAME SERVICE
+    //listGames positive
+    //listGames negative
+    //createGame positive
+    //createGame negative
+    //joinGame positive
+    //joinGame negative
 }
