@@ -132,7 +132,7 @@ public class Server {
 
     private Object createGame(Request req, Response res) {
         AuthNewGame auth = new Gson().fromJson(req.body(), AuthNewGame.class);
-        String head = req.headers("authorization"); //should this be .headers() ??
+        String head = req.headers("authorization");
         auth = new AuthNewGame(head, auth.gameName());
         CreateGameResult response = null;
         try {
@@ -158,6 +158,8 @@ public class Server {
 
     private Object joinGame(Request req, Response res) {
         AuthJoinGame join = new Gson().fromJson(req.body(), AuthJoinGame.class); //should this be .headers() ??
+        String head = req.headers("authorization");
+        join = new AuthJoinGame(head, join.playerColor(), join.gameID());
         LogoutResult response = null;
         try {
             response = gameService.joinGame(join);
