@@ -2,6 +2,7 @@ package service;
 import dataAccess.*;
 import requests.*;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class AuthService {
@@ -42,6 +43,10 @@ public class AuthService {
         UDataAccess.clear();
         ADataAccess.clear();
     }
-    //^NEED TO THROW EXCEPTIONS?
+
+    //for unit test
+    public Map<Object, Object> getMap(){
+        return ADataAccess.returnAuths();
+    }
 }
 

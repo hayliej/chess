@@ -4,6 +4,7 @@ import dataAccess.*;
 import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import requests.LoginRequest;
 import requests.RegisterResult;
 import requests.UserData;
 import service.*;
@@ -60,9 +61,32 @@ public class ServiceTests {
 
     //AUTH SERVICE
     //login positive
+    @Test
+    public void loginPositive(){
+        try {
+            aService.login(new LoginRequest("username", "password"));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+        Map<Object, Object> amap = aService.getMap();
+        assertNotNull(amap);
+    }
     //login negative
+    @Test
+    public void loginNegative(){
+        try {
+            RegisterResult result = aService.login(new LoginRequest("username", null));
+            RegisterResult test = new RegisterResult("Error: unauthorized", null, null);
+            assertEquals(result, test);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //logout positive
+
     //logout negative
+
 
     //GAME SERVICE
     //listGames positive
