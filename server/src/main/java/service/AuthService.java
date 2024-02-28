@@ -35,7 +35,7 @@ public class AuthService {
         if (!(ADataAccess.returnAuths().containsKey(authTok))){
             return new LogoutResult("Error: unauthorized");
         }
-        ADataAccess.returnAuths().remove(authTok);
+        ADataAccess.removeAuth(authTok);
         return new LogoutResult("");
     }
 

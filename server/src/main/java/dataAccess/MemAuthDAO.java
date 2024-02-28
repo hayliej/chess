@@ -19,6 +19,11 @@ public class MemAuthDAO implements AuthDAO {
         auths.put(authdata.authToken(), authdata.username());
     }
 
+    @Override
+    public void removeAuth(String authToken) {
+        auths.remove(authToken);
+    }
+
     //get value
     public String getVal(String auth) { return auths.get(auth); }
 

@@ -84,7 +84,18 @@ public class ServiceTests {
     }
 
     //logout positive
-
+    @Test
+    public void logoutPositive(){
+        try {
+            RegisterResult result = aService.login(new LoginRequest("username", "password"));
+            Map<Object, Object> amap = aService.getMap();
+            aService.logout((String) amap.get(result.authToken()));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+        Map<Object, Object> amap = aService.getMap();
+        assertNull(amap);
+    }
     //logout negative
 
 
