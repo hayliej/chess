@@ -30,7 +30,7 @@ public class Server {
         Spark.delete("/session", this::logout);
         Spark.get("/game", this::listGames);
         Spark.post("/game", this::createGame);
-        //Spark.put("/game", this::joinGame);
+        Spark.put("/game", this::joinGame);
 
         Spark.awaitInitialization();
         return Spark.port();
@@ -150,11 +150,34 @@ public class Server {
             }
         }
         res.status(200);
-        return new Gson().toJson(response);    }
+        return new Gson().toJson(response);
+    }
 
-//    private Object joinGame(Request req, Response res) {
-//        return "";
-//    }
+    private Object joinGame(Request req, Response res) {
+        AuthJoinGame join = new Gson().fromJson(req.body(), AuthJoinGame.class); //should this be .headers() ??
+        LogoutResult response = null;
+        try {
+            response = gameService.joinGame(join);
+        } catch (DataAccessException e) {
+            res.status(500);
+            response = new LogoutResult("Error: error occurred");
+            return new Gson().toJson(response);
+        }
+        if (response.message()!=null) {
+            if (response.message().equals("Error: unauthorized")) {
+                res.status(401);
+                return new Gson().toJson(response);
+            } else if (response.message().equals("Error: bad request")) {
+                res.status(400);
+                return new Gson().toJson(response);
+            } else if (response.message().equals("Error: already taken")) {
+                res.status(403);
+                return new Gson().toJson(response);
+            }
+        }
+        res.status(200);
+        return new Gson().toJson(response);
+    }
 
     public void stop() {
         Spark.stop();
