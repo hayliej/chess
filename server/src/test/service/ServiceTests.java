@@ -5,6 +5,7 @@ import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import requests.LoginRequest;
+import requests.LogoutResult;
 import requests.RegisterResult;
 import requests.UserData;
 import service.*;
@@ -26,7 +27,11 @@ public class ServiceTests {
         uService.clear();
 
         UserData user = new UserData("username", "password", "email@byu.edu");
-        uService.createUser(user);
+        try {
+            uService.getUser(user);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     //CLEAR positive
@@ -86,17 +91,28 @@ public class ServiceTests {
     //logout positive
     @Test
     public void logoutPositive(){
+        UserData u = uService.getMap().get("username");
         try {
-            RegisterResult result = aService.login(new LoginRequest("username", "password"));
-            Map<Object, Object> amap = aService.getMap();
-            aService.logout((String) amap.get(result.authToken()));
+            RegisterResult loggedIn = aService.login(new LoginRequest(u.username(), u.password()));
+            LogoutResult result = aService.logout(loggedIn.authToken());
+            assertEquals(new LogoutResult(""),result);
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
-        Map<Object, Object> amap = aService.getMap();
-        assertNull(amap);
     }
     //logout negative
+    @Test
+    public void logoutNegative(){
+        UserData u = uService.getMap().get("username");
+        try {
+            RegisterResult loggedIn = aService.login(new LoginRequest(u.username(), u.password()));
+            LogoutResult result = aService.logout("loggedIn.authToken()");
+            assertEquals(new LogoutResult("Error: unauthorized"),result);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
     //GAME SERVICE
