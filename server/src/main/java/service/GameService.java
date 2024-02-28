@@ -25,7 +25,7 @@ public class GameService {
         }
         List games = new ArrayList();
         for (Integer i=1;i<=GDataAccess.getSize(); i++){
-            games.add(GDataAccess.returnGames().get(Integer.toString(i)));
+            games.add(GDataAccess.returnGames().get(i));
         }
         return new ListGamesResult(null, games);
     }
@@ -37,7 +37,7 @@ public class GameService {
         } else if (newAuth.authToken()==null || newAuth.gameName()==null){
             return new CreateGameResult("Error: bad request", null);
         }
-        String id = Integer.toString(GDataAccess.getSize()+1);
+        Integer id = GDataAccess.getSize()+1;
         GDataAccess.addGame(id, new GameData(id, null, null, newAuth.gameName()));
         return new CreateGameResult(null, id);
     }

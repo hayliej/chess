@@ -11,7 +11,7 @@ public interface GameDAO {
     public void clear();
 
     //createGame
-    public void addGame(String id, GameData gamedata) throws DataAccessException;
+    public void addGame(Integer id, GameData gamedata) throws DataAccessException;
 
     //getGame
 
@@ -24,5 +24,5 @@ public interface GameDAO {
     int getSize();
 
     //return map
-    Map<String, GameData> returnGames();
+    Map<Integer, GameData> returnGames();
 }

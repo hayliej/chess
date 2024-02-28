@@ -1,4 +1,4 @@
 package requests;
 
-public record CreateGameResult(String message, String gameID) {
+public record CreateGameResult(String message, Integer gameID) {
 }

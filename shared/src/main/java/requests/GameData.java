@@ -1,4 +1,4 @@
 package requests;
 
-public record GameData(String gameID, String whiteUsername, String blackUsername, String gameName) {
+public record GameData(Integer gameID, String whiteUsername, String blackUsername, String gameName) {
 }

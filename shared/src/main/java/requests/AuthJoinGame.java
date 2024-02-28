@@ -1,5 +1,5 @@
 package requests;
 
 //used for joinGame
-public record AuthJoinGame(String authToken, String playerColor, String gameID) {
+public record AuthJoinGame(String authToken, String playerColor, Integer gameID) {
 }
