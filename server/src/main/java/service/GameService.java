@@ -46,8 +46,14 @@ public class GameService {
     public LogoutResult joinGame(AuthJoinGame join) throws DataAccessException {
         if (!(ADataAccess.returnAuths().containsKey(join.authToken()))){
             return new LogoutResult("Error: unauthorized");
-        } else if (join.authToken()==null || join.gameID()==null || join.playerColor()==null){
+        } else if (join.authToken()==null || join.gameID()==null){
             return new LogoutResult("Error: bad request");
+        }
+        if ((GDataAccess.returnGames().get(join.gameID())==null)){
+            return new LogoutResult("Error: bad request");
+        }
+        if (join.playerColor()==null){
+            return new LogoutResult(null);
         }
         if (join.playerColor().equals("WHITE")) {
             if (!(GDataAccess.returnGames().get(join.gameID()).whiteUsername()==null)){
