@@ -148,8 +148,39 @@ public class ServiceTests {
         }
     }
     //createGame positive
-
+    @Test
+    public void createGamesPositive(){
+        UserData u = uService.getMap().get("username");
+        RegisterResult loggedIn = null;
+        try {
+            loggedIn = aService.login(new LoginRequest(u.username(), u.password()));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            CreateGameResult result = gService.createGame(new AuthNewGame(loggedIn.authToken(),"gameName"));
+            assertEquals(new CreateGameResult(null, 1), result);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
     //createGame negative
+    @Test
+    public void createGamesNegative(){
+        UserData u = uService.getMap().get("username");
+        RegisterResult loggedIn = null;
+        try {
+            loggedIn = aService.login(new LoginRequest(u.username(), u.password()));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            CreateGameResult result = gService.createGame(new AuthNewGame(loggedIn.authToken(),null));
+            assertEquals(new CreateGameResult("Error: bad request", null), result);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     //joinGame positive
 
