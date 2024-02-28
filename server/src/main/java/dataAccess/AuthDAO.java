@@ -17,6 +17,7 @@ public interface AuthDAO {
     Map<Object, Object> returnAuths();
 
     //getAuth
+    String getVal(String auth);
 
     //deleteAuth
 }

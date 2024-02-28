@@ -53,11 +53,17 @@ public class GameService {
             if (!(GDataAccess.returnGames().get(join.gameID()).whiteUsername()==null)){
                 return new LogoutResult("Error: already taken");
             }
+            GameData replace = new GameData(join.gameID(), ADataAccess.getVal(join.authToken()),
+                    null, GDataAccess.returnGames().get(join.gameID()).gameName());
+            GDataAccess.returnGames().replace(join.gameID(), replace);
         }
         if (join.playerColor().equals("BLACK")) {
             if (!(GDataAccess.returnGames().get(join.gameID()).blackUsername()==null)){
                 return new LogoutResult("Error: already taken");
             }
+            GameData replace = new GameData(join.gameID(), null, ADataAccess.getVal(join.authToken()),
+                    GDataAccess.returnGames().get(join.gameID()).gameName());
+            GDataAccess.returnGames().replace(join.gameID(), replace);
         }
         return new LogoutResult(null);
     }

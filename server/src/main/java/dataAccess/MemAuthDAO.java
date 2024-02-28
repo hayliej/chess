@@ -19,6 +19,9 @@ public class MemAuthDAO implements AuthDAO {
         auths.put(authdata.authToken(), authdata.username());
     }
 
+    //get value
+    public String getVal(String auth) { return auths.get(auth); }
+
     //return map
     public Map returnAuths(){
         return auths;
