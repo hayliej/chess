@@ -57,12 +57,14 @@ public class Server {
             response = new RegisterResult("Error: error occurred", null, null);
             return new Gson().toJson(response);
         }
-        if (response.equals(new RegisterResult("Error: already taken", null, null))) {
-            res.status(403);
-            return new Gson().toJson(response);
-        } else if (response.message().equals("Error: bad request")){
-            res.status(400);
-            return new Gson().toJson(response);
+        if (response.message()!=null) {
+            if (response.equals(new RegisterResult("Error: already taken", null, null))) {
+                res.status(403);
+                return new Gson().toJson(response);
+            } else if (response.message().equals("Error: bad request")) {
+                res.status(400);
+                return new Gson().toJson(response);
+            }
         }
         res.status(200);//set this for corresponding message that you get back from service
         return new Gson().toJson(response);
@@ -78,9 +80,11 @@ public class Server {
             response = new RegisterResult("Error: error occurred", null, null);
             return new Gson().toJson(response);
         }
-        if (response.message().equals("Error: unauthorized")){
-            res.status(401);
-            return new Gson().toJson(response);
+        if (response.message()!=null) {
+            if (response.message().equals("Error: unauthorized")) {
+                res.status(401);
+                return new Gson().toJson(response);
+            }
         }
         res.status(200);//set this for corresponding message that you get back from service
         return new Gson().toJson(response);
@@ -96,9 +100,11 @@ public class Server {
             response = new LogoutResult("Error: error occurred");
             return new Gson().toJson(response);
         }
-        if (response.message().equals("Error: unauthorized")){
-            res.status(401);
-            return new Gson().toJson(response);
+        if (response.message()!=null) {
+            if (response.message().equals("Error: unauthorized")) {
+                res.status(401);
+                return new Gson().toJson(response);
+            }
         }
         res.status(200);
         return new Gson().toJson(response);
@@ -114,9 +120,11 @@ public class Server {
             response = new ListGamesResult("Error: error occurred", null);
             return new Gson().toJson(response);
         }
-        if (response.message().equals("Error: unauthorized")){
-            res.status(401);
-            return new Gson().toJson(response);
+        if (response.message()!=null) {
+            if (response.message().equals("Error: unauthorized")) {
+                res.status(401);
+                return new Gson().toJson(response);
+            }
         }
         res.status(200);
         return new Gson().toJson(response);
@@ -132,12 +140,14 @@ public class Server {
             response = new CreateGameResult("Error: error occurred", null);
             return new Gson().toJson(response);
         }
-        if (response.message().equals("Error: unauthorized")){
-            res.status(401);
-            return new Gson().toJson(response);
-        } else if (response.message().equals("Error: bad request")){
-            res.status(400);
-            return new Gson().toJson(response);
+        if (response.message()!=null) {
+            if (response.message().equals("Error: unauthorized")) {
+                res.status(401);
+                return new Gson().toJson(response);
+            } else if (response.message().equals("Error: bad request")) {
+                res.status(400);
+                return new Gson().toJson(response);
+            }
         }
         res.status(200);
         return new Gson().toJson(response);    }
