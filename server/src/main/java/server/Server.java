@@ -91,7 +91,7 @@ public class Server {
     }
 
     private Object logout(Request req, Response res) {
-        AuthToken auth = new Gson().fromJson(req.body(), AuthToken.class); //should this be .headers() ??
+        String auth = req.headers("authorization");
         LogoutResult response = null;
         try {
             response = authService.logout(auth);
@@ -111,7 +111,7 @@ public class Server {
     }
 
     private Object listGames(Request req, Response res) {
-        AuthToken auth = new Gson().fromJson(req.body(), AuthToken.class); //should this be .headers() ??
+        String auth = req.headers("authorization"); //should this be .headers() ??
         ListGamesResult response = null;
         try {
             response = gameService.listGames(auth); //make listgames function in service
@@ -131,7 +131,9 @@ public class Server {
     }
 
     private Object createGame(Request req, Response res) {
-        AuthNewGame auth = new Gson().fromJson(req.body(), AuthNewGame.class); //should this be .headers() ??
+        AuthNewGame auth = new Gson().fromJson(req.body(), AuthNewGame.class);
+        String head = req.headers("authorization"); //should this be .headers() ??
+        auth = new AuthNewGame(head, auth.gameName());
         CreateGameResult response = null;
         try {
             response = gameService.createGame(auth);
@@ -146,10 +148,11 @@ public class Server {
                 return new Gson().toJson(response);
             } else if (response.message().equals("Error: bad request")) {
                 res.status(400);
-                return new Gson().toJson(response);
+                return new Gson().toJson(response); //move this out
             }
+
         }
-        res.status(200);
+        res.status(200); //move to try
         return new Gson().toJson(response);
     }
 

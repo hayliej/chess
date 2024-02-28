@@ -16,8 +16,8 @@ public class GameService {
     }
 
     //listGames
-    public ListGamesResult listGames(AuthToken auth) throws DataAccessException {
-        if (!(ADataAccess.returnAuths().containsKey(auth.authToken()))){
+    public ListGamesResult listGames(String auth) throws DataAccessException {
+        if (!(ADataAccess.returnAuths().containsKey(auth))){
             return new ListGamesResult("Error: unauthorized", null);
         }
         return new ListGamesResult(null, GDataAccess.returnGames());

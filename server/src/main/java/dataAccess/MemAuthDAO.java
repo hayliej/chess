@@ -11,7 +11,7 @@ public class MemAuthDAO implements AuthDAO {
 
     //clear
     public void clear() {
-        Map<String,String> auths = new HashMap<>();
+        auths.clear();
     }
 
     @Override

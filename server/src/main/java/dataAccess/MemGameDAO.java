@@ -11,7 +11,7 @@ public class MemGameDAO implements GameDAO {
     private static Map<String, GameData> games = new HashMap<>();
 
     public void clear() {
-        Map<String,GameData> games = new HashMap<>();
+        games.clear();
     }
 
     @Override

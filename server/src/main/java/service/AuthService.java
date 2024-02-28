@@ -30,7 +30,7 @@ public class AuthService {
         return new RegisterResult(null, logReq.username(), authToken);
     }
 
-    public static LogoutResult logout(AuthToken authTok) throws DataAccessException {
+    public static LogoutResult logout(String authTok) throws DataAccessException {
         if (!(ADataAccess.returnAuths().containsKey(authTok))){
             return new LogoutResult("Error: unauthorized");
         }
