@@ -52,21 +52,18 @@ public class Server {
         RegisterResult response = null;
         try {
             response = userService.getUser(user);
+            res.status(200); //set this for corresponding message that you get back from service
         } catch (DataAccessException e) {
             res.status(500);
             response = new RegisterResult("Error: error occurred", null, null);
-            return new Gson().toJson(response);
         }
         if (response.message()!=null) {
             if (response.equals(new RegisterResult("Error: already taken", null, null))) {
                 res.status(403);
-                return new Gson().toJson(response);
             } else if (response.message().equals("Error: bad request")) {
                 res.status(400);
-                return new Gson().toJson(response);
             }
         }
-        res.status(200);//set this for corresponding message that you get back from service
         return new Gson().toJson(response);
     }
 
@@ -74,19 +71,17 @@ public class Server {
         LoginRequest loginReq = new Gson().fromJson(req.body(), LoginRequest.class);
         RegisterResult response = null;
         try {
-            response = authService.login(loginReq); //make login function in service
+            response = authService.login(loginReq);
+            res.status(200);
         } catch (DataAccessException e) {
             res.status(500);
             response = new RegisterResult("Error: error occurred", null, null);
-            return new Gson().toJson(response);
         }
         if (response.message()!=null) {
             if (response.message().equals("Error: unauthorized")) {
                 res.status(401);
-                return new Gson().toJson(response);
             }
         }
-        res.status(200);//set this for corresponding message that you get back from service
         return new Gson().toJson(response);
     }
 
@@ -95,18 +90,16 @@ public class Server {
         LogoutResult response = null;
         try {
             response = authService.logout(auth);
+            res.status(200);
         } catch (DataAccessException e) {
             res.status(500);
             response = new LogoutResult("Error: error occurred");
-            return new Gson().toJson(response);
         }
         if (response.message()!=null) {
             if (response.message().equals("Error: unauthorized")) {
                 res.status(401);
-                return new Gson().toJson(response);
             }
         }
-        res.status(200);
         return new Gson().toJson(response);
     }
 
@@ -114,19 +107,17 @@ public class Server {
         String auth = req.headers("authorization"); //should this be .headers() ??
         ListGamesResult response = null;
         try {
-            response = gameService.listGames(auth); //make listgames function in service
+            response = gameService.listGames(auth);
+            res.status(200);
         } catch (DataAccessException e) {
             res.status(500);
             response = new ListGamesResult("Error: error occurred", null);
-            return new Gson().toJson(response);
         }
         if (response.message()!=null) {
             if (response.message().equals("Error: unauthorized")) {
                 res.status(401);
-                return new Gson().toJson(response);
             }
         }
-        res.status(200);
         return new Gson().toJson(response);
     }
 
@@ -137,22 +128,18 @@ public class Server {
         CreateGameResult response = null;
         try {
             response = gameService.createGame(auth);
+            res.status(200);
         } catch (DataAccessException e) {
             res.status(500);
             response = new CreateGameResult("Error: error occurred", null);
-            return new Gson().toJson(response);
         }
         if (response.message()!=null) {
             if (response.message().equals("Error: unauthorized")) {
                 res.status(401);
-                return new Gson().toJson(response);
             } else if (response.message().equals("Error: bad request")) {
                 res.status(400);
-                return new Gson().toJson(response); //move this out
             }
-
         }
-        res.status(200); //move to try
         return new Gson().toJson(response);
     }
 
@@ -163,24 +150,20 @@ public class Server {
         LogoutResult response = null;
         try {
             response = gameService.joinGame(join);
+            res.status(200);
         } catch (DataAccessException e) {
             res.status(500);
             response = new LogoutResult("Error: error occurred");
-            return new Gson().toJson(response);
         }
         if (response.message()!=null) {
             if (response.message().equals("Error: unauthorized")) {
                 res.status(401);
-                return new Gson().toJson(response);
             } else if (response.message().equals("Error: bad request")) {
                 res.status(400);
-                return new Gson().toJson(response);
             } else if (response.message().equals("Error: already taken")) {
                 res.status(403);
-                return new Gson().toJson(response);
             }
         }
-        res.status(200);
         return new Gson().toJson(response);
     }
 
