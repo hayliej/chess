@@ -10,7 +10,7 @@ import service.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ServiceTests {
     static GameService gService = new GameService();
@@ -37,12 +37,19 @@ public class ServiceTests {
     }
 
     //USER SERVICE
-    //getUser positive
-    //getUser negative
+    //getUser (register) positive
+    @Test
+    public void registerPositive(){
+        Map<String, UserData> umap = uService.getMap();
+        assertNotNull(umap);
+    }
+    //getUser (register) negative
+    @Test
+    public void registerNegative(){
+        Map<String, UserData> umap = uService.getMap();
+        assertNotNull(umap);
+    }
 
-    //don't need these: ??
-    //createUser positive
-    //createUser negative
 
     //AUTH SERVICE
     //login positive
