@@ -44,13 +44,13 @@ public class ServiceTests {
     //USER SERVICE
     //getUser (register) positive
     @Test
-    public void registerPositive(){
+    public void getUserPositive(){
         Map<String, UserData> umap = uService.getMap();
         assertNotNull(umap);
     }
     //getUser (register) negative
     @Test
-    public void registerNegative(){
+    public void getUserNegative(){
         UserData newUser = new UserData(null, "password", "email@byu.edu");
         try {
             RegisterResult result = uService.getUser(newUser);
@@ -61,6 +61,20 @@ public class ServiceTests {
         }
     }
 
+    //createUser positive
+    @Test
+    public void createUserPositive(){
+        uService.createUser(new UserData("u2", "p2", "email2@byu.edu"));
+        Map<String, UserData> umap = uService.getMap();
+        assertEquals(2, umap.size());
+    }
+    //createUser negative
+    @Test
+    public void createUserNegative(){
+        uService.createUser(new UserData(null, "p2", "email2@byu.edu"));
+        Map<String, UserData> umap = uService.getMap();
+        assertEquals(1, umap.size());
+    }
 
     //AUTH SERVICE
     //login positive

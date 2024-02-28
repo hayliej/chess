@@ -40,7 +40,9 @@ public class UserService {
     //createUser
     public static Object createUser(UserData userData){
         try {
-            UDataAccess.addUser(userData);
+            if (userData.username() !=null && userData.password()!=null && userData.email()!=null){
+                UDataAccess.addUser(userData);
+            }
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
