@@ -149,7 +149,7 @@ public class ServiceTests {
     }
     //createGame positive
     @Test
-    public void createGamesPositive(){
+    public void createGamePositive(){
         UserData u = uService.getMap().get("username");
         RegisterResult loggedIn = null;
         try {
@@ -166,7 +166,7 @@ public class ServiceTests {
     }
     //createGame negative
     @Test
-    public void createGamesNegative(){
+    public void createGameNegative(){
         UserData u = uService.getMap().get("username");
         RegisterResult loggedIn = null;
         try {
@@ -183,7 +183,39 @@ public class ServiceTests {
     }
 
     //joinGame positive
-
+    @Test
+    public void joinGamePositive(){
+        UserData u = uService.getMap().get("username");
+        RegisterResult loggedIn = null;
+        try {
+            loggedIn = aService.login(new LoginRequest(u.username(), u.password()));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            gService.createGame(new AuthNewGame(loggedIn.authToken(),"gameName"));
+            LogoutResult result = gService.joinGame(new AuthJoinGame(loggedIn.authToken(),"WHITE", 1));
+            assertEquals(new LogoutResult(null), result);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
     //joinGame negative
-
+    @Test
+    public void joinGameNegative(){
+        UserData u = uService.getMap().get("username");
+        RegisterResult loggedIn = null;
+        try {
+            loggedIn = aService.login(new LoginRequest(u.username(), u.password()));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            gService.createGame(new AuthNewGame(loggedIn.authToken(),"gameName"));
+            LogoutResult result = gService.joinGame(new AuthJoinGame("loggedIn.authToken()","WHITE", 1));
+            assertEquals(new LogoutResult("Error: unauthorized"), result);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
