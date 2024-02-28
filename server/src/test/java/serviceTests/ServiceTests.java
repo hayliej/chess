@@ -42,49 +42,6 @@ public class ServiceTests {
         Map<String, UserData> test = new HashMap<String, UserData>();
         assertEquals(umap, test);
     }
-//    //user clear positive 2 - just here because autograder was being weird about me not having multiple for clear, it's the same though
-//    @Test
-//    public void clearU2(){
-//        uService.clear();
-//        Map<String, UserData> umap = uService.getMap();
-//        Map<String, UserData> test = new HashMap<String, UserData>();
-//        assertEquals(umap, test);
-//    }
-//
-//    //auth clear positive 1
-//    @Test
-//    public void clearA1(){
-//        aService.clear();
-//        Map<Object, Object> umap = aService.getMap();
-//        Map<Object, Object> test = new HashMap<Object, Object>();
-//        assertEquals(umap, test);
-//    }
-//    //auth clear positive 2 - same thing as clearU2
-//    @Test
-//    public void clearA2(){
-//        aService.clear();
-//        Map<Object, Object> umap = aService.getMap();
-//        Map<Object, Object> test = new HashMap<Object, Object>();
-//        assertEquals(umap, test);
-//    }
-//
-//    //game clear positive 1
-//    @Test
-//    public void clearG1(){
-//        gService.clear();
-//        Map<Integer, GameData> umap = gService.getMap();
-//        Map<Integer, GameData> test = new HashMap<Integer, GameData>();
-//        assertEquals(umap, test);
-//    }
-//
-//    //game clear positive 2 - same reason
-//    @Test
-//    public void clearG2(){
-//        gService.clear();
-//        Map<Integer, GameData> umap = gService.getMap();
-//        Map<Integer, GameData> test = new HashMap<Integer, GameData>();
-//        assertEquals(umap, test);
-//    }
 
     //USER SERVICE
     //getUser (register) positive
