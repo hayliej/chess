@@ -59,17 +59,21 @@ public class GameService {
             if (!(GDataAccess.returnGames().get(join.gameID()).whiteUsername()==null)){
                 return new LogoutResult("Error: already taken");
             }
-            GameData replace = new GameData(join.gameID(), ADataAccess.getVal(join.authToken()),
-                    null, GDataAccess.returnGames().get(join.gameID()).gameName());
-            GDataAccess.returnGames().replace(join.gameID(), replace);
+            GameData old = GDataAccess.returnGames().get(join.gameID());
+//            GameData replace = new GameData(old.gameID(), ADataAccess.getVal(join.authToken()),
+//                    null, GDataAccess.returnGames().get(join.gameID()).gameName());
+            GameData newgd = new GameData(old.gameID(), ADataAccess.getVal(join.authToken()), old.blackUsername(), old.gameName());
+            GDataAccess.returnGames().replace(join.gameID(), newgd);
         }
         if (join.playerColor().equals("BLACK")) {
             if (!(GDataAccess.returnGames().get(join.gameID()).blackUsername()==null)){
                 return new LogoutResult("Error: already taken");
             }
-            GameData replace = new GameData(join.gameID(), null, ADataAccess.getVal(join.authToken()),
-                    GDataAccess.returnGames().get(join.gameID()).gameName());
-            GDataAccess.returnGames().replace(join.gameID(), replace);
+            GameData old = GDataAccess.returnGames().get(join.gameID());
+//            GameData replace = new GameData(join.gameID(), null, ADataAccess.getVal(join.authToken()),
+//                    GDataAccess.returnGames().get(join.gameID()).gameName());
+            GameData newgd = new GameData(old.gameID(), old.whiteUsername(), ADataAccess.getVal(join.authToken()), old.gameName());
+            GDataAccess.returnGames().replace(join.gameID(), newgd);
         }
         return new LogoutResult(null);
     }
