@@ -8,14 +8,9 @@ import java.util.UUID;
 
 public class UserService {
     //what do we do with this??
-    private static UserDAO UDataAccess = new MemUserDAO();
-    private static AuthDAO ADataAccess = new MemAuthDAO();
+    private static UserDAO uDataAccess = new MemUserDAO();
+    private static AuthDAO aDataAccess = new MemAuthDAO();
 
-
-//    public UserService() {
-//        this.UDataAccess = UDataAccess;
-//        this.ADataAccess = ADataAccess;
-//    }
 
     //getUser
     public static RegisterResult getUser(UserData u) throws DataAccessException {
@@ -24,13 +19,13 @@ public class UserService {
         if (u.username() ==null || u.password()==null || u.email()==null){
             return new RegisterResult("Error: bad request", null, null);
         }
-        else if (!(UDataAccess.returnUsers().containsKey(username))) {
+        else if (!(uDataAccess.returnUsers().containsKey(username))) {
             createUser(u);
             String authToken = UUID.randomUUID().toString();
-            ADataAccess.addAuth(new AuthData(authToken, username));
+            aDataAccess.addAuth(new AuthData(authToken, username));
 //            String authToken = ADataAccess.returnAuths().get(username);
             return new RegisterResult(null, username, authToken);
-        } else if (UDataAccess.returnUsers().containsKey(username)) {
+        } else if (uDataAccess.returnUsers().containsKey(username)) {
             return new RegisterResult("Error: already taken", null, null);
         } //else if ()
         return new RegisterResult(null, null, null);
@@ -40,7 +35,7 @@ public class UserService {
     public static Object createUser(UserData userData){
         try {
             if (userData.username() !=null && userData.password()!=null && userData.email()!=null){
-                UDataAccess.addUser(userData);
+                uDataAccess.addUser(userData);
             }
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
@@ -50,13 +45,13 @@ public class UserService {
 
     //clearDB
     public void clear() {
-        UDataAccess.clear();
-        ADataAccess.clear();
+        uDataAccess.clear();
+        aDataAccess.clear();
     }
 
     //for unit test
     public Map<String, UserData> getMap(){
-        return UDataAccess.returnUsers();
+        return uDataAccess.returnUsers();
     }
 
 }

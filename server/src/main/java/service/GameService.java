@@ -1,6 +1,5 @@
 package service;
 import dataAccess.*;
-import org.eclipse.jetty.util.log.Log;
 import requests.*;
 
 import java.util.ArrayList;
@@ -8,87 +7,81 @@ import java.util.List;
 import java.util.Map;
 
 public class GameService {
-    private static UserDAO UDataAccess = new MemUserDAO();
-    private static AuthDAO ADataAccess = new MemAuthDAO();
-    private static GameDAO GDataAccess = new MemGameDAO();
+    private static UserDAO uDataAccess = new MemUserDAO();
+    private static AuthDAO aDataAccess = new MemAuthDAO();
+    private static GameDAO gDataAccess = new MemGameDAO();
 
-
-//    public GameService() {
-//        this.UDataAccess = UDataAccess;
-//        this.ADataAccess = ADataAccess;
-//        this.GDataAccess = GDataAccess;
-//    }
 
     //listGames
     public ListGamesResult listGames(String auth) throws DataAccessException {
-        if (!(ADataAccess.returnAuths().containsKey(auth))){
+        if (!(aDataAccess.returnAuths().containsKey(auth))){
             return new ListGamesResult("Error: unauthorized", null);
         }
         List games = new ArrayList();
-        for (Integer i=1;i<=GDataAccess.getSize(); i++){
-            games.add(GDataAccess.returnGames().get(i));
+        for (Integer i = 1; i<= gDataAccess.getSize(); i++){
+            games.add(gDataAccess.returnGames().get(i));
         }
         return new ListGamesResult(null, games);
     }
 
     //createGame
     public CreateGameResult createGame(AuthNewGame newAuth) throws DataAccessException {
-        if (!(ADataAccess.returnAuths().containsKey(newAuth.authToken()))){
+        if (!(aDataAccess.returnAuths().containsKey(newAuth.authToken()))){
             return new CreateGameResult("Error: unauthorized", null);
         } else if (newAuth.authToken()==null || newAuth.gameName()==null){
             return new CreateGameResult("Error: bad request", null);
         }
-        Integer id = GDataAccess.getSize()+1;
-        GDataAccess.addGame(id, new GameData(id, null, null, newAuth.gameName()));
+        Integer id = gDataAccess.getSize()+1;
+        gDataAccess.addGame(id, new GameData(id, null, null, newAuth.gameName()));
         return new CreateGameResult(null, id);
     }
 
     //join game
     public LogoutResult joinGame(AuthJoinGame join) throws DataAccessException {
-        if (!(ADataAccess.returnAuths().containsKey(join.authToken()))){
+        if (!(aDataAccess.returnAuths().containsKey(join.authToken()))){
             return new LogoutResult("Error: unauthorized");
         } else if (join.authToken()==null || join.gameID()==null){
             return new LogoutResult("Error: bad request");
         }
-        if ((GDataAccess.returnGames().get(join.gameID())==null)){
+        if ((gDataAccess.returnGames().get(join.gameID())==null)){
             return new LogoutResult("Error: bad request");
         }
         if (join.playerColor()==null){
             return new LogoutResult(null);
         }
         if (join.playerColor().equals("WHITE")) {
-            if (!(GDataAccess.returnGames().get(join.gameID()).whiteUsername()==null)){
+            if (!(gDataAccess.returnGames().get(join.gameID()).whiteUsername()==null)){
                 return new LogoutResult("Error: already taken");
             }
-            GameData old = GDataAccess.returnGames().get(join.gameID());
+            GameData old = gDataAccess.returnGames().get(join.gameID());
 //            GameData replace = new GameData(old.gameID(), ADataAccess.getVal(join.authToken()),
 //                    null, GDataAccess.returnGames().get(join.gameID()).gameName());
-            GameData newgd = new GameData(old.gameID(), ADataAccess.getVal(join.authToken()), old.blackUsername(), old.gameName());
-            GDataAccess.returnGames().replace(join.gameID(), newgd);
+            GameData newgd = new GameData(old.gameID(), aDataAccess.getVal(join.authToken()), old.blackUsername(), old.gameName());
+            gDataAccess.returnGames().replace(join.gameID(), newgd);
         }
         if (join.playerColor().equals("BLACK")) {
-            if (!(GDataAccess.returnGames().get(join.gameID()).blackUsername()==null)){
+            if (!(gDataAccess.returnGames().get(join.gameID()).blackUsername()==null)){
                 return new LogoutResult("Error: already taken");
             }
-            GameData old = GDataAccess.returnGames().get(join.gameID());
+            GameData old = gDataAccess.returnGames().get(join.gameID());
 //            GameData replace = new GameData(join.gameID(), null, ADataAccess.getVal(join.authToken()),
 //                    GDataAccess.returnGames().get(join.gameID()).gameName());
-            GameData newgd = new GameData(old.gameID(), old.whiteUsername(), ADataAccess.getVal(join.authToken()), old.gameName());
-            GDataAccess.returnGames().replace(join.gameID(), newgd);
+            GameData newgd = new GameData(old.gameID(), old.whiteUsername(), aDataAccess.getVal(join.authToken()), old.gameName());
+            gDataAccess.returnGames().replace(join.gameID(), newgd);
         }
         return new LogoutResult(null);
     }
 
     //clearDB
     public void clear(){
-        GDataAccess.clear();
-        ADataAccess.clear();
-        UDataAccess.clear();
+        gDataAccess.clear();
+        aDataAccess.clear();
+        uDataAccess.clear();
     }
 
     //for unit test
     public Map<Integer, GameData> getMap(){
-        return GDataAccess.returnGames();
+        return gDataAccess.returnGames();
     }
 }
 
