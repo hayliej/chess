@@ -28,7 +28,7 @@ public class Server {
         Spark.post("/user", this::register);
         Spark.post("/session", this::login);
         Spark.delete("/session", this::logout);
-        //Spark.get("/game", this::listGames);
+        Spark.get("/game", this::listGames);
         Spark.post("/game", this::createGame);
         //Spark.put("/game", this::joinGame);
 
@@ -104,23 +104,23 @@ public class Server {
         return new Gson().toJson(response);
     }
 
-//    private Object listGames(Request req, Response res) {
-//        AuthToken auth = new Gson().fromJson(req.body(), AuthToken.class); //should this be .headers() ??
-//        ListGamesResult response = null;
-//        try {
-//            response = gameService.listGames(auth); //make listgames function in service
-//        } catch (DataAccessException e) {
-//            res.status(500);
-//            response = new ListGamesResult("Error: error occurred", null);
-//            return new Gson().toJson(response);
-//        }
-//        if (response.message().equals("Error: unauthorized")){
-//            res.status(401);
-//            return new Gson().toJson(response);
-//        }
-//        res.status(200);
-//        return new Gson().toJson(response);
-//    }
+    private Object listGames(Request req, Response res) {
+        AuthToken auth = new Gson().fromJson(req.body(), AuthToken.class); //should this be .headers() ??
+        ListGamesResult response = null;
+        try {
+            response = gameService.listGames(auth); //make listgames function in service
+        } catch (DataAccessException e) {
+            res.status(500);
+            response = new ListGamesResult("Error: error occurred", null);
+            return new Gson().toJson(response);
+        }
+        if (response.message().equals("Error: unauthorized")){
+            res.status(401);
+            return new Gson().toJson(response);
+        }
+        res.status(200);
+        return new Gson().toJson(response);
+    }
 
     private Object createGame(Request req, Response res) {
         AuthNewGame auth = new Gson().fromJson(req.body(), AuthNewGame.class); //should this be .headers() ??
@@ -141,7 +141,7 @@ public class Server {
         }
         res.status(200);
         return new Gson().toJson(response);    }
-//
+
 //    private Object joinGame(Request req, Response res) {
 //        return "";
 //    }

@@ -24,5 +24,5 @@ public interface GameDAO {
     int getSize();
 
     //return map
-    Map<Integer, GameData> returnGames();
+    Map<String, GameData> returnGames();
 }

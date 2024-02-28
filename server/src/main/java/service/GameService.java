@@ -1,9 +1,6 @@
 package service;
 import dataAccess.*;
-import requests.AuthNewGame;
-import requests.CreateGameResult;
-import requests.GameData;
-import requests.LogoutResult;
+import requests.*;
 
 public class GameService {
     private static UserDAO UDataAccess = new MemUserDAO();
@@ -19,6 +16,13 @@ public class GameService {
 
     //THINGS SERVICE NEEDS TO DO:
     //get/listGames
+    public ListGamesResult listGames(AuthToken auth) throws DataAccessException {
+        if (!(ADataAccess.returnAuths().containsKey(auth.authToken()))){
+            return new ListGamesResult("Error: unauthorized", null);
+        }
+        return new ListGamesResult(null, GDataAccess.returnGames());
+    }
+
     //getGame
     //createGame
     public CreateGameResult createGame(AuthNewGame newAuth) throws DataAccessException {
