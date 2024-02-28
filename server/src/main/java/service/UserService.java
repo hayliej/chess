@@ -12,12 +12,11 @@ public class UserService {
     private static AuthDAO ADataAccess = new MemAuthDAO();
 
 
-    public UserService() {
-        this.UDataAccess = UDataAccess;
-        this.ADataAccess = ADataAccess;
-    }
+//    public UserService() {
+//        this.UDataAccess = UDataAccess;
+//        this.ADataAccess = ADataAccess;
+//    }
 
-    //THINGS SERVICE NEEDS TO DO: ???
     //getUser
     public static RegisterResult getUser(UserData u) throws DataAccessException {
         String username = u.getUsername();

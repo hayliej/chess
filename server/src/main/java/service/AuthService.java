@@ -11,10 +11,10 @@ public class AuthService {
     private static AuthDAO ADataAccess = new MemAuthDAO();
 
 
-    public AuthService() {
-        this.UDataAccess = UDataAccess;
-        this.ADataAccess = ADataAccess;
-    }
+//    public AuthService() {
+//        this.UDataAccess = UDataAccess;
+//        this.ADataAccess = ADataAccess;
+//    }
 
     public static RegisterResult login(LoginRequest logReq) throws DataAccessException {
         if (logReq.username() ==null || logReq.password()==null){

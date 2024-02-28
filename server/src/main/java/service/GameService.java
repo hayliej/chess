@@ -5,6 +5,7 @@ import requests.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GameService {
     private static UserDAO UDataAccess = new MemUserDAO();
@@ -12,11 +13,11 @@ public class GameService {
     private static GameDAO GDataAccess = new MemGameDAO();
 
 
-    public GameService() {
-        this.UDataAccess = UDataAccess;
-        this.ADataAccess = ADataAccess;
-        this.GDataAccess = GDataAccess;
-    }
+//    public GameService() {
+//        this.UDataAccess = UDataAccess;
+//        this.ADataAccess = ADataAccess;
+//        this.GDataAccess = GDataAccess;
+//    }
 
     //listGames
     public ListGamesResult listGames(String auth) throws DataAccessException {
@@ -83,6 +84,11 @@ public class GameService {
         GDataAccess.clear();
         ADataAccess.clear();
         UDataAccess.clear();
+    }
+
+    //for unit test
+    Map<Integer, GameData> getMap(){
+        return GDataAccess.returnGames();
     }
 }
 
