@@ -4,6 +4,7 @@ import dataAccess.*;
 import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import requests.RegisterResult;
 import requests.UserData;
 import service.*;
 
@@ -46,8 +47,14 @@ public class ServiceTests {
     //getUser (register) negative
     @Test
     public void registerNegative(){
-        Map<String, UserData> umap = uService.getMap();
-        assertNotNull(umap);
+        UserData newUser = new UserData(null, "password", "email@byu.edu");
+        try {
+            RegisterResult result = uService.getUser(newUser);
+            RegisterResult test = new RegisterResult("Error: bad request", null, null);
+            assertEquals(result, test);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
