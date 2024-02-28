@@ -15,8 +15,7 @@ public class GameService {
         this.GDataAccess = GDataAccess;
     }
 
-    //THINGS SERVICE NEEDS TO DO:
-    //get/listGames
+    //listGames
     public ListGamesResult listGames(AuthToken auth) throws DataAccessException {
         if (!(ADataAccess.returnAuths().containsKey(auth.authToken()))){
             return new ListGamesResult("Error: unauthorized", null);
@@ -62,7 +61,5 @@ public class GameService {
         ADataAccess.clear();
         UDataAccess.clear();
     }
-
-    //^NEED TO THROW EXCEPTIONS?
 }
 
