@@ -1,4 +1,4 @@
-package java.serviceTests;
+package serviceTests;
 import chess.*;
 import dataAccess.*;
 import org.eclipse.jetty.server.Authentication;
