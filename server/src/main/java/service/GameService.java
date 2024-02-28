@@ -87,7 +87,7 @@ public class GameService {
     }
 
     //for unit test
-    Map<Integer, GameData> getMap(){
+    public Map<Integer, GameData> getMap(){
         return GDataAccess.returnGames();
     }
 }
