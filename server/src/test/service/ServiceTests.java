@@ -4,12 +4,10 @@ import dataAccess.*;
 import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import requests.LoginRequest;
-import requests.LogoutResult;
-import requests.RegisterResult;
-import requests.UserData;
+import requests.*;
 import service.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -114,12 +112,47 @@ public class ServiceTests {
     }
 
 
-
     //GAME SERVICE
     //listGames positive
+    @Test
+    public void listGamesPositive(){
+        UserData u = uService.getMap().get("username");
+        RegisterResult loggedIn = null;
+        try {
+            loggedIn = aService.login(new LoginRequest(u.username(), u.password()));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            ListGamesResult result = gService.listGames(loggedIn.authToken());
+            assertEquals(new ListGamesResult(null, new ArrayList()), result);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
     //listGames negative
+    @Test
+    public void listGamesNegative(){
+        UserData u = uService.getMap().get("username");
+        RegisterResult loggedIn = null;
+        try {
+            loggedIn = aService.login(new LoginRequest(u.username(), u.password()));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            ListGamesResult result = gService.listGames("loggedIn.authToken()");
+            assertEquals(new ListGamesResult("Error: unauthorized", null), result);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
     //createGame positive
+
     //createGame negative
+
     //joinGame positive
+
     //joinGame negative
+
 }
