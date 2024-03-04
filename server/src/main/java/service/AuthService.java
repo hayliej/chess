@@ -1,6 +1,8 @@
 package service;
 import dataAccess.*;
 import requests.*;
+import results.LogoutResult;
+import results.RegisterResult;
 
 import java.util.Map;
 import java.util.UUID;

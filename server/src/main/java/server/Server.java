@@ -1,13 +1,14 @@
 package server;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import dataAccess.DataAccessException;
+import results.CreateGameResult;
+import results.ListGamesResult;
+import results.LogoutResult;
+import results.RegisterResult;
 import service.*;
 import spark.*;
 import requests.*;
-
-import java.io.Reader;
 
 public class Server {
     private static UserService userService = new UserService();

@@ -1,6 +1,9 @@
 package service;
 import dataAccess.*;
 import requests.*;
+import results.CreateGameResult;
+import results.ListGamesResult;
+import results.LogoutResult;
 
 import java.util.ArrayList;
 import java.util.List;

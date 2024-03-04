@@ -1,10 +1,12 @@
 package serviceTests;
-import chess.*;
 import dataAccess.*;
-import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import requests.*;
+import results.CreateGameResult;
+import results.ListGamesResult;
+import results.LogoutResult;
+import results.RegisterResult;
 import service.*;
 
 import java.util.ArrayList;
