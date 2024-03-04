@@ -68,7 +68,6 @@ public class ChessGame {
             ChessPiece p1 = board.getPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()));
             //check if it's the other team
             if (p1 == null || !(p1.getTeamColor().equals(p.getTeamColor()))) {
-//                if (!(p1.getTeamColor().equals(p.getTeamColor()))) {
                     board.addPiece(move.getStartPosition(), null);
                     board.addPiece(move.getEndPosition(), p);
                     if (!isInCheck(p.getTeamColor())) {
@@ -79,18 +78,6 @@ public class ChessGame {
                     board.addPiece(move.getEndPosition(), p1);
                     board.addPiece(move.getStartPosition(), p);
                 }
-            //}
-//            if (p1 == null) {
-//                board.addPiece(move.getStartPosition(), null);
-//                board.addPiece(move.getEndPosition(), p);
-//                if (!isInCheck(p.getTeamColor())) {
-//                    if (!isInCheckmate(p.getTeamColor())) {
-//                        validMvs.add(move);
-//                    }
-//                }
-//                board.addPiece(move.getEndPosition(), p1);
-//                board.addPiece(move.getStartPosition(), p);
-//            }
         }
 
             return validMvs;
