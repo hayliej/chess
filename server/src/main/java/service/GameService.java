@@ -81,10 +81,5 @@ public class GameService {
         aDataAccess.clear();
         uDataAccess.clear();
     }
-
-    //for unit test
-    public Map<Integer, GameData> getMap(){
-        return gDataAccess.returnGames();
-    }
 }
 
