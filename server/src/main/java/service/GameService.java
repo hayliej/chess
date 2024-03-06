@@ -76,7 +76,7 @@ public class GameService {
     }
 
     //clearDB
-    public void clear(){
+    public void clear() throws DataAccessException {
         gDataAccess.clear();
         aDataAccess.clear();
         uDataAccess.clear();

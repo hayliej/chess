@@ -36,7 +36,7 @@ public class AuthService {
         return new LogoutResult("");
     }
 
-    public void clear() {
+    public void clear() throws DataAccessException {
         uDataAccess.clear();
         aDataAccess.clear();
     }

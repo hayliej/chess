@@ -45,7 +45,7 @@ public class UserService {
     }
 
     //clearDB
-    public void clear() {
+    public void clear() throws DataAccessException {
         uDataAccess.clear();
         aDataAccess.clear();
     }
