@@ -21,7 +21,7 @@ public class ServiceTests {
     static AuthService aService = new AuthService();
 
     @BeforeEach
-    public void setup(){
+    public void setup() throws DataAccessException {
         gService.clear();
         aService.clear();
         uService.clear();
@@ -38,7 +38,7 @@ public class ServiceTests {
 
     //user clear positive 1
     @Test
-    public void clearU1(){
+    public void clearU1() throws DataAccessException {
         uService.clear();
         Map<String, UserData> umap = uService.getMap();
         Map<String, UserData> test = new HashMap<String, UserData>();
