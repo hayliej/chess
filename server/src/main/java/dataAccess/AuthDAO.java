@@ -8,7 +8,7 @@ public interface AuthDAO {
     //make map of auths
 
     //clear
-    public void clear();
+    public void clear() throws DataAccessException;
 
     //createAuth
     public void addAuth(AuthData authdata) throws DataAccessException;

@@ -2,12 +2,19 @@ package dataAccess;
 
 import requests.GameData;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Map;
 
 public class SqlGameDAO implements GameDAO{
     @Override
-    public void clear() {
-
+    public void clear() throws DataAccessException {
+        var statement = "TRUNCATE games";
+        try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
+            state.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
     }
 
     @Override
