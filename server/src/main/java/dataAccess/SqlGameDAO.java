@@ -9,13 +9,13 @@ import java.util.Map;
 public class SqlGameDAO implements GameDAO{
     private static final String[] createStatements = {
             """
-            CREATE TABLE IF NOT EXISTS  games (
+            CREATE TABLE IF NOT EXISTS games (
               `gameID` INT NOT NULL,
               `whiteUsername` varchar(256),
               `blackUsername` varchar(256),
               `game` varchar(256),
-              PRIMARY KEY (`gameID`),
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+              PRIMARY KEY (`gameID`)
+            );
             """
     };
     private static void configureDatabase() throws DataAccessException {
