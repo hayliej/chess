@@ -52,7 +52,7 @@ public class SqlGameDAO implements GameDAO{
             state.setInt(1, gamedata.gameID());
             state.setString(2,gamedata.whiteUsername());
             state.setString(3, gamedata.blackUsername());
-            state.setString(3, gamedata.gameName()); //JSON?????
+            state.setString(4, gamedata.gameName()); //JSON?????
             state.executeUpdate();
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
