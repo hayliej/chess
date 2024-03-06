@@ -5,6 +5,8 @@ import requests.AuthData;
 import java.util.Map;
 
 public class SqlAuthDAO implements AuthDAO{
+
+
     @Override
     public void clear() {
 
@@ -29,4 +31,6 @@ public class SqlAuthDAO implements AuthDAO{
     public String getVal(String auth) {
         return null;
     }
+
+
 }
