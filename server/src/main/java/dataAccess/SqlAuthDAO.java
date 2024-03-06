@@ -7,7 +7,31 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public class SqlAuthDAO implements AuthDAO{
+    private static final String[] createStatements = {
+            """
+            CREATE TABLE IF NOT EXISTS  auths (
+              `authToken` varchar(256) NOT NULL,
+              `username` varchar(256) NOT NULL,
+              PRIMARY KEY (`authToken`),
+            );
+            """
+    };
+    private static void configureDatabase() throws DataAccessException {
+        DatabaseManager.createDatabase();
+        try (var conn = DatabaseManager.getConnection()) {
+            for (var statement : createStatements) {
+                try (var preparedStatement = conn.prepareStatement(statement)) {
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()));
+        }
+    }
 
+    public SqlAuthDAO() throws DataAccessException {
+        configureDatabase();
+    }
 
     @Override
     public void clear() throws DataAccessException {

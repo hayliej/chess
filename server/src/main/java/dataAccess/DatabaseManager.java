@@ -15,7 +15,7 @@ public class DatabaseManager {
     static {
         try {
             try (var propStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("db.properties")) {
-                if (propStream == null) throw new Exception("Unable to laod db.properties");
+                if (propStream == null) throw new Exception("Unable to load db.properties");
                 Properties props = new Properties();
                 props.load(propStream);
                 databaseName = props.getProperty("db.name");
@@ -29,11 +29,11 @@ public class DatabaseManager {
         } catch (Exception ex) {
             throw new RuntimeException("unable to process db.properties. " + ex.getMessage());
         }
-        try {
-            configureDatabase();
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            configureDatabase();
+//        } catch (DataAccessException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     /**
@@ -73,44 +73,44 @@ public class DatabaseManager {
         }
     }
 
-    private static final String[] createStatements = {
-            """
-            CREATE TABLE IF NOT EXISTS  users (
-              `username` TEXT NOT NULL,
-              `password` TEXT NOT NULL,
-              `email` TEXT NOT NULL,
-              PRIMARY KEY (`username`),
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-            """ ,
-            """
-            CREATE TABLE IF NOT EXISTS  auths (
-              `authToken` TEXT NOT NULL,
-              `username` TEXT NOT NULL,
-              PRIMARY KEY (`authToken`),
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-            """,
-            """
-            CREATE TABLE IF NOT EXISTS  games (
-              `gameID` INT NOT NULL,
-              `whiteUsername` TEXT,
-              `blackUsername` TEXT,
-              `game` TEXT,
-              PRIMARY KEY (`gameID`),
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-            """
-    };
+//    private static final String[] createStatements = {
+//            """
+//            CREATE TABLE IF NOT EXISTS  users (
+//              `username` TEXT NOT NULL,
+//              `password` TEXT NOT NULL,
+//              `email` TEXT NOT NULL,
+//              PRIMARY KEY (`username`),
+//            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+//            """
+//            """
+//            CREATE TABLE IF NOT EXISTS  auths (
+//              `authToken` TEXT NOT NULL,
+//              `username` TEXT NOT NULL,
+//              PRIMARY KEY (`authToken`),
+//            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+//            """,
+//            """
+//            CREATE TABLE IF NOT EXISTS  games (
+//              `gameID` INT NOT NULL,
+//              `whiteUsername` TEXT,
+//              `blackUsername` TEXT,
+//              `game` TEXT,
+//              PRIMARY KEY (`gameID`),
+//            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+//            """
+   // };
 
 
-    private static void configureDatabase() throws DataAccessException {
-        DatabaseManager.createDatabase();
-        try (var conn = DatabaseManager.getConnection()) {
-            for (var statement : createStatements) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
-                }
-            }
-        } catch (SQLException ex) {
-            throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()));
-        }
-    }
+//    private static void configureDatabase() throws DataAccessException {
+//        DatabaseManager.createDatabase();
+//        try (var conn = DatabaseManager.getConnection()) {
+//            for (var statement : createStatements) {
+//                try (var preparedStatement = conn.prepareStatement(statement)) {
+//                    preparedStatement.executeUpdate();
+//                }
+//            }
+//        } catch (SQLException ex) {
+//            throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()));
+//        }
+//    }
 }

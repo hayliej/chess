@@ -7,6 +7,33 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public class SqlUserDAO implements UserDAO {
+    private static final String[] createStatements = {
+            """
+            CREATE TABLE IF NOT EXISTS  users (
+              `username` varchar(256) NOT NULL,
+              `password` varchar(256) NOT NULL,
+              `email` varchar(256) NOT NULL,
+              PRIMARY KEY (`username`)
+            );
+            """
+    };
+    private static void configureDatabase() throws DataAccessException {
+        DatabaseManager.createDatabase();
+        try (var conn = DatabaseManager.getConnection()) {
+            for (var statement : createStatements) {
+                try (var preparedStatement = conn.prepareStatement(statement)) {
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()));
+        }
+    }
+
+    public SqlUserDAO() throws DataAccessException {
+        configureDatabase();
+    }
+
     @Override
     public void clear() throws DataAccessException {
         var statement = "TRUNCATE users";

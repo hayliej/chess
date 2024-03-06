@@ -10,9 +10,35 @@ import java.util.List;
 import java.util.Map;
 
 public class GameService {
-    private static UserDAO uDataAccess = new MemUserDAO();
-    private static AuthDAO aDataAccess = new MemAuthDAO();
-    private static GameDAO gDataAccess = new MemGameDAO();
+    private static UserDAO uDataAccess;
+
+    static {
+        try {
+            uDataAccess = new SqlUserDAO();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static AuthDAO aDataAccess;
+
+    static {
+        try {
+            aDataAccess = new SqlAuthDAO();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static GameDAO gDataAccess;
+
+    static {
+        try {
+            gDataAccess = new SqlGameDAO();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     //listGames

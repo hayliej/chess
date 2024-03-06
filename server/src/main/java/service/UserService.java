@@ -9,8 +9,25 @@ import java.util.UUID;
 
 public class UserService {
     //what do we do with this??
-    private static UserDAO uDataAccess = new MemUserDAO();
-    private static AuthDAO aDataAccess = new MemAuthDAO();
+    private static UserDAO uDataAccess;
+
+    static {
+        try {
+            uDataAccess = new SqlUserDAO();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static AuthDAO aDataAccess;
+
+    static {
+        try {
+            aDataAccess = new SqlAuthDAO();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     //getUser

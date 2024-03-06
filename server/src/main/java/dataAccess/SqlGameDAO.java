@@ -7,6 +7,34 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public class SqlGameDAO implements GameDAO{
+    private static final String[] createStatements = {
+            """
+            CREATE TABLE IF NOT EXISTS  games (
+              `gameID` INT NOT NULL,
+              `whiteUsername` varchar(256),
+              `blackUsername` varchar(256),
+              `game` varchar(256),
+              PRIMARY KEY (`gameID`),
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+            """
+    };
+    private static void configureDatabase() throws DataAccessException {
+        DatabaseManager.createDatabase();
+        try (var conn = DatabaseManager.getConnection()) {
+            for (var statement : createStatements) {
+                try (var preparedStatement = conn.prepareStatement(statement)) {
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()));
+        }
+    }
+
+    public SqlGameDAO() throws DataAccessException {
+        configureDatabase();
+    }
+
     @Override
     public void clear() throws DataAccessException {
         var statement = "TRUNCATE games";
