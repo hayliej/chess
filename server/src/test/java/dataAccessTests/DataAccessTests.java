@@ -172,13 +172,32 @@ public class DataAccessTests {
     }
 
     //returnAuths negative
+    //DO THIS^
 
     //getVal positive
+    @Test
+    public void getValPositive() throws DataAccessException {
+        String username = aDAO.getVal("testAuth");
+        String test = "username";
+        assertEquals(test, username);
+    }
+
     //getVal negative
+    @Test
+    public void getValNegative() throws DataAccessException {
+        boolean thrown = false;
+        try {
+            aDAO.getVal("NotHere");
+        } catch (DataAccessException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    } //DOESN'T WORK RIGHT YET
 
 
     //GAME
     //addGame positive
+
     //addGame negative
 
     //updateGames positive
