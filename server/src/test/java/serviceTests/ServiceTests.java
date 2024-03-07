@@ -48,7 +48,7 @@ public class ServiceTests {
     //USER SERVICE
     //getUser (register) positive
     @Test
-    public void getUserPositive(){
+    public void getUserPositive() throws DataAccessException {
         Map<String, UserData> umap = uService.getMap();
         assertNotNull(umap);
     }
@@ -67,14 +67,14 @@ public class ServiceTests {
 
     //createUser positive
     @Test
-    public void createUserPositive(){
+    public void createUserPositive() throws DataAccessException {
         uService.createUser(new UserData("u2", "p2", "email2@byu.edu"));
         Map<String, UserData> umap = uService.getMap();
         assertEquals(2, umap.size());
     }
     //createUser negative
     @Test
-    public void createUserNegative(){
+    public void createUserNegative() throws DataAccessException {
         uService.createUser(new UserData(null, "p2", "email2@byu.edu"));
         Map<String, UserData> umap = uService.getMap();
         assertEquals(1, umap.size());
@@ -106,7 +106,7 @@ public class ServiceTests {
 
     //logout positive
     @Test
-    public void logoutPositive(){
+    public void logoutPositive() throws DataAccessException {
         UserData u = uService.getMap().get("username");
         try {
             RegisterResult loggedIn = aService.login(new LoginRequest(u.username(), u.password()));
@@ -118,7 +118,7 @@ public class ServiceTests {
     }
     //logout negative
     @Test
-    public void logoutNegative(){
+    public void logoutNegative() throws DataAccessException {
         UserData u = uService.getMap().get("username");
         try {
             RegisterResult loggedIn = aService.login(new LoginRequest(u.username(), u.password()));
@@ -133,7 +133,7 @@ public class ServiceTests {
     //GAME SERVICE
     //listGames positive
     @Test
-    public void listGamesPositive(){
+    public void listGamesPositive() throws DataAccessException {
         UserData u = uService.getMap().get("username");
         RegisterResult loggedIn = null;
         try {
@@ -150,7 +150,7 @@ public class ServiceTests {
     }
     //listGames negative
     @Test
-    public void listGamesNegative(){
+    public void listGamesNegative() throws DataAccessException {
         UserData u = uService.getMap().get("username");
         RegisterResult loggedIn = null;
         try {
@@ -167,7 +167,7 @@ public class ServiceTests {
     }
     //createGame positive
     @Test
-    public void createGamePositive(){
+    public void createGamePositive() throws DataAccessException {
         UserData u = uService.getMap().get("username");
         RegisterResult loggedIn = null;
         try {
@@ -184,7 +184,7 @@ public class ServiceTests {
     }
     //createGame negative
     @Test
-    public void createGameNegative(){
+    public void createGameNegative() throws DataAccessException {
         UserData u = uService.getMap().get("username");
         RegisterResult loggedIn = null;
         try {
@@ -202,7 +202,7 @@ public class ServiceTests {
 
     //joinGame positive
     @Test
-    public void joinGamePositive(){
+    public void joinGamePositive() throws DataAccessException {
         UserData u = uService.getMap().get("username");
         RegisterResult loggedIn = null;
         try {
@@ -220,7 +220,7 @@ public class ServiceTests {
     }
     //joinGame negative
     @Test
-    public void joinGameNegative(){
+    public void joinGameNegative() throws DataAccessException {
         UserData u = uService.getMap().get("username");
         RegisterResult loggedIn = null;
         try {

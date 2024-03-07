@@ -68,7 +68,7 @@ public class UserService {
     }
 
     //for unit test
-    public Map<String, UserData> getMap(){
+    public Map<String, UserData> getMap() throws DataAccessException {
         return uDataAccess.returnUsers();
     }
 
