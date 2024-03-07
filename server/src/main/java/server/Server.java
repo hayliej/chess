@@ -14,11 +14,6 @@ public class Server {
     private static UserService userService = new UserService();
     private static GameService gameService = new GameService();
     private static AuthService authService = new AuthService();
-    public Server(){
-        this.userService = userService;
-        this.gameService = gameService;
-        this.authService = authService;
-    }
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
