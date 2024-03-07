@@ -24,5 +24,5 @@ public interface GameDAO {
     int getSize() throws DataAccessException;
 
     //return map
-    Map<Integer, GameData> returnGames();
+    Map<Integer, GameData> returnGames() throws DataAccessException;
 }

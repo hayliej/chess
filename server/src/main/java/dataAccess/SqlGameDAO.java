@@ -1,10 +1,12 @@
 package dataAccess;
 
 import requests.GameData;
+import requests.UserData;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SqlGameDAO implements GameDAO{
@@ -74,7 +76,20 @@ public class SqlGameDAO implements GameDAO{
     }
 
     @Override
-    public Map<Integer, GameData> returnGames() {
-        return null;
+    public Map<Integer, GameData> returnGames() throws DataAccessException {
+        Map<Integer, GameData> gameMap = new HashMap<Integer, GameData>();
+        var statement = "SELECT * FROM users";
+        try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
+            var rs = state.executeQuery();
+            Integer id = rs.getInt("gameID");
+            String wu = rs.getString("whiteUsername");
+            String bu = rs.getString("blackUsername");
+            String gm = rs.getString("game");
+            GameData gameAdd = new GameData(id, wu, bu, gm);
+            gameMap.put(id, gameAdd);
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+        return gameMap;
     }
 }
