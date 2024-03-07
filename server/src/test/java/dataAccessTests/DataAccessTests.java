@@ -202,13 +202,13 @@ public class DataAccessTests {
     @Test
     public void addGamePositive() throws DataAccessException {
         Map<Integer, GameData> testmap = new HashMap<>();
-        ChessGame game = new ChessGame();
-        GameData gdata = new GameData(1, "w", "b", "name", game);
+        GameData gdata = new GameData(1, "w", "b", "name", null);
         testmap.put(1, gdata);
         gDAO.addGame(1, gdata);
         Map<Integer, GameData> gmap = gDAO.returnGames();
-        assertEquals(testmap.size(), gmap.size());
+        assertEquals(testmap, gmap);
     }
+
     //addGame negative
     @Test
     public void addGameNegative() throws DataAccessException {
@@ -223,7 +223,31 @@ public class DataAccessTests {
     }
 
     //updateGames positive
+    @Test
+    public void updateGamesPositive() throws DataAccessException {
+        Map<Integer, GameData> testmap = new HashMap<>();
+        GameData gdata = new GameData(1, null, "b", "name", null);
+        gDAO.addGame(1, gdata);
+        GameData gdata2 = new GameData(1, "w", "b", "name", null);
+        testmap.put(1, gdata2);
+        gDAO.updateGames(1, "white", "w");
+        Map<Integer, GameData> gmap = gDAO.returnGames();
+        assertEquals(testmap, gmap);
+    }
+
     //updateGames negative
+    @Test
+    public void updateGamesNegative() throws DataAccessException {
+        GameData gdata = new GameData(1, null, "b", "name", null);
+        gDAO.addGame(1, gdata);
+        boolean thrown = false;
+        try {
+            gDAO.updateGames(null, "white", "w");
+        } catch (DataAccessException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
 
     //getSize positive
     //getSize negative
