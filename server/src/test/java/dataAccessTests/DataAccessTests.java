@@ -56,7 +56,7 @@ public class DataAccessTests {
             throw new RuntimeException(e);
         }
 
-        String authToken = UUID.randomUUID().toString();
+        String authToken = "testAuth";
         AuthData auth = new AuthData(authToken, user.username());
         try {
             aDAO.addAuth(auth);
@@ -79,8 +79,10 @@ public class DataAccessTests {
     //addUser positive
     @Test
     public void addUserPositive() throws DataAccessException {
+        Map<String, UserData> testmap = new HashMap<>();
+        testmap.put("username", new UserData("username", "password", "email@byu.edu"));
         Map<String, UserData> umap = uDAO.returnUsers();
-        assertNotNull(umap);
+        assertEquals(testmap, umap);
     }
 
     //addUser negative
@@ -97,13 +99,41 @@ public class DataAccessTests {
     }
 
     //returnUsers positive
+    @Test
+    public void returnUserPositive() throws DataAccessException {
+        Map<String, UserData> testmap = new HashMap<>();
+        testmap.put("username", new UserData("username", "password", "email@byu.edu"));
+        Map<String, UserData> returnmap = uDAO.returnUsers();
+        assertEquals(testmap, returnmap);
+    }
 
-    //returnUsers negative
-
+//    //returnUsers negative -- DO I NEED THIS??
+//    @Test
+//    public void returnUserNegative() throws DataAccessException {
+//        uDAO.clear();
+//        Map<String, UserData> returnMap = uDAO.returnUsers();
+//        assertEquals(new Map<String, UserData>() {
+//        }, returnMap);
+//    }
 
     //AUTH
     //addAuth positive
+    @Test
+    public void addAuthPositive() throws DataAccessException {
+        String authToken = "testAuth";
+        AuthData testauth = new AuthData(authToken, "username");
+        Map<Object, Object> testmap = new HashMap<>();
+        testmap.put(authToken, testauth);
+        Map<Object, Object> amap = aDAO.returnAuths();
+        assertEquals(testmap, amap);
+    }
+
     //addAuth negative
+    @Test
+    public void addAuthNegative() throws DataAccessException {
+        Map<Object, Object> amap = aDAO.returnAuths();
+        assertNotNull(amap);
+    }
 
     //removeAuth positive
     //removeAuth negative
