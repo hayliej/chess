@@ -262,6 +262,16 @@ public class DataAccessTests {
     //HOW DO THIS??
 
     //returnGames positive
-    //returnGames negative
+    @Test
+    public void returnGamesPositive() throws DataAccessException {
+        GameData gdata = new GameData(1, null, "b", "name", null);
+        gDAO.addGame(1, gdata);
+        Map<Integer, GameData> testmap = new HashMap<>();
+        testmap.put(1, gdata);
+        Map<Integer, GameData> returnmap = gDAO.returnGames();
+        assertEquals(testmap, returnmap);
+    }
 
+    //returnGames negative
+    //???
 }
