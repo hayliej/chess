@@ -3,6 +3,7 @@ package dataAccess;
 import requests.GameData;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -60,7 +61,17 @@ public class SqlGameDAO implements GameDAO{
     }
 
     @Override
-    public int getSize() {
+    public int getSize() throws DataAccessException {
+//        var statement = "SELECT COUNT(*) FROM games";
+//        try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
+//            int result = (state.executeQuery());
+//            return result;
+//        } catch (SQLException e) {
+//            throw new DataAccessException(e.getMessage());
+//        }
+
+        //HOW RESULTSET TO INT????
+
         return 0;
     }
 

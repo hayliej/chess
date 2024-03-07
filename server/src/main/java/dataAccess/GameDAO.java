@@ -21,7 +21,7 @@ public interface GameDAO {
 
 
     //length map
-    int getSize();
+    int getSize() throws DataAccessException;
 
     //return map
     Map<Integer, GameData> returnGames();

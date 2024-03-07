@@ -4,6 +4,7 @@ import requests.UserData;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SqlUserDAO implements UserDAO {
@@ -59,12 +60,18 @@ public class SqlUserDAO implements UserDAO {
 
     @Override
     public Map<String, UserData> returnUsers() throws DataAccessException {
+        Map<String, UserData> userMap = new HashMap<String, UserData>();
         var statement = "SELECT * FROM users";
         try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
-            state.executeQuery();
+            var rs = state.executeQuery();
+            String un = rs.getString("username");
+            String pw = rs.getString("password");
+            String em = rs.getString("email");
+            UserData userAdd = new UserData(un, pw, em);
+            userMap.put(un, userAdd);
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
-        } //how do we return the right thing?
-        return null;
+        }
+        return userMap;
     }
 }
