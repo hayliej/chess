@@ -163,6 +163,14 @@ public class DataAccessTests {
     }  //DOESN'T WORK RIGHT YET
 
     //returnAuths positive
+    @Test
+    public void returnAuthsPositive() throws DataAccessException {
+        Map<Object, Object> testmap = new HashMap<>();
+        testmap.put("testAuth", new AuthData("testAuth", "username"));
+        Map<Object, Object> returnmap = aDAO.returnAuths();
+        assertEquals(testmap, returnmap);
+    }
+
     //returnAuths negative
 
     //getVal positive
