@@ -15,5 +15,5 @@ public interface UserDAO {
     //getUser
 
     //return map
-    Map<String, UserData> returnUsers();
+    Map<String, UserData> returnUsers() throws DataAccessException;
 }

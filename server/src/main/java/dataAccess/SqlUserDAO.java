@@ -58,7 +58,13 @@ public class SqlUserDAO implements UserDAO {
     }
 
     @Override
-    public Map<String, UserData> returnUsers() {
+    public Map<String, UserData> returnUsers() throws DataAccessException {
+        var statement = "SELECT * FROM users";
+        try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
+            state.executeQuery();
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        } //how do we return the right thing?
         return null;
     }
 }
