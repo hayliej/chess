@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DataAccessTests {
     static GameDAO gDAO;
@@ -77,9 +77,27 @@ public class DataAccessTests {
 
     //USER
     //addUser positive
+    @Test
+    public void addUserPositive() throws DataAccessException {
+        Map<String, UserData> umap = uDAO.returnUsers();
+        assertNotNull(umap);
+    }
+
     //addUser negative
+    @Test
+    public void addUserNegative() throws DataAccessException {
+        UserData newUser = new UserData(null, "password", "email@byu.edu");
+        boolean thrown = false;
+        try {
+            uDAO.addUser(newUser);
+        } catch (DataAccessException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
 
     //returnUsers positive
+
     //returnUsers negative
 
 
