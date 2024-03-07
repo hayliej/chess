@@ -2,10 +2,15 @@ package dataAccessTests;
 
 import dataAccess.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import requests.AuthData;
 import requests.UserData;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DataAccessTests {
     static GameDAO gDAO;
@@ -61,13 +66,48 @@ public class DataAccessTests {
     }
 
     //CLEAR
+    @Test
+    public void clear() throws DataAccessException {
+        uDAO.clear();
+        Map<String, UserData> umap = uDAO.returnUsers();
+        Map<String, UserData> test = new HashMap<String, UserData>();
+        assertEquals(umap, test);
+    }
 
 
     //USER
-    //
+    //addUser positive
+    //addUser negative
+
+    //returnUsers positive
+    //returnUsers negative
+
 
     //AUTH
+    //addAuth positive
+    //addAuth negative
+
+    //removeAuth positive
+    //removeAuth negative
+
+    //returnAuths positive
+    //returnAuths negative
+
+    //getVal positive
+    //getVal negative
 
 
     //GAME
+    //addGame positive
+    //addGame negative
+
+    //updateGames positive
+    //updateGames negative
+
+    //getSize positive
+    //getSize negative
+
+    //returnGames positive
+    //returnGames negative
+
 }
