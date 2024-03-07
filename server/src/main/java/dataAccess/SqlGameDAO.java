@@ -66,17 +66,31 @@ public class SqlGameDAO implements GameDAO{
         }
     }
 
+    public void updateGames(Integer gameID, String color, String username) throws DataAccessException {
+        var whiteUpdate = "UPDATE games SET whiteUsername=? WHERE gameID=?";
+        var blackUpdate = "UPDATE games SET blackUsername=? WHERE gameID=?";
+        if (color.equals("white")) {
+            try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(whiteUpdate)) {
+                state.setString(1,username);
+                state.setInt(2, gameID);
+                state.executeUpdate();
+            }catch (SQLException e) {
+                throw new DataAccessException(e.getMessage());
+            }
+        } else if (color.equals("black")) {
+            try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(blackUpdate)) {
+                state.setString(1,username);
+                state.setInt(2, gameID);
+                state.executeUpdate();
+            }catch (SQLException e) {
+                throw new DataAccessException(e.getMessage());
+            }
+        }
+    }
+
     @Override
     public int getSize() throws DataAccessException {
-        var statement = "SELECT COUNT(*) FROM games";
-        try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
-            var rs = (state.executeQuery());
-            rs.last();
-            int size = rs.getRow()-1;
-            return size;
-        } catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
-        }
+        return  returnGames().size();
     }
 
     @Override

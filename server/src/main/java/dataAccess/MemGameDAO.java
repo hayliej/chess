@@ -29,4 +29,9 @@ public class MemGameDAO implements GameDAO {
         return games;
     }
 
+    @Override
+    public void updateGames(Integer gameID, String color, String username) {
+
+    }
+
 }

@@ -71,6 +71,7 @@ public class Server {
             response = authService.login(loginReq);
             res.status(200);
         } catch (DataAccessException e) {
+            e.printStackTrace();
             res.status(500);
             response = new RegisterResult("Error: error occurred", null, null);
         }
@@ -89,6 +90,7 @@ public class Server {
             response = authService.logout(auth);
             res.status(200);
         } catch (DataAccessException e) {
+            e.printStackTrace();
             res.status(500);
             response = new LogoutResult("Error: error occurred");
         }
@@ -107,6 +109,7 @@ public class Server {
             response = gameService.listGames(auth);
             res.status(200);
         } catch (DataAccessException e) {
+            e.printStackTrace();
             res.status(500);
             response = new ListGamesResult("Error: error occurred", null);
         }
@@ -127,6 +130,7 @@ public class Server {
             response = gameService.createGame(auth);
             res.status(200);
         } catch (DataAccessException e) {
+            e.printStackTrace();
             res.status(500);
             response = new CreateGameResult("Error: error occurred", null);
         }
@@ -149,6 +153,7 @@ public class Server {
             response = gameService.joinGame(join);
             res.status(200);
         } catch (DataAccessException e) {
+            e.printStackTrace();
             res.status(500);
             response = new LogoutResult("Error: error occurred");
         }

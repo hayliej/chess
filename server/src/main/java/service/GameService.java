@@ -87,7 +87,7 @@ public class GameService {
 //            GameData replace = new GameData(old.gameID(), ADataAccess.getVal(join.authToken()),
 //                    null, GDataAccess.returnGames().get(join.gameID()).gameName());
             GameData newgd = new GameData(old.gameID(), aDataAccess.getVal(join.authToken()), old.blackUsername(), old.gameName(), old.game());
-            gDataAccess.returnGames().replace(join.gameID(), newgd);
+            gDataAccess.updateGames(join.gameID(), "white", aDataAccess.getVal(join.authToken()));
         }
         if (join.playerColor().equals("BLACK")) {
             if (!(gDataAccess.returnGames().get(join.gameID()).blackUsername()==null)){
@@ -97,7 +97,7 @@ public class GameService {
 //            GameData replace = new GameData(join.gameID(), null, ADataAccess.getVal(join.authToken()),
 //                    GDataAccess.returnGames().get(join.gameID()).gameName());
             GameData newgd = new GameData(old.gameID(), old.whiteUsername(), aDataAccess.getVal(join.authToken()), old.gameName(), old.game());
-            gDataAccess.returnGames().replace(join.gameID(), newgd);
+            gDataAccess.updateGames(join.gameID(), "black", aDataAccess.getVal(join.authToken()));
         }
         return new LogoutResult(null);
     }

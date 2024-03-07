@@ -25,4 +25,6 @@ public interface GameDAO {
 
     //return map
     Map<Integer, GameData> returnGames() throws DataAccessException;
+
+    void updateGames(Integer gameID, String color, String username) throws DataAccessException;
 }
