@@ -18,7 +18,7 @@ public class SqlGameDAO implements GameDAO{
               `gameID` INT NOT NULL,
               `whiteUsername` varchar(256),
               `blackUsername` varchar(256),
-              `gameName` varchar(256),
+              `gameName` varchar(256) NOT NULL,
               `game` TEXT,
               PRIMARY KEY (`gameID`)
             );

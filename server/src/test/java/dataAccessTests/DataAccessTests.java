@@ -91,13 +91,7 @@ public class DataAccessTests {
     @Test
     public void addUserNegative() throws DataAccessException {
         UserData newUser = new UserData(null, "password", "email@byu.edu");
-        boolean thrown = false;
-        try {
-            uDAO.addUser(newUser);
-        } catch (DataAccessException e) {
-            thrown = true;
-        }
-        assertTrue(thrown);
+        assertThrows(DataAccessException.class, ()->uDAO.addUser(newUser));
     }
 
     //returnUsers positive
@@ -109,14 +103,13 @@ public class DataAccessTests {
         assertEquals(testmap, returnmap);
     }
 
-//    //returnUsers negative -- DO I NEED THIS??
-//    @Test
-//    public void returnUserNegative() throws DataAccessException {
-//        uDAO.clear();
-//        Map<String, UserData> returnMap = uDAO.returnUsers();
-//        assertEquals(new Map<String, UserData>() {
-//        }, returnMap);
-//    }
+//    //returnUsers negative
+    @Test
+    public void returnUserNegative() throws DataAccessException {
+        uDAO.clear();
+        Map<String, UserData> returnMap = uDAO.returnUsers();
+        assertTrue(returnMap.isEmpty());
+    }
 
     //AUTH
     //addAuth positive
@@ -152,16 +145,11 @@ public class DataAccessTests {
         assertEquals(testmap, amap);
     }
 
-    //removeAuth negative   -- DOESN'T WORK RIGHT YET
+    //removeAuth negative
     @Test
     public void removeAuthNegative() throws DataAccessException {
-        boolean thrown = false;
-        try {
-            aDAO.removeAuth("notPresent");
-        } catch (DataAccessException e) {
-            thrown = true;
-        }
-        assertTrue(thrown);
+        aDAO.removeAuth("notPresent");
+        assertEquals(1, aDAO.returnAuths().size());
     }
 
     //returnAuths positive
@@ -174,8 +162,12 @@ public class DataAccessTests {
     }
 
     //returnAuths negative
-    //DO THIS^
-
+    @Test
+    public void returnAuthNegative() throws DataAccessException {
+        aDAO.clear();
+        Map<Object, Object> returnMap = aDAO.returnAuths();
+        assertTrue(returnMap.isEmpty());
+    }
     //getVal positive
     @Test
     public void getValPositive() throws DataAccessException {
@@ -184,16 +176,10 @@ public class DataAccessTests {
         assertEquals(test, username);
     }
 
-    //getVal negative   -- DOESN'T WORK RIGHT YET
+    //getVal negative
     @Test
     public void getValNegative() throws DataAccessException {
-        boolean thrown = false;
-        try {
-            aDAO.getVal(null);
-        } catch (DataAccessException e) {
-            thrown = true;
-        }
-        assertTrue(thrown);
+        assertNull(aDAO.getVal("NotHere"));
     }
 
 
@@ -209,13 +195,13 @@ public class DataAccessTests {
         assertEquals(testmap, gmap);
     }
 
-    //addGame negative   -- DOESN'T WORK RIGHT YET
+    //addGame negative
     @Test
     public void addGameNegative() throws DataAccessException {
-        GameData gdata = new GameData(null, "w", "b", "name", null);
+        GameData gdata = new GameData(1, "w", "b", null, null);
         boolean thrown = false;
         try {
-            gDAO.addGame(null, gdata);
+            gDAO.addGame(1, gdata);
         } catch (DataAccessException e) {
             thrown = true;
         }
@@ -235,18 +221,13 @@ public class DataAccessTests {
         assertEquals(testmap, gmap);
     }
 
-    //updateGames negative   -- DOESN'T WORK RIGHT YET
+    //updateGames negative
     @Test
     public void updateGamesNegative() throws DataAccessException {
         GameData gdata = new GameData(1, null, "b", "name", null);
         gDAO.addGame(1, gdata);
-        boolean thrown = false;
-        try {
-            gDAO.updateGames(null, "white", "w");
-        } catch (DataAccessException e) {
-            thrown = true;
-        }
-        assertTrue(thrown);
+        gDAO.updateGames(2, "white", "w;");
+        assertNull(gDAO.returnGames().get(1).whiteUsername());
     }
 
     //getSize positive
@@ -259,7 +240,13 @@ public class DataAccessTests {
     }
 
     //getSize negative
-    //HOW DO THIS??
+    @Test
+    public void getSizeNegative() throws DataAccessException {
+        GameData gdata = new GameData(1, null, "b", "name", null);
+        gDAO.addGame(1, gdata);
+        gDAO.clear();
+        assertEquals(0, gDAO.getSize());
+    }
 
     //returnGames positive
     @Test
@@ -273,5 +260,9 @@ public class DataAccessTests {
     }
 
     //returnGames negative
-    //???
-}
+    @Test
+    public void returnGamesNegative() throws DataAccessException {
+        gDAO.clear();
+        Map<Integer, GameData> returnMap = gDAO.returnGames();
+        assertTrue(returnMap.isEmpty());
+    }}
