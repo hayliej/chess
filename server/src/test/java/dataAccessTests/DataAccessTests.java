@@ -152,17 +152,17 @@ public class DataAccessTests {
         assertEquals(testmap, amap);
     }
 
-    //removeAuth negative
-//    @Test
-//    public void removeAuthNegative() throws DataAccessException {
-//        boolean thrown = false;
-//        try {
-//            aDAO.removeAuth("notPresent");
-//        } catch (DataAccessException e) {
-//            thrown = true;
-//        }
-//        assertTrue(thrown);
-//    }  //DOESN'T WORK RIGHT YET
+    //removeAuth negative   -- DOESN'T WORK RIGHT YET
+    @Test
+    public void removeAuthNegative() throws DataAccessException {
+        boolean thrown = false;
+        try {
+            aDAO.removeAuth("notPresent");
+        } catch (DataAccessException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
 
     //returnAuths positive
     @Test
@@ -184,17 +184,17 @@ public class DataAccessTests {
         assertEquals(test, username);
     }
 
-    //getVal negative
-//    @Test
-//    public void getValNegative() throws DataAccessException {
-//        boolean thrown = false;
-//        try {
-//            aDAO.getVal("NotHere");
-//        } catch (DataAccessException e) {
-//            thrown = true;
-//        }
-//        assertTrue(thrown);
-//    } //DOESN'T WORK RIGHT YET
+    //getVal negative   -- DOESN'T WORK RIGHT YET
+    @Test
+    public void getValNegative() throws DataAccessException {
+        boolean thrown = false;
+        try {
+            aDAO.getVal(null);
+        } catch (DataAccessException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
 
 
     //GAME
@@ -209,18 +209,18 @@ public class DataAccessTests {
         assertEquals(testmap, gmap);
     }
 
-    //addGame negative
-//    @Test
-//    public void addGameNegative() throws DataAccessException {
-//        GameData gdata = new GameData(null, "w", "b", "name", null);
-//        boolean thrown = false;
-//        try {
-//            gDAO.addGame(1, gdata);
-//        } catch (DataAccessException e) {
-//            thrown = true;
-//        }
-//        assertTrue(thrown);
-//    } //DOESN'T WORK RIGHT YET
+    //addGame negative   -- DOESN'T WORK RIGHT YET
+    @Test
+    public void addGameNegative() throws DataAccessException {
+        GameData gdata = new GameData(null, "w", "b", "name", null);
+        boolean thrown = false;
+        try {
+            gDAO.addGame(null, gdata);
+        } catch (DataAccessException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
 
     //updateGames positive
     @Test
@@ -235,19 +235,19 @@ public class DataAccessTests {
         assertEquals(testmap, gmap);
     }
 
-    //updateGames negative
-//    @Test
-//    public void updateGamesNegative() throws DataAccessException {
-//        GameData gdata = new GameData(1, null, "b", "name", null);
-//        gDAO.addGame(1, gdata);
-//        boolean thrown = false;
-//        try {
-//            gDAO.updateGames(null, "white", "w");
-//        } catch (DataAccessException e) {
-//            thrown = true;
-//        }
-//        assertTrue(thrown);
-//    } //DOESN'T WORK RIGHT YET
+    //updateGames negative   -- DOESN'T WORK RIGHT YET
+    @Test
+    public void updateGamesNegative() throws DataAccessException {
+        GameData gdata = new GameData(1, null, "b", "name", null);
+        gDAO.addGame(1, gdata);
+        boolean thrown = false;
+        try {
+            gDAO.updateGames(null, "white", "w");
+        } catch (DataAccessException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
 
     //getSize positive
     @Test
