@@ -64,11 +64,13 @@ public class SqlUserDAO implements UserDAO {
         var statement = "SELECT * FROM users";
         try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
             var rs = state.executeQuery();
-            String un = rs.getString("username");
-            String pw = rs.getString("password");
-            String em = rs.getString("email");
-            UserData userAdd = new UserData(un, pw, em);
-            userMap.put(un, userAdd);
+            while (rs.next()) {
+                String un = rs.getString("username");
+                String pw = rs.getString("password");
+                String em = rs.getString("email");
+                UserData userAdd = new UserData(un, pw, em);
+                userMap.put(un, userAdd);
+            }
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }

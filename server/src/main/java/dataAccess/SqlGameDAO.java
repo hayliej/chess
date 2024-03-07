@@ -81,12 +81,14 @@ public class SqlGameDAO implements GameDAO{
         var statement = "SELECT * FROM users";
         try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
             var rs = state.executeQuery();
-            Integer id = rs.getInt("gameID");
-            String wu = rs.getString("whiteUsername");
-            String bu = rs.getString("blackUsername");
-            String gm = rs.getString("game");
-            GameData gameAdd = new GameData(id, wu, bu, gm);
-            gameMap.put(id, gameAdd);
+            while (rs.next()) {
+                Integer id = rs.getInt("gameID");
+                String wu = rs.getString("whiteUsername");
+                String bu = rs.getString("blackUsername");
+                String gm = rs.getString("game");
+                GameData gameAdd = new GameData(id, wu, bu, gm);
+                gameMap.put(id, gameAdd);
+            }
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }

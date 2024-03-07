@@ -50,6 +50,7 @@ public class Server {
             response = userService.getUser(user);
             res.status(200); //set this for corresponding message that you get back from service
         } catch (DataAccessException e) {
+            e.printStackTrace();
             res.status(500);
             response = new RegisterResult("Error: error occurred", null, null);
         }

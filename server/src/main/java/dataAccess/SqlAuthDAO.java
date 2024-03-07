@@ -74,10 +74,12 @@ public class SqlAuthDAO implements AuthDAO{
         var statement = "SELECT * FROM auths";
         try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
             var rs = state.executeQuery();
-            String at = rs.getString("authToken");
-            String un = rs.getString("username");
-            AuthData authAdd = new AuthData(at, un);
-            authMap.put(un, authAdd);
+            while (rs.next()) {
+                String at = rs.getString("authToken");
+                String un = rs.getString("username");
+                AuthData authAdd = new AuthData(at, un);
+                authMap.put(un, authAdd);
+            }
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
