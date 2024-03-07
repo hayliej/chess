@@ -220,7 +220,7 @@ public class DataAccessTests {
             thrown = true;
         }
         assertTrue(thrown);
-    }
+    } //DOESN'T WORK RIGHT YET
 
     //updateGames positive
     @Test
@@ -247,10 +247,19 @@ public class DataAccessTests {
             thrown = true;
         }
         assertTrue(thrown);
-    }
+    } //DOESN'T WORK RIGHT YET
 
     //getSize positive
+    @Test
+    public void getSizePositive() throws DataAccessException {
+        GameData gdata = new GameData(1, null, "b", "name", null);
+        gDAO.addGame(1, gdata);
+        Integer g = gDAO.getSize();
+        assertEquals(1, g);
+    }
+
     //getSize negative
+    //HOW DO THIS??
 
     //returnGames positive
     //returnGames negative
