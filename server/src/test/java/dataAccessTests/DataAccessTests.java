@@ -1,9 +1,11 @@
 package dataAccessTests;
 
+import chess.ChessGame;
 import dataAccess.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import requests.AuthData;
+import requests.GameData;
 import requests.UserData;
 
 import java.util.HashMap;
@@ -197,8 +199,28 @@ public class DataAccessTests {
 
     //GAME
     //addGame positive
-
+    @Test
+    public void addGamePositive() throws DataAccessException {
+        Map<Integer, GameData> testmap = new HashMap<>();
+        ChessGame game = new ChessGame();
+        GameData gdata = new GameData(1, "w", "b", "name", game);
+        testmap.put(1, gdata);
+        gDAO.addGame(1, gdata);
+        Map<Integer, GameData> gmap = gDAO.returnGames();
+        assertEquals(testmap.size(), gmap.size());
+    }
     //addGame negative
+    @Test
+    public void addGameNegative() throws DataAccessException {
+        GameData gdata = new GameData(null, "w", "b", "name", null);
+        boolean thrown = false;
+        try {
+            gDAO.addGame(1, gdata);
+        } catch (DataAccessException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
 
     //updateGames positive
     //updateGames negative
