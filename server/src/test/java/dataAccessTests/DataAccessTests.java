@@ -131,8 +131,14 @@ public class DataAccessTests {
     //addAuth negative
     @Test
     public void addAuthNegative() throws DataAccessException {
-        Map<Object, Object> amap = aDAO.returnAuths();
-        assertNotNull(amap);
+        AuthData newAuth = new AuthData(null, "username");
+        boolean thrown = false;
+        try {
+            aDAO.addAuth(newAuth);
+        } catch (DataAccessException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
     }
 
     //removeAuth positive
