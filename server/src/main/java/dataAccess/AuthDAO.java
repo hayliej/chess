@@ -19,7 +19,7 @@ public interface AuthDAO {
     Map<Object, Object> returnAuths() throws DataAccessException;
 
     //getAuth
-    String getVal(String auth);
+    String getVal(String auth) throws DataAccessException;
 
     //deleteAuth
 }
