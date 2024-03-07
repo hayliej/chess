@@ -78,7 +78,7 @@ public class SqlAuthDAO implements AuthDAO{
                 String at = rs.getString("authToken");
                 String un = rs.getString("username");
                 AuthData authAdd = new AuthData(at, un);
-                authMap.put(un, authAdd);
+                authMap.put(at, authAdd);
             }
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
