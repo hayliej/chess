@@ -62,17 +62,15 @@ public class SqlGameDAO implements GameDAO{
 
     @Override
     public int getSize() throws DataAccessException {
-//        var statement = "SELECT COUNT(*) FROM games";
-//        try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
-//            int result = (state.executeQuery());
-//            return result;
-//        } catch (SQLException e) {
-//            throw new DataAccessException(e.getMessage());
-//        }
-
-        //HOW RESULTSET TO INT????
-
-        return 0;
+        var statement = "SELECT COUNT(*) FROM games";
+        try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
+            var rs = (state.executeQuery());
+            rs.last();
+            int size = rs.getRow()-1;
+            return size;
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
     }
 
     @Override
