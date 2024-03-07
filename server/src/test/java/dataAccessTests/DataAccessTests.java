@@ -142,7 +142,25 @@ public class DataAccessTests {
     }
 
     //removeAuth positive
+    @Test
+    public void removeAuthPositive() throws DataAccessException {
+        aDAO.removeAuth("testAuth");
+        Map<Object, Object> amap = aDAO.returnAuths();
+        Map<Object, Object> testmap = new HashMap<>();
+        assertEquals(testmap, amap);
+    }
+
     //removeAuth negative
+    @Test
+    public void removeAuthNegative() throws DataAccessException {
+        boolean thrown = false;
+        try {
+            aDAO.removeAuth("notPresent");
+        } catch (DataAccessException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }  //DOESN'T WORK RIGHT YET
 
     //returnAuths positive
     //returnAuths negative
