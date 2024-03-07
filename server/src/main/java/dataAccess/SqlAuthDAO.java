@@ -1,9 +1,11 @@
 package dataAccess;
 
 import requests.AuthData;
+import requests.UserData;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SqlAuthDAO implements AuthDAO{
@@ -67,8 +69,19 @@ public class SqlAuthDAO implements AuthDAO{
     }
 
     @Override
-    public Map<Object, Object> returnAuths() {
-        return null;
+    public Map<Object, Object> returnAuths() throws DataAccessException {
+        Map<Object, Object> authMap = new HashMap<Object, Object>();
+        var statement = "SELECT * FROM auths";
+        try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
+            var rs = state.executeQuery();
+            String at = rs.getString("authToken");
+            String un = rs.getString("username");
+            AuthData authAdd = new AuthData(at, un);
+            authMap.put(un, authAdd);
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+        return authMap;
     }
 
     @Override

@@ -83,7 +83,7 @@ public class ServiceTests {
     //AUTH SERVICE
     //login positive
     @Test
-    public void loginPositive(){
+    public void loginPositive() throws DataAccessException {
         try {
             aService.login(new LoginRequest("username", "password"));
         } catch (DataAccessException e) {

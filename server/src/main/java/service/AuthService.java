@@ -59,7 +59,7 @@ public class AuthService {
     }
 
     //for unit test
-    public Map<Object, Object> getMap(){
+    public Map<Object, Object> getMap() throws DataAccessException {
         return aDataAccess.returnAuths();
     }
 }

@@ -16,7 +16,7 @@ public interface AuthDAO {
     //remove auth
     public void removeAuth(String authToken) throws DataAccessException;
     //return map
-    Map<Object, Object> returnAuths();
+    Map<Object, Object> returnAuths() throws DataAccessException;
 
     //getAuth
     String getVal(String auth);
