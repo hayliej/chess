@@ -1,5 +1,7 @@
 package dataAccess;
 
+import chess.ChessGame;
+import com.google.gson.Gson;
 import requests.GameData;
 import requests.UserData;
 
@@ -16,7 +18,8 @@ public class SqlGameDAO implements GameDAO{
               `gameID` INT NOT NULL,
               `whiteUsername` varchar(256),
               `blackUsername` varchar(256),
-              `game` varchar(256),
+              `gameName` varchar(256),
+              `game` TEXT,
               PRIMARY KEY (`gameID`)
             );
             """
@@ -50,12 +53,13 @@ public class SqlGameDAO implements GameDAO{
 
     @Override
     public void addGame(Integer id, GameData gamedata) throws DataAccessException {
-        var statement = "INSERT INTO games (gameID, whiteUsername, blackUsername, game) VALUES (?, ?, ?, ?)";
+        var statement = "INSERT INTO games (gameID, whiteUsername, blackUsername, gameName, game) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
             state.setInt(1, gamedata.gameID());
             state.setString(2,gamedata.whiteUsername());
             state.setString(3, gamedata.blackUsername());
-            state.setString(4, gamedata.gameName()); //JSON?????
+            state.setString(4, gamedata.gameName());
+            state.setString(5, new Gson().toJson(gamedata.game()));
             state.executeUpdate();
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
@@ -78,15 +82,16 @@ public class SqlGameDAO implements GameDAO{
     @Override
     public Map<Integer, GameData> returnGames() throws DataAccessException {
         Map<Integer, GameData> gameMap = new HashMap<Integer, GameData>();
-        var statement = "SELECT * FROM users";
+        var statement = "SELECT * FROM games";
         try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(statement)) {
             var rs = state.executeQuery();
             while (rs.next()) {
                 Integer id = rs.getInt("gameID");
                 String wu = rs.getString("whiteUsername");
                 String bu = rs.getString("blackUsername");
-                String gm = rs.getString("game");
-                GameData gameAdd = new GameData(id, wu, bu, gm);
+                String gn = rs.getString("gameName");
+                ChessGame game = new Gson().fromJson(rs.getString("game"), ChessGame.class);
+                GameData gameAdd = new GameData(id, wu, bu, gn, game);
                 gameMap.put(id, gameAdd);
             }
         } catch (SQLException e) {

@@ -1,4 +1,5 @@
 package service;
+import chess.ChessGame;
 import dataAccess.*;
 import requests.*;
 import results.CreateGameResult;
@@ -61,7 +62,7 @@ public class GameService {
             return new CreateGameResult("Error: bad request", null);
         }
         Integer id = gDataAccess.getSize()+1;
-        gDataAccess.addGame(id, new GameData(id, null, null, newAuth.gameName()));
+        gDataAccess.addGame(id, new GameData(id, null, null, newAuth.gameName(), new ChessGame()));
         return new CreateGameResult(null, id);
     }
 
@@ -85,7 +86,7 @@ public class GameService {
             GameData old = gDataAccess.returnGames().get(join.gameID());
 //            GameData replace = new GameData(old.gameID(), ADataAccess.getVal(join.authToken()),
 //                    null, GDataAccess.returnGames().get(join.gameID()).gameName());
-            GameData newgd = new GameData(old.gameID(), aDataAccess.getVal(join.authToken()), old.blackUsername(), old.gameName());
+            GameData newgd = new GameData(old.gameID(), aDataAccess.getVal(join.authToken()), old.blackUsername(), old.gameName(), old.game());
             gDataAccess.returnGames().replace(join.gameID(), newgd);
         }
         if (join.playerColor().equals("BLACK")) {
@@ -95,7 +96,7 @@ public class GameService {
             GameData old = gDataAccess.returnGames().get(join.gameID());
 //            GameData replace = new GameData(join.gameID(), null, ADataAccess.getVal(join.authToken()),
 //                    GDataAccess.returnGames().get(join.gameID()).gameName());
-            GameData newgd = new GameData(old.gameID(), old.whiteUsername(), aDataAccess.getVal(join.authToken()), old.gameName());
+            GameData newgd = new GameData(old.gameID(), old.whiteUsername(), aDataAccess.getVal(join.authToken()), old.gameName(), old.game());
             gDataAccess.returnGames().replace(join.gameID(), newgd);
         }
         return new LogoutResult(null);
