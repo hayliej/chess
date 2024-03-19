@@ -159,6 +159,7 @@ public class ChessBoard {
         out.print(SET_TEXT_COLOR_BLACK);
     }
 
+
     private static void printPlayer(PrintStream out, String player) {
         out.print(SET_BG_COLOR_WHITE);
         out.print(SET_TEXT_COLOR_BLACK);
