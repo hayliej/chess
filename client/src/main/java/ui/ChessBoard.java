@@ -7,7 +7,7 @@ import static ui.EscapeSequences.*;
 
 public class ChessBoard {
     private static final int BOARD_SIZE_IN_SQUARES = 8;
-    private static final int SQUARE_SIZE_IN_CHARS = 4;
+    private static final int SQUARE_SIZE_IN_CHARS = 3;
     private static final int LINE_WIDTH_IN_CHARS = 1;
     private static final String EMPTY = "   ";
     private static final String QUEEN = " Q ";
@@ -36,7 +36,7 @@ public class ChessBoard {
 
         setBlack(out);
 
-        String[] headers = { "a ", " b ", " c ", " d ", " e ", " f ", " g ", " h " };
+        String[] headers = { " a ", " b ", " c ", " d ", " e ", " f ", " g ", " h " };
         for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
             drawHeader(out, headers[boardCol]);
 
@@ -59,7 +59,7 @@ public class ChessBoard {
 
     private static void printHeaderText(PrintStream out, String player) {
         out.print(SET_BG_COLOR_BLACK);
-        out.print(SET_TEXT_COLOR_GREEN);
+        out.print(SET_TEXT_COLOR_WHITE);
 
         out.print(player);
 
@@ -87,7 +87,7 @@ public class ChessBoard {
 
                 if (squareRow == SQUARE_SIZE_IN_CHARS / 2) {
                     int prefixLength = SQUARE_SIZE_IN_CHARS / 2;
-                    int suffixLength = SQUARE_SIZE_IN_CHARS - prefixLength - 1;
+                    int suffixLength = SQUARE_SIZE_IN_CHARS - 1; //prefixLength - 1;
 
                     out.print(EMPTY.repeat(prefixLength));
                     out.print(EMPTY.repeat(suffixLength));
