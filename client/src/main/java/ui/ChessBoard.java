@@ -38,7 +38,7 @@ public class ChessBoard {
 
         setBlack(out);
 
-        String[] headers = { " a ", " b ", " c ", " d ", " e ", " f ", " g ", " h " };
+        String[] headers = { "a", "b", "c", "d", "e", "f", "g", "h" };
         for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
             drawHeader(out, headers[boardCol]);
 
@@ -69,40 +69,59 @@ public class ChessBoard {
     }
 
     private static void drawChessBoard(PrintStream out) {
-
+        boolean startWhite = true;
         for (int boardRow = 0; boardRow < BOARD_SIZE_IN_SQUARES; ++boardRow) {
-
-            drawRowOfSquares(out);
+            if (startWhite) {
+                drawRowOfSquares(out, true);
+            } else {
+                drawRowOfSquares(out, false);
+            }
 
             if (boardRow < BOARD_SIZE_IN_SQUARES - 1) {
-                drawVerticalLine(out);
+//                drawVerticalLine(out);
                 setBlack(out);
+            }
+            if (startWhite) {
+                startWhite = false;
+            } else {
+                startWhite = true;
             }
         }
     }
 
-    private static void drawRowOfSquares(PrintStream out) {
+    private static void drawRowOfSquares(PrintStream out, boolean tf) {
+        boolean white = tf;
 
         for (int squareRow = 0; squareRow < SQUARE_SIZE_IN_CHARS; ++squareRow) {
             for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
-                setWhite(out);
-
-                if (squareRow == SQUARE_SIZE_IN_CHARS / 2) {
-                    int prefixLength = SQUARE_SIZE_IN_CHARS / 2;
-                    int suffixLength = SQUARE_SIZE_IN_CHARS - 1; //prefixLength - 1;
-
-                    out.print(EMPTY.repeat(prefixLength));
-                    out.print(EMPTY.repeat(suffixLength));
-                }
-                else {
-                    out.print(EMPTY.repeat(SQUARE_SIZE_IN_CHARS));
+                if (white) {
+                    setWhite(out);
+                } else {
+                    setBlack(out);
                 }
 
-                if (boardCol < BOARD_SIZE_IN_SQUARES - 1) {
-                    // Draw right line
-                    setRed(out);
-                    out.print(EMPTY.repeat(LINE_WIDTH_IN_CHARS));
-                }
+                    if (squareRow == SQUARE_SIZE_IN_CHARS / 2) {
+                        int prefixLength = SQUARE_SIZE_IN_CHARS / 2;
+                        int suffixLength = SQUARE_SIZE_IN_CHARS - 1; //prefixLength - 1;
+
+                        out.print(EMPTY.repeat(prefixLength));
+                        out.print(EMPTY.repeat(suffixLength));
+                    } else {
+                        out.print(EMPTY.repeat(SQUARE_SIZE_IN_CHARS));
+                    }
+
+                    if (white) {
+                        white = false;
+                    } else {
+                        white = true;
+                    }
+
+
+//                if (boardCol < BOARD_SIZE_IN_SQUARES - 1) {
+//                    // Draw right line
+//                    setRed(out);
+//                    out.print(EMPTY.repeat(LINE_WIDTH_IN_CHARS));
+//                }
 
                 setBlack(out);
             }
@@ -111,19 +130,19 @@ public class ChessBoard {
         }
     }
 
-    private static void drawVerticalLine(PrintStream out) {
-
-        int boardSizeInSpaces = BOARD_SIZE_IN_SQUARES * SQUARE_SIZE_IN_CHARS +
-                (BOARD_SIZE_IN_SQUARES - 1) * LINE_WIDTH_IN_CHARS;
-
-        for (int lineRow = 0; lineRow < LINE_WIDTH_IN_CHARS; ++lineRow) {
-            setRed(out);
-            out.print(EMPTY.repeat(boardSizeInSpaces));
-
-            setBlack(out);
-            out.println();
-        }
-    }
+//    private static void drawVerticalLine(PrintStream out) {
+//
+//        int boardSizeInSpaces = BOARD_SIZE_IN_SQUARES * SQUARE_SIZE_IN_CHARS +
+//                (BOARD_SIZE_IN_SQUARES - 1) * LINE_WIDTH_IN_CHARS;
+//
+//        for (int lineRow = 0; lineRow < LINE_WIDTH_IN_CHARS; ++lineRow) {
+//            setRed(out);
+//            out.print(EMPTY.repeat(boardSizeInSpaces));
+//
+//            setBlack(out);
+//            out.println();
+//        }
+//    }
 
     private static void setWhite(PrintStream out) {
         out.print(SET_BG_COLOR_WHITE);
