@@ -28,6 +28,8 @@ public class ChessBoard {
 
         drawChessBoard(out);
 
+        drawHeaders(out);
+
         out.print(SET_BG_COLOR_BLACK);
         out.print(SET_TEXT_COLOR_WHITE);
     }
