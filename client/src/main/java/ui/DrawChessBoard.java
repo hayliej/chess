@@ -65,11 +65,13 @@ public class DrawChessBoard {
 
     private static void drawChessBoard(PrintStream out) {
         boolean startWhite = true;
+        int row = 8;
         for (int boardRow = 0; boardRow < BOARD_SIZE_IN_SQUARES; ++boardRow) {
             if (startWhite) {
-                drawRowOfSquares(out, true);
+                drawRowOfSquares(out, true, row);
+
             } else {
-                drawRowOfSquares(out, false);
+                drawRowOfSquares(out, false, row);
             }
 
             if (boardRow < BOARD_SIZE_IN_SQUARES - 1) {
@@ -80,15 +82,16 @@ public class DrawChessBoard {
             } else {
                 startWhite = true;
             }
+
+            row = row -1;
         }
     }
 
-    private static void drawRowOfSquares(PrintStream out, boolean tf) {
+    private static void drawRowOfSquares(PrintStream out, boolean tf, int row) {
         boolean white = tf;
         ChessBoard board = new ChessBoard();
         board.resetBoard();
 
-        int row = 8;
         for (int squareRow = 0; squareRow < SQUARE_SIZE_IN_CHARS; ++squareRow) {
             out.print(SET_BG_COLOR_BLACK);
             out.print(SET_TEXT_COLOR_WHITE);
@@ -116,8 +119,6 @@ public class DrawChessBoard {
             out.print(SET_BG_COLOR_BLACK);
             out.print(SET_TEXT_COLOR_WHITE);
             out.print(" " + row);
-
-            row = row -1;
 
             out.println();
         }
