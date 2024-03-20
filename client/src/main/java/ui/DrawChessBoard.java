@@ -1,11 +1,16 @@
 package ui;
 
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessPiece;
+import chess.ChessPosition;
+
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
 import static ui.EscapeSequences.*;
 
-public class ChessBoard {
+public class DrawChessBoard {
     private static final int BOARD_SIZE_IN_SQUARES = 8;
     private static final int SQUARE_SIZE_IN_CHARS = 3;
     private static final int LINE_WIDTH_IN_CHARS = 1;
@@ -91,6 +96,7 @@ public class ChessBoard {
 
     private static void drawRowOfSquares(PrintStream out, boolean tf) {
         boolean white = tf;
+        ChessBoard board = new ChessBoard();
 
         for (int squareRow = 0; squareRow < SQUARE_SIZE_IN_CHARS; ++squareRow) {
             for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
@@ -102,9 +108,11 @@ public class ChessBoard {
 
                     if (squareRow == SQUARE_SIZE_IN_CHARS / 2) {
                         int prefixLength = SQUARE_SIZE_IN_CHARS / 2;
-                        int suffixLength = SQUARE_SIZE_IN_CHARS - 1; //prefixLength - 1;
+                        int suffixLength = SQUARE_SIZE_IN_CHARS - prefixLength - 1;
 
                         out.print(EMPTY.repeat(prefixLength));
+                        //print out chess piece letter here
+                        printPlayer(out, board.getPiece(new ChessPosition(squareRow+1, boardCol+1)));
                         out.print(EMPTY.repeat(suffixLength));
                     } else {
                         out.print(EMPTY.repeat(SQUARE_SIZE_IN_CHARS));
@@ -160,11 +168,40 @@ public class ChessBoard {
     }
 
 
-    private static void printPlayer(PrintStream out, String player) {
-        out.print(SET_BG_COLOR_WHITE);
-        out.print(SET_TEXT_COLOR_BLACK);
+    private static void printPlayer(PrintStream out, ChessPiece piece) {
+        //out.print(SET_BG_COLOR_WHITE);
 
-        out.print(player);
+        if (piece == null){
+            out.print(EMPTY);
+        } else {
+
+            if (piece.getTeamColor().equals(ChessGame.TeamColor.BLACK)) {
+                out.print(SET_TEXT_COLOR_BLUE);
+            } else {
+                out.print(SET_TEXT_COLOR_RED);
+            }
+
+            switch (piece.getPieceType()) {
+                case KING -> {
+                    out.print(KING);
+                }
+                case QUEEN -> {
+                    out.print(QUEEN);
+                }
+                case BISHOP -> {
+                    out.print(BISHOP);
+                }
+                case KNIGHT -> {
+                    out.print(KNIGHT);
+                }
+                case ROOK -> {
+                    out.print(ROOK);
+                }
+                case PAWN -> {
+                    out.print(PAWN);
+                }
+            }
+        }
 
         setWhite(out);
     }
