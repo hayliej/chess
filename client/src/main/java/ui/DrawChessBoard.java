@@ -43,7 +43,7 @@ public class DrawChessBoard {
 
         setBlack(out);
 
-        String[] headers = { " a ", " b ", " c ", " d ", " e ", " f ", " g ", " h " };
+        String[] headers = { "   a ", " b ", " c ", " d ", " e ", " f ", " g ", " h " };
         for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
             drawHeader(out, headers[boardCol]);
 
@@ -100,6 +100,9 @@ public class DrawChessBoard {
         board.resetBoard();
 
         for (int squareRow = 0; squareRow < SQUARE_SIZE_IN_CHARS; ++squareRow) {
+            out.print(SET_BG_COLOR_BLACK);
+            out.print(SET_TEXT_COLOR_WHITE);
+            out.print(squareRow + " ");
             for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
                 if (white) {
                     setWhite(out);
@@ -134,6 +137,9 @@ public class DrawChessBoard {
 
                 setBlack(out);
             }
+            out.print(SET_BG_COLOR_BLACK);
+            out.print(SET_TEXT_COLOR_WHITE);
+            out.print(" " + squareRow);
 
             out.println();
         }
