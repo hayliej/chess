@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Welcome to Chess");
+        System.out.println("Welcome to Chess! Type help to start.");
 
         Scanner scanner = new Scanner(System.in);
         var result = "";
