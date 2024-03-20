@@ -28,10 +28,14 @@ public class DrawChessBoard {
 
         out.print(ERASE_SCREEN);
 
+        drawHeadersReverse(out);
+        drawChessBoardReverse(out);
+        drawHeadersReverse(out);
+
+        out.println();
+
         drawHeaders(out);
-
         drawChessBoard(out);
-
         drawHeaders(out);
 
         out.print(SET_BG_COLOR_BLACK);
@@ -43,6 +47,18 @@ public class DrawChessBoard {
         setBlack(out);
 
         String[] headers = { "   a ", " b ", " c ", " d ", " e ", " f ", " g ", " h " };
+        for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
+            drawHeader(out, headers[boardCol]);
+        }
+
+        out.println();
+    }
+
+    private static void drawHeadersReverse(PrintStream out) {
+
+        setBlack(out);
+
+        String[] headers = { "   h ", " g ", " f ", " e ", " d ", " c ", " b ", " a " };
         for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
             drawHeader(out, headers[boardCol]);
         }
@@ -84,6 +100,30 @@ public class DrawChessBoard {
             }
 
             row = row -1;
+        }
+    }
+
+    private static void drawChessBoardReverse(PrintStream out) {
+        boolean startWhite = true;
+        int row = 1;
+        for (int boardRow = 0; boardRow < BOARD_SIZE_IN_SQUARES; ++boardRow) {
+            if (startWhite) {
+                drawRowOfSquares(out, true, row);
+
+            } else {
+                drawRowOfSquares(out, false, row);
+            }
+
+            if (boardRow < BOARD_SIZE_IN_SQUARES - 1) {
+                setBlack(out);
+            }
+            if (startWhite) {
+                startWhite = false;
+            } else {
+                startWhite = true;
+            }
+
+            row = row +1;
         }
     }
 
