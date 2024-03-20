@@ -20,10 +20,10 @@ public class Main {
                     break;
                 }
                 case "login" -> {
-                    //call login method
+                    login();
                 }
                 case "register" -> {
-                    //call register method
+                    register();
                 }
             }
         }
