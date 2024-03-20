@@ -9,7 +9,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         var result = "";
         while (!result.equals("quit")){
-            //print prompt
+            printPrompt();
 
             String input = scanner.nextLine();
             switch (input){
@@ -17,7 +17,7 @@ public class Main {
                     //print help thing
                 }
                 case "quit" -> {
-                    //break out of loop
+                    break;
                 }
                 case "login" -> {
                     //call login method
@@ -32,4 +32,8 @@ public class Main {
     //put method calls to other repls here:
     //login
     //register
+
+    private static void printPrompt() {
+        System.out.print("[LOGGED_OUT] " + ">>> ");
+    }
 }
