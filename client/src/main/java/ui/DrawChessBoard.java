@@ -99,10 +99,11 @@ public class DrawChessBoard {
         ChessBoard board = new ChessBoard();
         board.resetBoard();
 
+        int row = 8;
         for (int squareRow = 0; squareRow < SQUARE_SIZE_IN_CHARS; ++squareRow) {
             out.print(SET_BG_COLOR_BLACK);
             out.print(SET_TEXT_COLOR_WHITE);
-            out.print(squareRow + " ");
+            out.print(row + " ");
             for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
                 if (white) {
                     setWhite(out);
@@ -116,7 +117,7 @@ public class DrawChessBoard {
 
                         out.print(EMPTY.repeat(prefixLength));
                         //print out chess piece letter here
-                        printPlayer(out, board.getPiece(new ChessPosition(squareRow+1, boardCol+1)));
+                        printPlayer(out, board.getPiece(new ChessPosition(row, boardCol+1)));
                         out.print(EMPTY.repeat(suffixLength));
                     } else {
                         out.print(EMPTY.repeat(SQUARE_SIZE_IN_CHARS));
@@ -139,7 +140,9 @@ public class DrawChessBoard {
             }
             out.print(SET_BG_COLOR_BLACK);
             out.print(SET_TEXT_COLOR_WHITE);
-            out.print(" " + squareRow);
+            out.print(" " + row);
+
+            row = row -1;
 
             out.println();
         }
