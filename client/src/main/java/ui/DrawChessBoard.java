@@ -43,13 +43,13 @@ public class DrawChessBoard {
 
         setBlack(out);
 
-        String[] headers = { "a", "b", "c", "d", "e", "f", "g", "h" };
+        String[] headers = { " a ", " b ", " c ", " d ", " e ", " f ", " g ", " h " };
         for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
             drawHeader(out, headers[boardCol]);
 
-            if (boardCol < BOARD_SIZE_IN_SQUARES - 1) {
-                out.print(EMPTY.repeat(LINE_WIDTH_IN_CHARS));
-            }
+//            if (boardCol < BOARD_SIZE_IN_SQUARES - 1) {
+//                out.print(EMPTY.repeat(LINE_WIDTH_IN_CHARS));
+//            }
         }
 
         out.println();
@@ -59,9 +59,9 @@ public class DrawChessBoard {
         int prefixLength = SQUARE_SIZE_IN_CHARS / 2;
         int suffixLength = SQUARE_SIZE_IN_CHARS - prefixLength - 1;
 
-        out.print(EMPTY.repeat(prefixLength));
+        //out.print(EMPTY.repeat(prefixLength));
         printHeaderText(out, headerText);
-        out.print(EMPTY.repeat(suffixLength));
+        //out.print(EMPTY.repeat(suffixLength));
     }
 
     private static void printHeaderText(PrintStream out, String player) {
