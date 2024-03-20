@@ -31,23 +31,21 @@ public class Main {
     }
 
     private static void help() {
-        System.out.print("\tregister <USERNAME> <PASSWORD> <EMAIL> ");
-        System.out.print("- to create an account \n");
-        System.out.print("\tlogin <USERNAME> <PASSWORD> ");
-        System.out.print("- to play chess \n");
-        System.out.print("\tquit ");
-        System.out.print("- playing chess \n");
-        System.out.print("\thelp ");
-        System.out.print("- with possible commands \n");
+        System.out.print("\tregister <USERNAME> <PASSWORD> <EMAIL> - to create an account \n");
+        System.out.print("\tlogin <USERNAME> <PASSWORD> - to play chess \n");
+        System.out.print("\tquit - playing chess \n");
+        System.out.print("\thelp - with possible commands \n");
     }
 
     //login
     private static void login() {
-        //send to post-login repl
+        // call login from server facade
+        // send to post-login repl
     }
 
     //register
     private static void register() {
+        // call register from server facade
         //send to post-login repl
     }
 
