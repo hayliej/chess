@@ -1,4 +1,5 @@
 import chess.*;
+import ui.PostLoginRepl;
 
 import java.util.Scanner;
 
@@ -41,6 +42,7 @@ public class Main {
     private static void login() {
         // call login from server facade
         // send to post-login repl
+        new PostLoginRepl().run();
     }
 
     //register
