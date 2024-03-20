@@ -14,7 +14,7 @@ public class Main {
             String input = scanner.nextLine();
             switch (input){
                 case "help" -> {
-                    //print help thing
+                    help();
                 }
                 case "quit" -> {
                     break;
@@ -29,6 +29,18 @@ public class Main {
         }
 
     }
+
+    private static void help() {
+        System.out.print("\tregister <USERNAME> <PASSWORD> <EMAIL> ");
+        System.out.print("- to create an account \n");
+        System.out.print("\tlogin <USERNAME> <PASSWORD> ");
+        System.out.print("- to play chess \n");
+        System.out.print("\tquit ");
+        System.out.print("- playing chess \n");
+        System.out.print("\thelp ");
+        System.out.print("- with possible commands \n");
+    }
+
     //put method calls to other repls here:
     //login
     //register
