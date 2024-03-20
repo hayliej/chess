@@ -100,20 +100,18 @@ public class DrawChessBoard {
                     setBlack(out);
                 }
 
-                    if (squareRow == SQUARE_SIZE_IN_CHARS / 2) {
-                        //print out chess piece letter here
-                        printPlayer(out, board.getPiece(new ChessPosition(row, boardCol+1)));
-                    } else {
-                        out.print(EMPTY.repeat(SQUARE_SIZE_IN_CHARS));
-                    }
+                if (squareRow == SQUARE_SIZE_IN_CHARS / 2) {
+                    //print out chess piece letter here
+                    printPlayer(out, board.getPiece(new ChessPosition(row, boardCol+1)));
+                } else {
+                    out.print(EMPTY.repeat(SQUARE_SIZE_IN_CHARS));
+                }
 
-                    if (white) {
-                        white = false;
-                    } else {
-                        white = true;
-                    }
-
-                setBlack(out);
+                if (white) {
+                    white = false;
+                } else {
+                    white = true;
+                }
             }
             out.print(SET_BG_COLOR_BLACK);
             out.print(SET_TEXT_COLOR_WHITE);
