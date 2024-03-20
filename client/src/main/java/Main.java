@@ -41,9 +41,15 @@ public class Main {
         System.out.print("- with possible commands \n");
     }
 
-    //put method calls to other repls here:
     //login
+    private static void login() {
+        //send to post-login repl
+    }
+
     //register
+    private static void register() {
+        //send to post-login repl
+    }
 
     private static void printPrompt() {
         System.out.print("[LOGGED_OUT] " + ">>> ");
