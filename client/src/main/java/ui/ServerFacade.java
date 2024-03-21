@@ -52,13 +52,13 @@ public class ServerFacade {
 
     public LogoutResult joinGame(String auth, Integer id, String color) {
         var path = "/game";
-        AuthJoinGame joiOb = new AuthJoinGame(auth, color, id);
+        AuthJoinGame joiOb = new AuthJoinGame(null, color, id);
         return makeRequest("PUT", path, joiOb, LogoutResult.class);
     }
 
     public LogoutResult observeGame(String auth, Integer id) {
         var path = "/game";
-        AuthJoinGame joiOb = new AuthJoinGame(auth, null, id);
+        AuthJoinGame joiOb = new AuthJoinGame(null, null, id);
         return makeRequest("PUT", path, joiOb, LogoutResult.class);
     }
 
