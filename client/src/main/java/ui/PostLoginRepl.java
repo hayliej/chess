@@ -45,7 +45,6 @@ public class PostLoginRepl {
 
     //list()?
 
-
     private static void logout() {
         // call logout from server facade
         //send to pre-login repl

@@ -20,18 +20,6 @@ public class Main {
             } else if (line.startsWith("register")){
                 register(line);
             }
-
-//            switch (line.startsWith()){
-//                case "help" -> {
-//                    help();
-//                }
-//                case "login" -> {
-//                    login(line);
-//                }
-//                case "register" -> {
-//                    register(line);
-//                }
-//            }
         }
 
     }
