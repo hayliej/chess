@@ -83,7 +83,7 @@ public class ServerFacadeTests {
 
     //createGame positive
     @Test
-    public void createGamePositive() { ///Not working!!!
+    public void createGamePositive() { //DOESN'T WORK
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
         String message = cres.message();
@@ -122,7 +122,7 @@ public class ServerFacadeTests {
 
     //observeGame positive
     @Test
-    public void observeGamePositive() {
+    public void observeGamePositive() { //DOESN'T WORK
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
         LogoutResult ores = facade.observeGame(res.authToken(), cres.gameID());
@@ -142,7 +142,7 @@ public class ServerFacadeTests {
 
     //list positive
     @Test
-    public void listGamesPositive() {
+    public void listGamesPositive() { //DOESN'T WORK
         RegisterResult res = facade.register("newUsername", "password", "email");
         facade.createGame(res.authToken(), "name");
         ListGamesResult lres = facade.listGames(res.authToken());
