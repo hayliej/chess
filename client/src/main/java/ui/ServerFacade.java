@@ -58,6 +58,12 @@ public class ServerFacade {
         return makeRequest("PUT", path, joiOb, LogoutResult.class);
     }
 
+    public LogoutResult listGames(String authT) {
+        var path = "/game";
+        String auth = authT;
+        return makeRequest("GET", path, auth, LogoutResult.class);
+    }
+
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
