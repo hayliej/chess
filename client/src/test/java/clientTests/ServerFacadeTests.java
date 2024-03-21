@@ -2,6 +2,7 @@ package clientTests;
 
 import org.junit.jupiter.api.*;
 import server.Server;
+import ui.ServerFacade;
 
 
 public class ServerFacadeTests {
@@ -11,8 +12,9 @@ public class ServerFacadeTests {
     @BeforeAll
     public static void init() {
         server = new Server();
-        var port = server.run(0);
+        var port = server.run(8080);
         System.out.println("Started test HTTP server on " + port);
+        ServerFacade facade = new ServerFacade(String.valueOf(port));
     }
 
     @AfterAll
