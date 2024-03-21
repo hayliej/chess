@@ -28,9 +28,6 @@ public class PostLoginRepl {
                 case "join observer" -> {
                     //joinObserver(line);
                 }
-                case "quit" -> {
-                    break;
-                }
             }
         }
         System.out.println();

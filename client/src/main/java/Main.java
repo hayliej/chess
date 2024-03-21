@@ -13,20 +13,25 @@ public class Main {
             printPrompt();
 
             line = scanner.nextLine();
-            switch (line){
-                case "help" -> {
-                    help();
-                }
-                case "quit" -> {
-                    break;
-                }
-                case "login" -> {
-                    login(line);
-                }
-                case "register" -> {
-                    register(line);
-                }
+            if (line.startsWith("help")){
+                help();
+            } else if (line.startsWith("login")){
+                login(line);
+            } else if (line.startsWith("register")){
+                register(line);
             }
+
+//            switch (line.startsWith()){
+//                case "help" -> {
+//                    help();
+//                }
+//                case "login" -> {
+//                    login(line);
+//                }
+//                case "register" -> {
+//                    register(line);
+//                }
+//            }
         }
 
     }
@@ -40,10 +45,13 @@ public class Main {
 
     //login
     private static void login(String input) {
-        //parse out input to get username and password!!!!
+        //parse out input to get username and password
+        String[] in = input.split(" <");
+        String u = in[1];
+        String username = u.replace(">", "");
+        String p = in[2];
+        String password = p.replace(">", "");
 
-        String username = "";
-        String password = "";
         // call login from server facade
         new ServerFacade("http://localhost:8080").login(username, password);
         // send to post-login repl
