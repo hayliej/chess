@@ -2,6 +2,7 @@ package clientTests;
 
 import org.junit.jupiter.api.*;
 import results.CreateGameResult;
+import results.ListGamesResult;
 import results.LogoutResult;
 import results.RegisterResult;
 import server.Server;
@@ -140,7 +141,22 @@ public class ServerFacadeTests {
 
 
     //list positive
+    @Test
+    public void listGamesPositive() {
+        RegisterResult res = facade.register("newUsername", "password", "email");
+        facade.createGame(res.authToken(), "name");
+        ListGamesResult lres = facade.listGames(res.authToken());
+        String message = lres.message();
+        assertNull(message);
+    }
 
     //list negative
-
+    @Test
+    public void listGamesNegative() {
+        RegisterResult res = facade.register("newUsername", "password", "email");
+        facade.createGame(res.authToken(), "name");
+        ListGamesResult lres = facade.listGames(null);
+        String message = lres.message();
+        assertNotNull(message);
+    }
 }
