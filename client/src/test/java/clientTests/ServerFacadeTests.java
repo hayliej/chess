@@ -122,14 +122,25 @@ public class ServerFacadeTests {
     //observeGame positive
     @Test
     public void observeGamePositive() {
-
-        //Assertions.assertTrue(true);
+        RegisterResult res = facade.register("newUsername", "password", "email");
+        CreateGameResult cres = facade.createGame(res.authToken(), "name");
+        LogoutResult ores = facade.observeGame(res.authToken(), cres.gameID());
+        String message = ores.message();
+        assertNull(message);
     }
     //observeGame negative
     @Test
     public void observeGameNegative() {
-
-        //Assertions.assertTrue(true);
+        RegisterResult res = facade.register("newUsername", "password", "email");
+        CreateGameResult cres = facade.createGame(res.authToken(), "name");
+        LogoutResult ores = facade.observeGame(null, cres.gameID());
+        String message = ores.message();
+        assertNotNull(message);
     }
+
+
+    //list positive
+
+    //list negative
 
 }
