@@ -21,11 +21,6 @@ public class ServerFacadeTests {
     }
 
 
-    @Test
-    public void sampleTest() {
-        Assertions.assertTrue(true);
-    }
-
     //login positive
     @Test
     public void loginPositive() {
