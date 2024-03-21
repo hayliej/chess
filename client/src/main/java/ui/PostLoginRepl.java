@@ -31,6 +31,7 @@ public class PostLoginRepl {
         }
         System.out.println();
     }
+
     static String authToken = "";
     public static void setAuth(String auth){
         authToken = auth;
@@ -62,7 +63,7 @@ public class PostLoginRepl {
         String g = in[1];
         String gameName = g.replace(">", "");
         // call create game from server facade
-        new ServerFacade("http://localhost:8080").createGame(gameName);
+        new ServerFacade("http://localhost:8080").createGame(authToken, gameName);
         //send to game repl (next phase)
     }
 
@@ -75,7 +76,7 @@ public class PostLoginRepl {
         String c = in[2];
         String color = c.replace(">", "");
         // call join game from server facade
-        new ServerFacade("http://localhost:8080").joinGame(idNum, color);
+        new ServerFacade("http://localhost:8080").joinGame(authToken, idNum, color);
     }
 
     private static void joinGameObserver(String input) {
@@ -85,7 +86,7 @@ public class PostLoginRepl {
         String id = i.replace(">", "");
         Integer idNum = Integer.valueOf(id);
         // call join game observer from server facade
-        new ServerFacade("http://localhost:8080").observeGame(idNum);
+        new ServerFacade("http://localhost:8080").observeGame(authToken, idNum);
     }
 
     private static void printPrompt() {

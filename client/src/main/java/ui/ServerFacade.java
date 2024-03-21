@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URL;
 import com.google.gson.Gson;
 import requests.AuthJoinGame;
+import requests.AuthNewGame;
 import requests.LoginRequest;
 import requests.UserData;
 import results.CreateGameResult;
@@ -33,27 +34,27 @@ public class ServerFacade {
         return makeRequest("POST", path, regOb, RegisterResult.class);
     }
 
-    public LogoutResult logout(String username) {
+    public LogoutResult logout(String authT) {
         var path = "/session";
-        String logOb = username;
-        return makeRequest("DELETE", path, logOb, LogoutResult.class);
+        String auth = authT;
+        return makeRequest("DELETE", path, auth, LogoutResult.class);
     }
 
-    public CreateGameResult createGame(String gameName) {
+    public CreateGameResult createGame(String auth, String gameName) {
         var path = "/game";
-        String creOb = gameName;
+        AuthNewGame creOb = new AuthNewGame(auth, gameName);
         return makeRequest("POST", path, creOb, CreateGameResult.class);
     }
 
-    public LogoutResult joinGame(Integer id, String color) {
+    public LogoutResult joinGame(String auth, Integer id, String color) {
         var path = "/game";
-        AuthJoinGame joiOb = new AuthJoinGame(null, color, id);
+        AuthJoinGame joiOb = new AuthJoinGame(auth, color, id);
         return makeRequest("PUT", path, joiOb, LogoutResult.class);
     }
 
-    public LogoutResult observeGame(Integer id) {
+    public LogoutResult observeGame(String auth, Integer id) {
         var path = "/game";
-        AuthJoinGame joiOb = new AuthJoinGame(null, null, id);
+        AuthJoinGame joiOb = new AuthJoinGame(auth, null, id);
         return makeRequest("PUT", path, joiOb, LogoutResult.class);
     }
 
