@@ -8,12 +8,12 @@ public class Main {
         System.out.println("Welcome to Chess! Type help to start.");
 
         Scanner scanner = new Scanner(System.in);
-        var result = "";
-        while (!result.equals("quit")){
+        String line = "";
+        while (!line.equals("quit")){
             printPrompt();
 
-            String input = scanner.nextLine();
-            switch (input){
+            line = scanner.nextLine();
+            switch (line){
                 case "help" -> {
                     help();
                 }
@@ -21,10 +21,10 @@ public class Main {
                     break;
                 }
                 case "login" -> {
-                    login();
+                    login(line);
                 }
                 case "register" -> {
-                    register();
+                    register(line);
                 }
             }
         }
@@ -39,15 +39,19 @@ public class Main {
     }
 
     //login
-    private static void login() {
+    private static void login(String input) {
+        //parse out input to get username and password!!!!
+
+        String username = "";
+        String password = "";
         // call login from server facade
-        ServerFacade.login();
+        new ServerFacade("http://localhost:8080").login(username, password);
         // send to post-login repl
         new PostLoginRepl().run();
     }
 
     //register
-    private static void register() {
+    private static void register(String input) {
         // call register from server facade
         //send to post-login repl
     }

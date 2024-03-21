@@ -7,26 +7,26 @@ public class PostLoginRepl {
         System.out.println("You are logged in. Type help for options.");
 
         Scanner scanner = new Scanner(System.in);
-        var result = "";
-        while (!result.equals("quit")){
+        var line = "";
+        while (!line.equals("quit")){
             printPrompt();
 
-            String input = scanner.nextLine();
-            switch (input){
+            line = scanner.nextLine();
+            switch (line){
                 case "help" -> {
                     help();
                 }
                 case "logout" -> {
-                    //logout();
+                    //logout(line);
                 }
                 case "create game" -> {
-                    //createGame();
+                    //createGame(line);
                 }
                 case "join game" -> {
-                    //joinGame();
+                    //joinGame(line);
                 }
                 case "join observer" -> {
-                    //joinObserver();
+                    //joinObserver(line);
                 }
                 case "quit" -> {
                     break;

@@ -2,6 +2,9 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import com.google.gson.Gson;
+import requests.LoginRequest;
+import requests.UserData;
+
 import java.io.*;
 import java.net.*;
 
@@ -12,9 +15,10 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-    public static Object login(Object logOb) {
+    public Object login(String username, String password) {
         var path = "/session";
-        return this.makeRequest("POST", path, logOb, Object.class);
+        LoginRequest logOb = new LoginRequest(username, password);
+        return makeRequest("POST", path, logOb, Object.class);
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) {
@@ -22,7 +26,7 @@ public class ServerFacade {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
-            http.setDoOutput(true);
+            //http.setDoOutput(true);
 
             writeBody(request, http);
             http.connect();
