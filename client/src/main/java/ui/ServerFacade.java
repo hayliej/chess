@@ -4,10 +4,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import com.google.gson.Gson;
-import requests.AuthJoinGame;
-import requests.AuthNewGame;
-import requests.LoginRequest;
-import requests.UserData;
+import requests.*;
 import results.CreateGameResult;
 import results.ListGamesResult;
 import results.LogoutResult;
@@ -23,27 +20,33 @@ public class ServerFacade {
         serverUrl = url;
     }
 
+    String authToken;
+
     public RegisterResult login(String username, String password) {
         var path = "/session";
         LoginRequest logOb = new LoginRequest(username, password);
-        return makeRequest("POST", path, logOb, RegisterResult.class);
+        RegisterResult res = makeRequest("POST", path, logOb, RegisterResult.class);
+        authToken=res.authToken();
+        return res;
     }
 
     public RegisterResult register(String username, String password, String email) {
         var path = "/user";
         UserData regOb = new UserData(username, password, email);
-        return makeRequest("POST", path, regOb, RegisterResult.class);
+        RegisterResult res = makeRequest("POST", path, regOb, RegisterResult.class);
+        authToken=res.authToken();
+        return res;
     }
 
     public LogoutResult logout(String authT) {
         var path = "/session";
         String auth = authT;
-        return makeRequest("DELETE", path, auth, LogoutResult.class);
+        return makeRequest("DELETE", path, null, LogoutResult.class);
     }
 
     public CreateGameResult createGame(String auth, String gameName) {
         var path = "/game";
-        AuthNewGame creOb = new AuthNewGame(auth, gameName);
+        GameData creOb = new GameData(null, null, null, gameName, null);
         return makeRequest("POST", path, creOb, CreateGameResult.class);
     }
 
@@ -65,11 +68,17 @@ public class ServerFacade {
         return makeRequest("GET", path, auth, ListGamesResult.class);
     }
 
+    public ListGamesResult clear() {
+        var path = "/db";
+        return makeRequest("DELETE", path, null, ListGamesResult.class);
+    }
+
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
+            http.setRequestProperty("authorization", authToken);
             http.setDoOutput(true);
 
             writeBody(request, http);

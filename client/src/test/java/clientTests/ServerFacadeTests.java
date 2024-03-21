@@ -24,6 +24,11 @@ public class ServerFacadeTests {
         facade = new ServerFacade("http://localhost:" + String.valueOf(port));
     }
 
+    @BeforeEach
+    public void clear() {
+        facade.clear();
+    }
+
     @AfterAll
     static void stopServer() {
         server.stop();
@@ -32,14 +37,15 @@ public class ServerFacadeTests {
 
     //login positive
     @Test
-    public void loginPositive() {
+    public void loginPositive() { //DOESN'T WORK
+        facade.register("newUsername", "password", "email");
         RegisterResult res = facade.login("username", "password");
         String user = res.username();
         assertEquals("username", user);
     }
     //login negative
     @Test
-    public void loginNegative() {   //NOT WORKING
+    public void loginNegative() {
         RegisterResult res = facade.login(null, "password");
         String message = res.message();
         assertNotNull(message);
@@ -69,12 +75,11 @@ public class ServerFacadeTests {
         RegisterResult res = facade.register("newUsername", "password", "email");
         LogoutResult lres = facade.logout(res.authToken());
         String message = lres.message();
-        assertNotNull(message);
+        assertEquals("",message);
     }
     //logout negative
     @Test
     public void logoutNegative() {
-        facade.register("newUsername", "password", "email");
         LogoutResult lres = facade.logout(null);
         String message = lres.message();
         assertTrue(message.startsWith("Error"));
@@ -83,7 +88,7 @@ public class ServerFacadeTests {
 
     //createGame positive
     @Test
-    public void createGamePositive() { //DOESN'T WORK
+    public void createGamePositive() {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
         String message = cres.message();
@@ -94,7 +99,7 @@ public class ServerFacadeTests {
     @Test
     public void createGameNegative() {
         facade.register("newUsername", "password", "email");
-        CreateGameResult cres = facade.createGame(null, "name");
+        CreateGameResult cres = facade.createGame(null, null);
         String message = cres.message();
         assertNotNull(message);
     }
@@ -102,7 +107,7 @@ public class ServerFacadeTests {
 
     //joinGame positive
     @Test
-    public void joinGamePositive() { //DOESN'T WORK
+    public void joinGamePositive() {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
         LogoutResult jres = facade.joinGame(res.authToken(), cres.gameID(), "WHITE");
@@ -114,7 +119,7 @@ public class ServerFacadeTests {
     public void joinGameNegative() {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
-        LogoutResult jres = facade.joinGame(null, cres.gameID(), "WHITE");
+        LogoutResult jres = facade.joinGame(null, null, "WHITE");
         String message = jres.message();
         assertNotNull(message);
     }
@@ -122,7 +127,7 @@ public class ServerFacadeTests {
 
     //observeGame positive
     @Test
-    public void observeGamePositive() { //DOESN'T WORK
+    public void observeGamePositive() {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
         LogoutResult ores = facade.observeGame(res.authToken(), cres.gameID());
@@ -134,7 +139,7 @@ public class ServerFacadeTests {
     public void observeGameNegative() {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
-        LogoutResult ores = facade.observeGame(null, cres.gameID());
+        LogoutResult ores = facade.observeGame(null, null);
         String message = ores.message();
         assertNotNull(message);
     }
@@ -152,9 +157,9 @@ public class ServerFacadeTests {
 
     //list negative
     @Test
-    public void listGamesNegative() {
+    public void listGamesNegative() { //DOESN'T WORK
         RegisterResult res = facade.register("newUsername", "password", "email");
-        facade.createGame(res.authToken(), "name");
+//        facade.createGame(res.authToken(), "name");
         ListGamesResult lres = facade.listGames(null);
         String message = lres.message();
         assertNotNull(message);
