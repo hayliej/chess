@@ -1,6 +1,7 @@
 package clientTests;
 
 import org.junit.jupiter.api.*;
+import results.LogoutResult;
 import results.RegisterResult;
 import server.Server;
 import ui.ServerFacade;
@@ -19,7 +20,6 @@ public class ServerFacadeTests {
         var port = server.run(0);
         System.out.println("Started test HTTP server on " + port);
         facade = new ServerFacade("http://localhost:" + String.valueOf(port));
-        //facade.register("username", "password", "email");
     }
 
     @AfterAll
@@ -64,14 +64,18 @@ public class ServerFacadeTests {
     //logout positive
     @Test
     public void logoutPositive() {
-
-        //Assertions.assertTrue(true);
+        RegisterResult res = facade.register("newUsername", "password", "email");
+        LogoutResult lres = facade.logout(res.authToken());
+        String message = lres.message();
+        assertNotNull(message);
     }
     //logout negative
     @Test
     public void logoutNegative() {
-
-        //Assertions.assertTrue(true);
+        RegisterResult res = facade.register("newUsername", "password", "email");
+        LogoutResult lres = facade.logout(null);
+        String message = lres.message();
+        assertTrue(message.startsWith("Error"));
     }
 
 
