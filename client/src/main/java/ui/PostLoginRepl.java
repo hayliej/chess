@@ -12,23 +12,20 @@ public class PostLoginRepl {
             printPrompt();
 
             line = scanner.nextLine();
-            switch (line){
-                case "help" -> {
-                    help();
-                }
-                case "logout" -> {
-                    //logout(line);
-                }
-                case "create game" -> {
-                    //createGame(line);
-                }
-                case "join game" -> {
-                    //joinGame(line);
-                }
-                case "join observer" -> {
-                    //joinObserver(line);
-                }
+            if (line.startsWith("help")){
+                help();
+            } else if (line.startsWith("logout")){
+                logout();
+            } else if (line.startsWith("create")){
+                createGame(line);
+            } else if (line.startsWith("join")){
+                joinGame(line);
+            } else if (line.startsWith("observe")){
+                joinGameObserver(line);
+            } else if (line.startsWith("list")){
+                list();
             }
+
         }
         System.out.println();
     }
@@ -43,23 +40,25 @@ public class PostLoginRepl {
         System.out.print("\thelp - with possible commands \n");
     }
 
-    //list()?
+    private static void list() {
+
+    }
 
     private static void logout() {
         // call logout from server facade
         //send to pre-login repl
     }
 
-    private static void createGame() {
+    private static void createGame(String input) {
         // call create game from server facade
         //send to game repl (next phase)
     }
 
-    private static void joinGame() {
+    private static void joinGame(String input) {
         // call join game from server facade
     }
 
-    private static void joinGameObserver() {
+    private static void joinGameObserver(String input) {
         // call join game observer from server facade
     }
 
