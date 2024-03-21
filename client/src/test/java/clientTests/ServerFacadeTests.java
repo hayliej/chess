@@ -11,15 +11,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ServerFacadeTests {
 
     private static Server server;
-    ServerFacade facade = new ServerFacade("http://localhost:8080");
+    static ServerFacade facade;
 
     @BeforeAll
     public static void init() {
         server = new Server();
-        var port = server.run(8080);
+        var port = server.run(0);
         System.out.println("Started test HTTP server on " + port);
-        ServerFacade facade = new ServerFacade("http://localhost:8080");
-        facade.register("username", "password", "email");
+        facade = new ServerFacade("http://localhost:" + String.valueOf(port));
+        //facade.register("username", "password", "email");
     }
 
     @AfterAll
@@ -37,23 +37,27 @@ public class ServerFacadeTests {
     }
     //login negative
     @Test
-    public void loginNegative() {
-
-        //Assertions.assertTrue(true);
+    public void loginNegative() {   //NOT WORKING
+        RegisterResult res = facade.login(null, "password");
+        String message = res.message();
+        assertNotNull(message);
     }
 
 
     //register positive
     @Test
     public void registerPositive() {
-
-        //Assertions.assertTrue(true);
+        RegisterResult res = facade.register("newUsername", "password", "email");
+        String user = res.username();
+        assertEquals("newUsername", user);
     }
+
     //register negative
     @Test
     public void registerNegative() {
-
-        //Assertions.assertTrue(true);
+        RegisterResult res = facade.register(null, "password", "email");
+        String message = res.message();
+        assertNotNull(message);
     }
 
 
