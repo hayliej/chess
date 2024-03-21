@@ -65,7 +65,7 @@ public class ServerFacade {
     public ListGamesResult listGames(String authT) {
         var path = "/game";
         String auth = authT;
-        return makeRequest("GET", path, auth, ListGamesResult.class);
+        return makeRequest("GET", path, null, ListGamesResult.class);
     }
 
     public ListGamesResult clear() {

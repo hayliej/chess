@@ -147,7 +147,7 @@ public class ServerFacadeTests {
 
     //list positive
     @Test
-    public void listGamesPositive() { //DOESN'T WORK
+    public void listGamesPositive() {
         RegisterResult res = facade.register("newUsername", "password", "email");
         facade.createGame(res.authToken(), "name");
         ListGamesResult lres = facade.listGames(res.authToken());
