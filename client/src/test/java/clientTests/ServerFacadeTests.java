@@ -161,8 +161,7 @@ public class ServerFacadeTests {
     //list negative
     @Test
     public void listGamesNegative() {
-        RegisterResult res = facade.register("newUsername", "password", "email");
-//        facade.createGame(res.authToken(), "name");
+        facade.register("newUsername", "password", "email");
         ListGamesResult lres = facade.listGames(null);
         List games = lres.games();
         List list = new ArrayList();
