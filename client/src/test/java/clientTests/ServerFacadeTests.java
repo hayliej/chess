@@ -101,17 +101,20 @@ public class ServerFacadeTests {
 
     //joinGame positive
     @Test
-    public void joinGamePositive() {
-
-        //Assertions.assertTrue(true);
+    public void joinGamePositive() { //DOESN'T WORK
+        RegisterResult res = facade.register("newUsername", "password", "email");
+        CreateGameResult cres = facade.createGame(res.authToken(), "name");
+        LogoutResult jres = facade.joinGame(res.authToken(), cres.gameID(), "WHITE");
+        String message = jres.message();
+        assertNull(message);
     }
     //joinGame negative
     @Test
     public void joinGameNegative() {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
-
-        String message = cres.message();
+        LogoutResult jres = facade.joinGame(null, cres.gameID(), "WHITE");
+        String message = jres.message();
         assertNotNull(message);
     }
 
