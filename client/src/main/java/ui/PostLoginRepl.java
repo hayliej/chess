@@ -35,7 +35,7 @@ public class PostLoginRepl {
     private static void help() {
         System.out.print("\tcreate <NAME> - a game \n");
         System.out.print("\tlist - games \n");
-        System.out.print("\tjoin <ID> [WHITE|BLACK|<empty>] - a game \n");
+        System.out.print("\tjoin <ID> [<WHITE>|<BLACK>|<empty>] - a game \n");
         System.out.print("\tobserve <ID> - a game \n");
         System.out.print("\tlogout - when you are done \n");
         System.out.print("\tquit - playing chess \n");
@@ -53,17 +53,25 @@ public class PostLoginRepl {
     }
 
     private static void createGame(String input) {
-        //parse input
+        //parse input to get game name
         String[] in = input.split(" <");
-        String u = in[1];
-        String gameName = u.replace(">", "");
+        String g = in[1];
+        String gameName = g.replace(">", "");
         // call create game from server facade
         new ServerFacade("http://localhost:8080").createGame(gameName);
         //send to game repl (next phase)
     }
 
     private static void joinGame(String input) {
+        //parse out input to get ID and color
+        String[] in = input.split(" <");
+        String i = in[1];
+        String id = i.replace(">", "");
+        Integer idNum = Integer.valueOf(id);
+        String c = in[2];
+        String color = c.replace(">", "");
         // call join game from server facade
+        new ServerFacade("http://localhost:8080").joinGame(idNum, color);
     }
 
     private static void joinGameObserver(String input) {

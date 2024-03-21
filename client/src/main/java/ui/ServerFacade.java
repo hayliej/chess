@@ -4,6 +4,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import com.google.gson.Gson;
+import requests.AuthJoinGame;
 import requests.LoginRequest;
 import requests.UserData;
 
@@ -39,6 +40,12 @@ public class ServerFacade {
         var path = "/game";
         String creOb = gameName;
         return makeRequest("POST", path, creOb, Object.class);
+    }
+
+    public Object joinGame(Integer id, String color) {
+        var path = "/game";
+        AuthJoinGame joiOb = new AuthJoinGame(null, color, id);
+        return makeRequest("PUT", path, joiOb, Object.class);
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) {
