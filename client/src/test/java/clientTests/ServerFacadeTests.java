@@ -1,6 +1,7 @@
 package clientTests;
 
 import org.junit.jupiter.api.*;
+import results.CreateGameResult;
 import results.LogoutResult;
 import results.RegisterResult;
 import server.Server;
@@ -72,7 +73,7 @@ public class ServerFacadeTests {
     //logout negative
     @Test
     public void logoutNegative() {
-        RegisterResult res = facade.register("newUsername", "password", "email");
+        facade.register("newUsername", "password", "email");
         LogoutResult lres = facade.logout(null);
         String message = lres.message();
         assertTrue(message.startsWith("Error"));
@@ -81,15 +82,20 @@ public class ServerFacadeTests {
 
     //createGame positive
     @Test
-    public void createGamePositive() {
-
-        //Assertions.assertTrue(true);
+    public void createGamePositive() { ///Not working!!!
+        RegisterResult res = facade.register("newUsername", "password", "email");
+        CreateGameResult cres = facade.createGame(res.authToken(), "name");
+        String message = cres.message();
+        assertNull(message);
     }
+
     //createGame negative
     @Test
     public void createGameNegative() {
-
-        //Assertions.assertTrue(true);
+        RegisterResult res = facade.register("newUsername", "password", "email");
+        CreateGameResult cres = facade.createGame(null, "name");
+        String message = cres.message();
+        assertNotNull(message);
     }
 
 
