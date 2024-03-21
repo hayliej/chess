@@ -9,6 +9,7 @@ import requests.AuthNewGame;
 import requests.LoginRequest;
 import requests.UserData;
 import results.CreateGameResult;
+import results.ListGamesResult;
 import results.LogoutResult;
 import results.RegisterResult;
 
@@ -58,10 +59,10 @@ public class ServerFacade {
         return makeRequest("PUT", path, joiOb, LogoutResult.class);
     }
 
-    public LogoutResult listGames(String authT) {
+    public ListGamesResult listGames(String authT) {
         var path = "/game";
         String auth = authT;
-        return makeRequest("GET", path, auth, LogoutResult.class);
+        return makeRequest("GET", path, auth, ListGamesResult.class);
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) {

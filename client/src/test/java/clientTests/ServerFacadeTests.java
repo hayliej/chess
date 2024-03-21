@@ -92,7 +92,7 @@ public class ServerFacadeTests {
     //createGame negative
     @Test
     public void createGameNegative() {
-        RegisterResult res = facade.register("newUsername", "password", "email");
+        facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(null, "name");
         String message = cres.message();
         assertNotNull(message);
@@ -108,8 +108,11 @@ public class ServerFacadeTests {
     //joinGame negative
     @Test
     public void joinGameNegative() {
+        RegisterResult res = facade.register("newUsername", "password", "email");
+        CreateGameResult cres = facade.createGame(res.authToken(), "name");
 
-        //Assertions.assertTrue(true);
+        String message = cres.message();
+        assertNotNull(message);
     }
 
 

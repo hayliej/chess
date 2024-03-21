@@ -50,7 +50,7 @@ public class PostLoginRepl {
     private static void list() {
         String auth = authToken;
         // call logout from server facade
-        System.out.print(new ServerFacade("http://localhost:8080").listGames(auth));
+        System.out.print(new ServerFacade("http://localhost:8080").listGames(auth).games());
         System.out.println();
     }
 
