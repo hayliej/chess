@@ -21,6 +21,12 @@ public class ServerFacade {
         return makeRequest("POST", path, logOb, Object.class);
     }
 
+    public Object register(String username, String password, String email) {
+        var path = "/user";
+        UserData regOb = new UserData(username, password, email);
+        return makeRequest("POST", path, regOb, Object.class);
+    }
+
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) {
         try {
             URL url = (new URI(serverUrl + path)).toURL();

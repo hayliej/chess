@@ -60,8 +60,18 @@ public class Main {
 
     //register
     private static void register(String input) {
+        //parse input
+        String[] in = input.split(" <");
+        String u = in[1];
+        String username = u.replace(">", "");
+        String p = in[2];
+        String password = p.replace(">", "");
+        String e = in[3];
+        String email = p.replace(">", "");
         // call register from server facade
+        new ServerFacade("http://localhost:8080").register(username, password, email);
         //send to post-login repl
+        new PostLoginRepl().run();
     }
 
     private static void printPrompt() {

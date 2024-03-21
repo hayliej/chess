@@ -43,6 +43,9 @@ public class PostLoginRepl {
         System.out.print("\thelp - with possible commands \n");
     }
 
+    //list()?
+
+
     private static void logout() {
         // call logout from server facade
         //send to pre-login repl
