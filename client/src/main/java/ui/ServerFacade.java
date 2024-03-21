@@ -35,6 +35,12 @@ public class ServerFacade {
         return makeRequest("DELETE", path, logOb, Object.class);
     }
 
+    public Object createGame(String gameName) {
+        var path = "/game";
+        String creOb = gameName;
+        return makeRequest("POST", path, creOb, Object.class);
+    }
+
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) {
         try {
             URL url = (new URI(serverUrl + path)).toURL();

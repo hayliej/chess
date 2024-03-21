@@ -47,13 +47,18 @@ public class PostLoginRepl {
     }
 
     private static void logout() {
-        String user = "username";
+        String user = "username"; ////WHAT DO YOU ACTUALLY PUT HERE??
         // call logout from server facade
         new ServerFacade("http://localhost:8080").logout(user);
     }
 
     private static void createGame(String input) {
+        //parse input
+        String[] in = input.split(" <");
+        String u = in[1];
+        String gameName = u.replace(">", "");
         // call create game from server facade
+        new ServerFacade("http://localhost:8080").createGame(gameName);
         //send to game repl (next phase)
     }
 
