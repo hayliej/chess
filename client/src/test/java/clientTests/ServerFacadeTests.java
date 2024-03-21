@@ -1,20 +1,25 @@
 package clientTests;
 
 import org.junit.jupiter.api.*;
+import results.RegisterResult;
 import server.Server;
 import ui.ServerFacade;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ServerFacadeTests {
 
     private static Server server;
+    ServerFacade facade = new ServerFacade("http://localhost:8080");
 
     @BeforeAll
     public static void init() {
         server = new Server();
         var port = server.run(8080);
         System.out.println("Started test HTTP server on " + port);
-        ServerFacade facade = new ServerFacade(String.valueOf(port));
+        ServerFacade facade = new ServerFacade("http://localhost:8080");
+        facade.register("username", "password", "email");
     }
 
     @AfterAll
@@ -26,8 +31,9 @@ public class ServerFacadeTests {
     //login positive
     @Test
     public void loginPositive() {
-
-        //Assertions.assertTrue(true);
+        RegisterResult res = facade.login("username", "password");
+        String user = res.username();
+        assertEquals("username", user);
     }
     //login negative
     @Test
