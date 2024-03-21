@@ -46,6 +46,24 @@ public class PostLoginRepl {
         System.out.print("\thelp - with possible commands \n");
     }
 
+    private static void logout() {
+        // call logout from server facade
+        //send to pre-login repl
+    }
+
+    private static void createGame() {
+        // call create game from server facade
+        //send to game repl (next phase)
+    }
+
+    private static void joinGame() {
+        // call join game from server facade
+    }
+
+    private static void joinGameObserver() {
+        // call join game observer from server facade
+    }
+
     private static void printPrompt() {
         System.out.print("[LOGGED_IN] " + ">>> ");
     }

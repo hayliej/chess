@@ -41,6 +41,7 @@ public class Main {
     //login
     private static void login() {
         // call login from server facade
+        ServerFacade.login();
         // send to post-login repl
         new PostLoginRepl().run();
     }
