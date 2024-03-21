@@ -40,8 +40,8 @@ public class ServerFacadeTests {
 
     //login positive
     @Test
-    public void loginPositive() { //DOESN'T WORK
-        facade.register("newUsername", "password", "email");
+    public void loginPositive() {
+        facade.register("username", "password", "email");
         RegisterResult res = facade.login("username", "password");
         String user = res.username();
         assertEquals("username", user);
