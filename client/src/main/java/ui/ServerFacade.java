@@ -12,6 +12,7 @@ import results.RegisterResult;
 
 import java.io.*;
 import java.net.*;
+import java.util.List;
 
 public class ServerFacade {
     private final String serverUrl;
