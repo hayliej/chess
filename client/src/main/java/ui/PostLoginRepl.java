@@ -31,6 +31,10 @@ public class PostLoginRepl {
         }
         System.out.println();
     }
+    static String authToken = "";
+    public static void setAuth(String auth){
+        authToken = auth;
+    }
 
     private static void help() {
         System.out.print("\tcreate <NAME> - a game \n");
@@ -47,9 +51,9 @@ public class PostLoginRepl {
     }
 
     private static void logout() {
-        String user = "username"; ////WHAT DO YOU ACTUALLY PUT HERE??
+        String auth = authToken;
         // call logout from server facade
-        new ServerFacade("http://localhost:8080").logout(user);
+        new ServerFacade("http://localhost:8080").logout(auth);
     }
 
     private static void createGame(String input) {
@@ -75,7 +79,13 @@ public class PostLoginRepl {
     }
 
     private static void joinGameObserver(String input) {
+        //parse out input to get ID and color
+        String[] in = input.split(" <");
+        String i = in[1];
+        String id = i.replace(">", "");
+        Integer idNum = Integer.valueOf(id);
         // call join game observer from server facade
+        new ServerFacade("http://localhost:8080").observeGame(idNum);
     }
 
     private static void printPrompt() {

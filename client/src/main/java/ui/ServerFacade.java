@@ -7,6 +7,9 @@ import com.google.gson.Gson;
 import requests.AuthJoinGame;
 import requests.LoginRequest;
 import requests.UserData;
+import results.CreateGameResult;
+import results.LogoutResult;
+import results.RegisterResult;
 
 import java.io.*;
 import java.net.*;
@@ -18,34 +21,40 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-    public Object login(String username, String password) {
+    public RegisterResult login(String username, String password) {
         var path = "/session";
         LoginRequest logOb = new LoginRequest(username, password);
-        return makeRequest("POST", path, logOb, Object.class);
+        return makeRequest("POST", path, logOb, RegisterResult.class);
     }
 
-    public Object register(String username, String password, String email) {
+    public RegisterResult register(String username, String password, String email) {
         var path = "/user";
         UserData regOb = new UserData(username, password, email);
-        return makeRequest("POST", path, regOb, Object.class);
+        return makeRequest("POST", path, regOb, RegisterResult.class);
     }
 
-    public Object logout(String username) {
+    public LogoutResult logout(String username) {
         var path = "/session";
         String logOb = username;
-        return makeRequest("DELETE", path, logOb, Object.class);
+        return makeRequest("DELETE", path, logOb, LogoutResult.class);
     }
 
-    public Object createGame(String gameName) {
+    public CreateGameResult createGame(String gameName) {
         var path = "/game";
         String creOb = gameName;
-        return makeRequest("POST", path, creOb, Object.class);
+        return makeRequest("POST", path, creOb, CreateGameResult.class);
     }
 
-    public Object joinGame(Integer id, String color) {
+    public LogoutResult joinGame(Integer id, String color) {
         var path = "/game";
         AuthJoinGame joiOb = new AuthJoinGame(null, color, id);
-        return makeRequest("PUT", path, joiOb, Object.class);
+        return makeRequest("PUT", path, joiOb, LogoutResult.class);
+    }
+
+    public LogoutResult observeGame(Integer id) {
+        var path = "/game";
+        AuthJoinGame joiOb = new AuthJoinGame(null, null, id);
+        return makeRequest("PUT", path, joiOb, LogoutResult.class);
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) {
@@ -53,7 +62,7 @@ public class ServerFacade {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
-            //http.setDoOutput(true);
+            http.setDoOutput(true);
 
             writeBody(request, http);
             http.connect();

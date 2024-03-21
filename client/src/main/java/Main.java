@@ -1,3 +1,4 @@
+import results.RegisterResult;
 import ui.PostLoginRepl;
 import ui.ServerFacade;
 
@@ -24,6 +25,8 @@ public class Main {
 
     }
 
+    public static String authToken = "";
+
     private static void help() {
         System.out.print("\tregister <USERNAME> <PASSWORD> <EMAIL> - to create an account \n");
         System.out.print("\tlogin <USERNAME> <PASSWORD> - to play chess \n");
@@ -41,7 +44,9 @@ public class Main {
         String password = p.replace(">", "");
 
         // call login from server facade
-        new ServerFacade("http://localhost:8080").login(username, password);
+        RegisterResult res = new ServerFacade("http://localhost:8080").login(username, password);
+        authToken = res.authToken();
+        PostLoginRepl.setAuth(authToken);
         // send to post-login repl
         new PostLoginRepl().run();
     }
@@ -57,7 +62,9 @@ public class Main {
         String e = in[3];
         String email = p.replace(">", "");
         // call register from server facade
-        new ServerFacade("http://localhost:8080").register(username, password, email);
+        RegisterResult res = new ServerFacade("http://localhost:8080").register(username, password, email);
+        authToken = res.authToken();
+        PostLoginRepl.setAuth(authToken);
         //send to post-login repl
         new PostLoginRepl().run();
     }
