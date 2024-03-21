@@ -16,6 +16,8 @@ public class PostLoginRepl {
                 help();
             } else if (line.startsWith("logout")){
                 logout();
+                //send back to pre-login (main)
+                break;
             } else if (line.startsWith("create")){
                 createGame(line);
             } else if (line.startsWith("join")){
@@ -45,8 +47,9 @@ public class PostLoginRepl {
     }
 
     private static void logout() {
+        String user = "username";
         // call logout from server facade
-        //send to pre-login repl
+        new ServerFacade("http://localhost:8080").logout(user);
     }
 
     private static void createGame(String input) {

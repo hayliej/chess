@@ -1,3 +1,5 @@
+package ui;
+
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -25,6 +27,12 @@ public class ServerFacade {
         var path = "/user";
         UserData regOb = new UserData(username, password, email);
         return makeRequest("POST", path, regOb, Object.class);
+    }
+
+    public Object logout(String username) {
+        var path = "/session";
+        String logOb = username;
+        return makeRequest("DELETE", path, logOb, Object.class);
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) {
