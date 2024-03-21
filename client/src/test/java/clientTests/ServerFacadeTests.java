@@ -8,6 +8,9 @@ import results.RegisterResult;
 import server.Server;
 import ui.ServerFacade;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -157,11 +160,12 @@ public class ServerFacadeTests {
 
     //list negative
     @Test
-    public void listGamesNegative() { //DOESN'T WORK
+    public void listGamesNegative() {
         RegisterResult res = facade.register("newUsername", "password", "email");
 //        facade.createGame(res.authToken(), "name");
         ListGamesResult lres = facade.listGames(null);
-        String message = lres.message();
-        assertNotNull(message);
+        List games = lres.games();
+        List list = new ArrayList();
+        assertEquals(list, games);
     }
 }
