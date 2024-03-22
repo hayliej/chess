@@ -82,7 +82,7 @@ public class ServerFacade {
             http.setRequestProperty("authorization", authToken);
             http.setDoOutput(true);
 
-            throwIfNotSuccessful(http);
+            //throwIfNotSuccessful(http);
 
             writeBody(request, http);
             http.connect();

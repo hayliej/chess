@@ -12,4 +12,3 @@ public class ResponseException extends Exception {
             return statusCode;
         }
     }
-}
