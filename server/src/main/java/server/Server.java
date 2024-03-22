@@ -103,7 +103,7 @@ public class Server {
     }
 
     private Object listGames(Request req, Response res) {
-        String auth = req.headers("authorization"); //should this be .headers() ??
+        String auth = req.headers("authorization");
         ListGamesResult response = null;
         try {
             response = gameService.listGames(auth);
