@@ -15,12 +15,16 @@ public class Main {
             printPrompt();
 
             line = scanner.nextLine();
-            if (line.startsWith("help")){
-                help();
-            } else if (line.startsWith("login")){
-                login(line);
-            } else if (line.startsWith("register")){
-                register(line);
+            try {
+                if (line.startsWith("help")) {
+                    help();
+                } else if (line.startsWith("login")) {
+                    login(line);
+                } else if (line.startsWith("register")) {
+                    register(line);
+                }
+            } catch (Exception e) {
+                System.out.print(e.getMessage());
             }
         }
 

@@ -83,10 +83,11 @@ public class ServerFacade {
             http.setRequestProperty("authorization", authToken);
             http.setDoOutput(true);
 
-            //throwIfNotSuccessful(http);
 
             writeBody(request, http);
             http.connect();
+            throwIfNotSuccessful(http);
+
             return readBody(http, responseClass);
         } catch (Exception ex) {
             throw new DataAccessException(ex.getMessage());

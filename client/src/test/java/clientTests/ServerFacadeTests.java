@@ -49,9 +49,7 @@ public class ServerFacadeTests {
     //login negative
     @Test
     public void loginNegative() throws DataAccessException {
-        RegisterResult res = facade.login(null, "password");
-        String message = res.message();
-        assertNotNull(message);
+        assertThrows(DataAccessException.class, () -> facade.login(null, "password"));
     }
 
 
@@ -66,9 +64,7 @@ public class ServerFacadeTests {
     //register negative
     @Test
     public void registerNegative() throws DataAccessException {
-        RegisterResult res = facade.register(null, "password", "email");
-        String message = res.message();
-        assertNotNull(message);
+        assertThrows(DataAccessException.class, () -> facade.register(null, "password", "email"));
     }
 
 
@@ -83,9 +79,7 @@ public class ServerFacadeTests {
     //logout negative
     @Test
     public void logoutNegative() throws DataAccessException {
-        LogoutResult lres = facade.logout(null);
-        String message = lres.message();
-        assertTrue(message.startsWith("Error"));
+        assertThrows(DataAccessException.class, () -> facade.logout(null));
     }
 
 
@@ -102,9 +96,7 @@ public class ServerFacadeTests {
     @Test
     public void createGameNegative() throws DataAccessException {
         facade.register("newUsername", "password", "email");
-        CreateGameResult cres = facade.createGame(null, null);
-        String message = cres.message();
-        assertNotNull(message);
+        assertThrows(DataAccessException.class, () -> facade.createGame(null, null));
     }
 
 
@@ -122,9 +114,7 @@ public class ServerFacadeTests {
     public void joinGameNegative() throws DataAccessException {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
-        LogoutResult jres = facade.joinGame(null, null, "WHITE");
-        String message = jres.message();
-        assertNotNull(message);
+        assertThrows(DataAccessException.class, () -> facade.joinGame(null, null, "WHITE"));
     }
 
 
@@ -142,9 +132,7 @@ public class ServerFacadeTests {
     public void observeGameNegative() throws DataAccessException {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
-        LogoutResult ores = facade.observeGame(null, null);
-        String message = ores.message();
-        assertNotNull(message);
+        assertThrows(DataAccessException.class, () -> facade.observeGame(null, null));
     }
 
 

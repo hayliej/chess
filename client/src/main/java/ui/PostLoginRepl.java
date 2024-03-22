@@ -13,20 +13,24 @@ public class PostLoginRepl {
             printPrompt();
 
             line = scanner.nextLine();
-            if (line.startsWith("help")){
-                help();
-            } else if (line.startsWith("logout")){
-                logout();
-                //send back to pre-login (main)
-                break;
-            } else if (line.startsWith("create")){
-                createGame(line);
-            } else if (line.startsWith("join")){
-                joinGame(line);
-            } else if (line.startsWith("observe")){
-                joinGameObserver(line);
-            } else if (line.startsWith("list")){
-                list();
+            try {
+                if (line.startsWith("help")) {
+                    help();
+                } else if (line.startsWith("logout")) {
+                    logout();
+                    //send back to pre-login (main)
+                    break;
+                } else if (line.startsWith("create")) {
+                    createGame(line);
+                } else if (line.startsWith("join")) {
+                    joinGame(line);
+                } else if (line.startsWith("observe")) {
+                    joinGameObserver(line);
+                } else if (line.startsWith("list")) {
+                    list();
+                }
+            } catch (Exception e) {
+                System.out.print(e.getMessage());
             }
 
         }
