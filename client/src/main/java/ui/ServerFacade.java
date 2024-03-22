@@ -21,7 +21,7 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-    String authToken;
+    static String authToken;
 
     public RegisterResult login(String username, String password) {
         var path = "/session";
@@ -82,6 +82,8 @@ public class ServerFacade {
             http.setRequestProperty("authorization", authToken);
             http.setDoOutput(true);
 
+            throwIfNotSuccessful(http);
+
             writeBody(request, http);
             http.connect();
             return readBody(http, responseClass);
@@ -123,5 +125,14 @@ public class ServerFacade {
         }
         return response;
     }
+    private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
+        var status = http.getResponseCode();
+        if (!isSuccessful(status)) {
+            throw new ResponseException(status, "failure: " + status);
+        }
+    }
 
+    private boolean isSuccessful(int status) {
+        return status / 100 == 2;
+    }
 }
