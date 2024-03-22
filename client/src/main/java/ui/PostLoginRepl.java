@@ -1,9 +1,10 @@
 package ui;
 
 import java.util.Scanner;
+import dataAccess.DataAccessException;
 
 public class PostLoginRepl {
-    public void run() throws ResponseException {
+    public void run() throws DataAccessException {
         System.out.println("You are logged in. Type help for options.");
 
         Scanner scanner = new Scanner(System.in);
@@ -47,20 +48,20 @@ public class PostLoginRepl {
         System.out.print("\thelp - with possible commands \n");
     }
 
-    private static void list() throws ResponseException {
+    private static void list() throws DataAccessException {
         String auth = authToken;
         // call logout from server facade
         System.out.print(new ServerFacade("http://localhost:8080").listGames(auth).games());
         System.out.println();
     }
 
-    private static void logout() throws ResponseException {
+    private static void logout() throws DataAccessException {
         String auth = authToken;
         // call logout from server facade
         new ServerFacade("http://localhost:8080").logout(auth);
     }
 
-    private static void createGame(String input) throws ResponseException {
+    private static void createGame(String input) throws DataAccessException {
         //parse input to get game name
         String[] in = input.split(" <");
         String g = in[1];
@@ -70,7 +71,7 @@ public class PostLoginRepl {
         //send to game repl (next phase)
     }
 
-    private static void joinGame(String input) throws ResponseException {
+    private static void joinGame(String input) throws DataAccessException {
         //parse out input to get ID and color
         String[] in = input.split(" <");
         String i = in[1];
@@ -82,7 +83,7 @@ public class PostLoginRepl {
         new ServerFacade("http://localhost:8080").joinGame(authToken, idNum, color);
     }
 
-    private static void joinGameObserver(String input) throws ResponseException {
+    private static void joinGameObserver(String input) throws DataAccessException {
         //parse out input to get ID and color
         String[] in = input.split(" <");
         String i = in[1];

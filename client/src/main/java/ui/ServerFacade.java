@@ -9,6 +9,7 @@ import results.CreateGameResult;
 import results.ListGamesResult;
 import results.LogoutResult;
 import results.RegisterResult;
+import dataAccess.DataAccessException;
 
 import java.io.*;
 import java.net.*;
@@ -23,7 +24,7 @@ public class ServerFacade {
 
     static String authToken;
 
-    public RegisterResult login(String username, String password) throws ResponseException {
+    public RegisterResult login(String username, String password) throws DataAccessException {
         var path = "/session";
         LoginRequest logOb = new LoginRequest(username, password);
         RegisterResult res = makeRequest("POST", path, logOb, RegisterResult.class);
@@ -31,7 +32,7 @@ public class ServerFacade {
         return res;
     }
 
-    public RegisterResult register(String username, String password, String email) throws ResponseException {
+    public RegisterResult register(String username, String password, String email) throws DataAccessException {
         var path = "/user";
         UserData regOb = new UserData(username, password, email);
         RegisterResult res = makeRequest("POST", path, regOb, RegisterResult.class);
@@ -39,42 +40,42 @@ public class ServerFacade {
         return res;
     }
 
-    public LogoutResult logout(String authT) throws ResponseException {
+    public LogoutResult logout(String authT) throws DataAccessException {
         var path = "/session";
         String auth = authT;
         return makeRequest("DELETE", path, null, LogoutResult.class);
     }
 
-    public CreateGameResult createGame(String auth, String gameName) throws ResponseException {
+    public CreateGameResult createGame(String auth, String gameName) throws DataAccessException {
         var path = "/game";
         GameData creOb = new GameData(null, null, null, gameName, null);
         return makeRequest("POST", path, creOb, CreateGameResult.class);
     }
 
-    public LogoutResult joinGame(String auth, Integer id, String color) throws ResponseException {
+    public LogoutResult joinGame(String auth, Integer id, String color) throws DataAccessException {
         var path = "/game";
         AuthJoinGame joiOb = new AuthJoinGame(null, color, id);
         return makeRequest("PUT", path, joiOb, LogoutResult.class);
     }
 
-    public LogoutResult observeGame(String auth, Integer id) throws ResponseException {
+    public LogoutResult observeGame(String auth, Integer id) throws DataAccessException {
         var path = "/game";
         AuthJoinGame joiOb = new AuthJoinGame(null, null, id);
         return makeRequest("PUT", path, joiOb, LogoutResult.class);
     }
 
-    public ListGamesResult listGames(String authT) throws ResponseException {
+    public ListGamesResult listGames(String authT) throws DataAccessException {
         var path = "/game";
         String auth = authT;
         return makeRequest("GET", path, null, ListGamesResult.class);
     }
 
-    public ListGamesResult clear() throws ResponseException {
+    public ListGamesResult clear() throws DataAccessException {
         var path = "/db";
         return makeRequest("DELETE", path, null, ListGamesResult.class);
     }
 
-    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
+    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws DataAccessException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -88,7 +89,7 @@ public class ServerFacade {
             http.connect();
             return readBody(http, responseClass);
         } catch (Exception ex) {
-            throw new ResponseException(500, ex.getMessage());
+            throw new DataAccessException(ex.getMessage());
         }
     }
 
@@ -125,10 +126,11 @@ public class ServerFacade {
         }
         return response;
     }
-    private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
+    
+    private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, DataAccessException {
         var status = http.getResponseCode();
         if (!isSuccessful(status)) {
-            throw new ResponseException(status, "failure: " + status);
+            throw new DataAccessException("failure: " + status);
         }
     }
 

@@ -1,12 +1,12 @@
 import results.RegisterResult;
 import ui.PostLoginRepl;
-import ui.ResponseException;
+import dataAccess.DataAccessException;
 import ui.ServerFacade;
 
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws ResponseException {
+    public static void main(String[] args) throws DataAccessException {
         System.out.println("Welcome to Chess! Type help to start.");
 
         Scanner scanner = new Scanner(System.in);
@@ -36,7 +36,7 @@ public class Main {
     }
 
     //login
-    private static void login(String input) throws ResponseException {
+    private static void login(String input) throws DataAccessException {
         //parse out input to get username and password
         String[] in = input.split(" <");
         String u = in[1];
@@ -53,7 +53,7 @@ public class Main {
     }
 
     //register
-    private static void register(String input) throws ResponseException {
+    private static void register(String input) throws DataAccessException {
         //parse input
         String[] in = input.split(" <");
         String u = in[1];

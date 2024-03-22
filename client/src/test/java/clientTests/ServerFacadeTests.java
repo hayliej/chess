@@ -6,9 +6,8 @@ import results.ListGamesResult;
 import results.LogoutResult;
 import results.RegisterResult;
 import server.Server;
-import ui.ResponseException;
+import dataAccess.DataAccessException;
 import ui.ServerFacade;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class ServerFacadeTests {
     }
 
     @BeforeEach
-    public void clear() throws ResponseException {
+    public void clear() throws DataAccessException {
         facade.clear();
     }
 
@@ -41,7 +40,7 @@ public class ServerFacadeTests {
 
     //login positive
     @Test
-    public void loginPositive() throws ResponseException {
+    public void loginPositive() throws DataAccessException {
         facade.register("username", "password", "email");
         RegisterResult res = facade.login("username", "password");
         String user = res.username();
@@ -49,7 +48,7 @@ public class ServerFacadeTests {
     }
     //login negative
     @Test
-    public void loginNegative() throws ResponseException {
+    public void loginNegative() throws DataAccessException {
         RegisterResult res = facade.login(null, "password");
         String message = res.message();
         assertNotNull(message);
@@ -58,7 +57,7 @@ public class ServerFacadeTests {
 
     //register positive
     @Test
-    public void registerPositive() throws ResponseException {
+    public void registerPositive() throws DataAccessException {
         RegisterResult res = facade.register("newUsername", "password", "email");
         String user = res.username();
         assertEquals("newUsername", user);
@@ -66,7 +65,7 @@ public class ServerFacadeTests {
 
     //register negative
     @Test
-    public void registerNegative() throws ResponseException {
+    public void registerNegative() throws DataAccessException {
         RegisterResult res = facade.register(null, "password", "email");
         String message = res.message();
         assertNotNull(message);
@@ -75,7 +74,7 @@ public class ServerFacadeTests {
 
     //logout positive
     @Test
-    public void logoutPositive() throws ResponseException {
+    public void logoutPositive() throws DataAccessException {
         RegisterResult res = facade.register("newUsername", "password", "email");
         LogoutResult lres = facade.logout(res.authToken());
         String message = lres.message();
@@ -83,7 +82,7 @@ public class ServerFacadeTests {
     }
     //logout negative
     @Test
-    public void logoutNegative() throws ResponseException {
+    public void logoutNegative() throws DataAccessException {
         LogoutResult lres = facade.logout(null);
         String message = lres.message();
         assertTrue(message.startsWith("Error"));
@@ -92,7 +91,7 @@ public class ServerFacadeTests {
 
     //createGame positive
     @Test
-    public void createGamePositive() throws ResponseException {
+    public void createGamePositive() throws DataAccessException {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
         String message = cres.message();
@@ -101,7 +100,7 @@ public class ServerFacadeTests {
 
     //createGame negative
     @Test
-    public void createGameNegative() throws ResponseException {
+    public void createGameNegative() throws DataAccessException {
         facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(null, null);
         String message = cres.message();
@@ -111,7 +110,7 @@ public class ServerFacadeTests {
 
     //joinGame positive
     @Test
-    public void joinGamePositive() throws ResponseException {
+    public void joinGamePositive() throws DataAccessException {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
         LogoutResult jres = facade.joinGame(res.authToken(), cres.gameID(), "WHITE");
@@ -120,7 +119,7 @@ public class ServerFacadeTests {
     }
     //joinGame negative
     @Test
-    public void joinGameNegative() throws ResponseException {
+    public void joinGameNegative() throws DataAccessException {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
         LogoutResult jres = facade.joinGame(null, null, "WHITE");
@@ -131,7 +130,7 @@ public class ServerFacadeTests {
 
     //observeGame positive
     @Test
-    public void observeGamePositive() throws ResponseException {
+    public void observeGamePositive() throws DataAccessException {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
         LogoutResult ores = facade.observeGame(res.authToken(), cres.gameID());
@@ -140,7 +139,7 @@ public class ServerFacadeTests {
     }
     //observeGame negative
     @Test
-    public void observeGameNegative() throws ResponseException {
+    public void observeGameNegative() throws DataAccessException {
         RegisterResult res = facade.register("newUsername", "password", "email");
         CreateGameResult cres = facade.createGame(res.authToken(), "name");
         LogoutResult ores = facade.observeGame(null, null);
@@ -151,7 +150,7 @@ public class ServerFacadeTests {
 
     //list positive
     @Test
-    public void listGamesPositive() throws ResponseException {
+    public void listGamesPositive() throws DataAccessException {
         RegisterResult res = facade.register("newUsername", "password", "email");
         facade.createGame(res.authToken(), "name");
         ListGamesResult lres = facade.listGames(res.authToken());
@@ -161,7 +160,7 @@ public class ServerFacadeTests {
 
     //list negative
     @Test
-    public void listGamesNegative() throws ResponseException {
+    public void listGamesNegative() throws DataAccessException {
         facade.register("newUsername", "password", "email");
         ListGamesResult lres = facade.listGames(null);
         List games = lres.games();
