@@ -45,7 +45,7 @@ public class PostLoginRepl {
     private static void help() {
         System.out.print("\tcreate <NAME> - a game \n");
         System.out.print("\tlist - games \n");
-        System.out.print("\tjoin <ID> [<WHITE>|<BLACK>|<empty>] - a game \n");
+        System.out.print("\tjoin <ID no decimal> [<WHITE>|<BLACK>|<empty>] - a game \n");
         System.out.print("\tobserve <ID> - a game \n");
         System.out.print("\tlogout - when you are done \n");
         System.out.print("\tquit - playing chess \n");
@@ -85,6 +85,7 @@ public class PostLoginRepl {
         String color = c.replace(">", "");
         // call join game from server facade
         new ServerFacade("http://localhost:8080").joinGame(authToken, idNum, color);
+        DrawChessBoard.main(null);
     }
 
     private static void joinGameObserver(String input) throws DataAccessException {
@@ -95,6 +96,7 @@ public class PostLoginRepl {
         Integer idNum = Integer.valueOf(id);
         // call join game observer from server facade
         new ServerFacade("http://localhost:8080").observeGame(authToken, idNum);
+        DrawChessBoard.main(null);
     }
 
     private static void printPrompt() {
