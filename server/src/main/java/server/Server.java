@@ -9,6 +9,8 @@ import results.RegisterResult;
 import service.*;
 import spark.*;
 import requests.*;
+import org.eclipse.jetty.websocket.api.annotations.*;
+import org.eclipse.jetty.websocket.api.*;
 
 public class Server {
     private static UserService userService = new UserService();
@@ -18,6 +20,7 @@ public class Server {
     public int run(int desiredPort) {
         Spark.port(desiredPort);
         Spark.staticFiles.location("web");
+        Spark.webSocket("/connect", Server.class);
 
         // Register your endpoints and handle exceptions here.
         Spark.delete("/db", this::clear);
