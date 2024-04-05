@@ -3,12 +3,11 @@ import javax.websocket.*;
 import java.net.URI;
 import java.util.Scanner;
 
-public class WebSocketFacade {
+public class WebSocketFacade extends Endpoint {
     public static void main(String[] args) throws Exception {
         var ws = new WebSocketFacade();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("echo");
         while (true) ws.send(scanner.nextLine());
     }
 
@@ -21,6 +20,8 @@ public class WebSocketFacade {
 
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
             public void onMessage(String message) {
+                //figure out type
+                //send to game ui maybe to handle
                 System.out.println(message);
             }
         });
@@ -33,16 +34,4 @@ public class WebSocketFacade {
     public void onOpen(Session session, EndpointConfig endpointConfig) {
         //???
     }
-
-    //USER GAME COMMANDS:
-    //joinPlayer
-    //join Observer
-    //makeMove
-    //leave
-    //resign
-
-    //SERVER MESSAGES:
-    //error
-    //loadGame
-    //notification
 }

@@ -20,7 +20,7 @@ public class Server {
     public int run(int desiredPort) {
         Spark.port(desiredPort);
         Spark.staticFiles.location("web");
-        Spark.webSocket("/connect", Server.class);
+        Spark.webSocket("/connect", WSServer.class);
 
         // Register your endpoints and handle exceptions here.
         Spark.delete("/db", this::clear);

@@ -85,7 +85,9 @@ public class PostLoginRepl {
         String color = c.replace(">", "");
         // call join game from server facade
         new ServerFacade("http://localhost:8080").joinGame(authToken, idNum, color);
-        DrawChessBoard.main(null);
+        DrawChessBoard.main(null);//get rd of this
+        //new.WebSocketS+Facade.joinPlayer();
+        new GameRepl().run();
     }
 
     private static void joinGameObserver(String input) throws DataAccessException {
