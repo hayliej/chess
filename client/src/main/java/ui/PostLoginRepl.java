@@ -86,7 +86,7 @@ public class PostLoginRepl {
         // call join game from server facade
         new ServerFacade("http://localhost:8080").joinGame(authToken, idNum, color);
         DrawChessBoard.main(null);//get rd of this
-        //new.WebSocketS+Facade.joinPlayer();
+        //new.WebSocketFacade.joinPlayer();
         new GameRepl().run();
     }
 
@@ -98,7 +98,9 @@ public class PostLoginRepl {
         Integer idNum = Integer.valueOf(id);
         // call join game observer from server facade
         new ServerFacade("http://localhost:8080").observeGame(authToken, idNum);
-        DrawChessBoard.main(null);
+        DrawChessBoard.main(null);//get rd of this
+        //new.WebSocketFacade.joinPlayer();
+        new GameRepl().run();
     }
 
     private static void printPrompt() {
