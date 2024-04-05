@@ -1,4 +1,5 @@
 package ui;
+import webSocketMessages.serverMessages.*;
 import javax.websocket.*;
 import java.net.URI;
 import java.util.Scanner;
@@ -21,6 +22,9 @@ public class WebSocketFacade extends Endpoint {
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
             public void onMessage(String message) {
                 //figure out type
+//                ServerMessage msg = new ServerMessage(message); // needs type, but don't know type :/ ugh
+//                if (msg.getServerMessageType().equals(LOAD_GAME)){
+//                }
                 //send to game ui maybe to handle
                 System.out.println(message);
             }
