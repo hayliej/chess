@@ -1,4 +1,5 @@
 import results.RegisterResult;
+import ui.GameRepl;
 import ui.PostLoginRepl;
 import dataAccess.DataAccessException;
 import ui.ServerFacade;
@@ -52,6 +53,7 @@ public class Main {
         RegisterResult res = new ServerFacade("http://localhost:8080").login(username, password);
         authToken = res.authToken();
         PostLoginRepl.setAuth(authToken);
+        GameRepl.setAuth(authToken);
         // send to post-login repl
         new PostLoginRepl().run();
     }
@@ -70,6 +72,7 @@ public class Main {
         RegisterResult res = new ServerFacade("http://localhost:8080").register(username, password, email);
         authToken = res.authToken();
         PostLoginRepl.setAuth(authToken);
+        GameRepl.setAuth(authToken);
         //send to post-login repl
         new PostLoginRepl().run();
     }

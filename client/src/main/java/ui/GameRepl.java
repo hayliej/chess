@@ -1,7 +1,10 @@
 package ui;
 
+import chess.ChessMove;
 import dataAccess.DataAccessException;
 import server.WSServer;
+import webSocketMessages.userCommands.MakeMove;
+import webSocketMessages.userCommands.UserGameCommand;
 
 import java.util.Scanner;
 
@@ -38,11 +41,15 @@ public class GameRepl {
         System.out.println();
     }
 
+    static String authToken = "";
+    public static void setAuth(String auth){
+        authToken = auth;
+    }
 
     private static void help() {
         System.out.print("\tredraw - chessboard \n");
         System.out.print("\tleave - the game \n");
-        System.out.print("\tmove - a piece \n");
+        System.out.print("\tmove <gameID no decimal> <start position> <end position> <PIECE TYPE>- a piece \n");
         System.out.print("\tresign - forfeit the game \n");
         System.out.print("\thighlight - legal moves \n");
         System.out.print("\thelp - with possible commands \n");
@@ -54,11 +61,17 @@ public class GameRepl {
         String[] in = input.split(" <");
         String g = in[1];
         String gID = g.replace(">", "");
-        Integer idNum = Integer.valueOf(gID);
-        String m = in[2];
-        String move = m.replace(">", "");
-        // call join game from server facade
-        //new WSServer(idNum, move);
+        Integer gIDNum = Integer.valueOf(gID);
+        String s = in[2];
+        String start = s.replace(">", "");
+        String e = in[2];
+        String end = e.replace(">", "");
+        String pt = in[2];
+        String pieceType = pt.replace(">", "");
+        ChessMove cm = new ChessMove(start, end, pieceType);
+        UserGameCommand ugc = new MakeMove(authToken, gIDNum, cm);
+        //need to make into gson for server?
+        new WSServer(session, ugc);
     }
 
     private static void leave() {
