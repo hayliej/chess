@@ -72,7 +72,7 @@ public class PostLoginRepl {
         String gameName = g.replace(">", "");
         // call create game from server facade
         new ServerFacade("http://localhost:8080").createGame(authToken, gameName);
-        //send to game repl (next phase)
+        //send to game repl (next phase) ??
     }
 
     private static void joinGame(String input) throws DataAccessException {
@@ -85,7 +85,7 @@ public class PostLoginRepl {
         String color = c.replace(">", "");
         // call join game from server facade
         new ServerFacade("http://localhost:8080").joinGame(authToken, idNum, color);
-        DrawChessBoard.main(null);//get rd of this
+        DrawChessBoard.main(null);//get rid of this once ws implemented
         //new.WebSocketFacade.joinPlayer();
         new GameRepl().run();
     }
@@ -98,7 +98,7 @@ public class PostLoginRepl {
         Integer idNum = Integer.valueOf(id);
         // call join game observer from server facade
         new ServerFacade("http://localhost:8080").observeGame(authToken, idNum);
-        DrawChessBoard.main(null);//get rd of this
+        DrawChessBoard.main(null);//get rid of this once ws implemented
         //new.WebSocketFacade.joinPlayer();
         new GameRepl().run();
     }
