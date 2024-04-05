@@ -34,4 +34,15 @@ public class WebSocketFacade {
         //???
     }
 
+    //USER GAME COMMANDS:
+    //joinPlayer
+    //join Observer
+    //makeMove
+    //leave
+    //resign
+
+    //SERVER MESSAGES:
+    //error
+    //loadGame
+    //notification
 }
