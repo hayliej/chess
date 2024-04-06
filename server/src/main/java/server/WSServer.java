@@ -20,13 +20,12 @@ public class WSServer {
         UserGameCommand msg = new Gson().fromJson(message, UserGameCommand.class);
         if (msg.getCommandType().equals(UserGameCommand.CommandType.JOIN_OBSERVER)){
             JoinObserver joinO = new Gson().fromJson(message, JoinObserver.class);
+            sessions.put(joinO.getAuthString(),session);
+            games.put(joinO.getID(), new ArrayList<>()); //fix adding auth
 
             //function pass in joinO
-            sessions.put(joinO.getAuthString(),session);
-
-            //send loadgame object to the observer that joined
-            games.put(joinO.getID(), new ArrayList<>()); //fix adding auth
-            //for auth in games loop through all except player that joined and send join notification
+                //send loadgame object to the observer that joined
+                //for auth in games loop through all except player that joined and send join notification
         } else if (msg.getCommandType().equals(UserGameCommand.CommandType.JOIN_PLAYER)) {
             //do stuff
         } else if (msg.getCommandType().equals(UserGameCommand.CommandType.MAKE_MOVE)) {
@@ -46,5 +45,25 @@ public class WSServer {
 
         System.out.printf("Received: %s", message);
         session.getRemote().sendString("WebSocket response: " + message); //this sends notifications
+    }
+
+    public void joinObserver(){
+        //do stuff
+    }
+
+    public void joinPlayer(){
+        //do stuff
+    }
+
+    public void makeMove(){
+        //do stuff
+    }
+
+    public void leave(){
+        //do stuff
+    }
+
+    public void resign(){
+        //do stuff
     }
 }
