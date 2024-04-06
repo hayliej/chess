@@ -27,6 +27,14 @@ public class WSServer {
             //send loadgame object to the observer that joined
             games.put(joinO.getID(), new ArrayList<>()); //fix adding auth
             //for auth in games loop through all except player that joined and send join notification
+        } else if (msg.getCommandType().equals(UserGameCommand.CommandType.JOIN_PLAYER)) {
+            //do stuff
+        } else if (msg.getCommandType().equals(UserGameCommand.CommandType.MAKE_MOVE)) {
+            //do stuff
+        } else if (msg.getCommandType().equals(UserGameCommand.CommandType.LEAVE)) {
+            //do stuff
+        } else if (msg.getCommandType().equals(UserGameCommand.CommandType.RESIGN)) {
+            //do stuff
         }
         //each of these test the type using ugc
         //then they turn that into the correct type
