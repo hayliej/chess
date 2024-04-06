@@ -40,6 +40,7 @@ public class WSServer {
         //then they turn that into the correct type
         //add their data to the appropriate map
         //call function that I'll make outside this method that will send the right thing (LG, E, N) to WSFacade
+        //function will send correct messages for each player depending on what's specified for each action
             //deal with facade stuff later, (WebSocketTests just tests this file's functionality, use it!)
             //deal with repl later too
 

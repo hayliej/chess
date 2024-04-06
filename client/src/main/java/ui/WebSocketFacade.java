@@ -25,7 +25,7 @@ public class WebSocketFacade extends Endpoint {
 //                ServerMessage msg = new ServerMessage(message); // needs type, but don't know type :/ ugh
 //                if (msg.getServerMessageType().equals(LOAD_GAME)){
 //                }
-                //send to game ui maybe to handle
+                //send to game ui (if needed) to handle
                 System.out.println(message);
             }
         });
