@@ -56,22 +56,22 @@ public class GameRepl {
     }
 
     //SEND THE MESSAGES FROM HERE. THIS IS WHERE THE TYPE COMES FROM.
-    private static void makeMove(String input) {
+    private static void makeMove(String input) { //fix this later
         //parse out input to get ID and color
-        String[] in = input.split(" <");
-        String g = in[1];
-        String gID = g.replace(">", "");
-        Integer gIDNum = Integer.valueOf(gID);
-        String s = in[2];
-        String start = s.replace(">", "");
-        String e = in[2];
-        String end = e.replace(">", "");
-        String pt = in[2];
-        String pieceType = pt.replace(">", "");
-        ChessMove cm = new ChessMove(start, end, pieceType);
-        UserGameCommand ugc = new MakeMove(authToken, gIDNum, cm);
-        //need to make into gson for server?
-        new WSServer(session, ugc);
+//        String[] in = input.split(" <");
+//        String g = in[1];
+//        String gID = g.replace(">", "");
+//        Integer gIDNum = Integer.valueOf(gID);
+//        String s = in[2];
+//        String start = s.replace(">", "");
+//        String e = in[2];
+//        String end = e.replace(">", "");
+//        String pt = in[2];
+//        String pieceType = pt.replace(">", "");
+//        ChessMove cm = new ChessMove(start, end, pieceType);
+//        UserGameCommand ugc = new MakeMove(authToken, gIDNum, cm);
+//        //need to make into gson for server?
+//        new WSServer(session, ugc);
     }
 
     private static void leave() {
