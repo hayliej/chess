@@ -35,11 +35,12 @@ public class WSServer {
             joinPlayer(joinP);
         } else if (msg.getCommandType().equals(UserGameCommand.CommandType.MAKE_MOVE)) {
             MakeMove makeM = new Gson().fromJson(message, MakeMove.class);
-
             //do stuff
         } else if (msg.getCommandType().equals(UserGameCommand.CommandType.LEAVE)) {
+            Leave leave = new Gson().fromJson(message, Leave.class);
             //do stuff
         } else if (msg.getCommandType().equals(UserGameCommand.CommandType.RESIGN)) {
+            Resign resign = new Gson().fromJson(message, Resign.class);
             //do stuff
         }
         //each of these test the type using ugc
