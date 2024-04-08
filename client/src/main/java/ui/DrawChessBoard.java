@@ -30,20 +30,21 @@ public class DrawChessBoard {
         return this.board;
     }
 
-    public static void main(String[] args, String color) {
+    public void main(String color) {
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
         out.print(ERASE_SCREEN);
-
-        drawHeaders(out, "black");
-        drawChessBoard(out, "black", getBoard());
-        drawHeaders(out, "black");
+        if (color.equals("black")) {
+            drawHeaders(out, "black");
+            drawChessBoard(out, "black", getBoard());
+            drawHeaders(out, "black");
+        } else if (color.equals("white")){
+            drawHeaders(out, "white");
+            drawChessBoard(out, "white", getBoard());
+            drawHeaders(out, "white");
+        }
 
         out.println();
-
-        drawHeaders(out, "white");
-        drawChessBoard(out, "white", getBoard());
-        drawHeaders(out, "white");
 
         out.print(SET_BG_COLOR_BLACK);
         out.print(SET_TEXT_COLOR_WHITE);
