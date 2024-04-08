@@ -46,13 +46,16 @@ public class WSServer {
     public void onMessage(Session session, String message) throws Exception {
         //user game commands
         UserGameCommand msg = new Gson().fromJson(message, UserGameCommand.class);
+        //for each of these, test the type using ugc
+            //then they turn that into the correct type
+            //add their data to the appropriate map
         if (msg.getCommandType().equals(UserGameCommand.CommandType.JOIN_OBSERVER)){
             JoinObserver joinO = new Gson().fromJson(message, JoinObserver.class);
             sessions.put(joinO.getAuthString(),session);
             if (games.containsKey(joinO.getID())){
                 games.get(joinO.getID()).add(joinO.getAuthString());
             } else {
-                games.put(joinO.getID(), new ArrayList<>());
+                games.put(joinO.getID(), gamePeople);
                 games.get(joinO.getID()).add(joinO.getAuthString());
             }
 
@@ -64,7 +67,7 @@ public class WSServer {
             if (games.containsKey(joinP.getID())){
                 games.get(joinP.getID()).add(joinP.getAuthString());
             } else {
-                games.put(joinP.getID(), new ArrayList<>());
+                games.put(joinP.getID(), gamePeople);
                 games.get(joinP.getID()).add(joinP.getAuthString());
             }
 
@@ -85,9 +88,7 @@ public class WSServer {
             //do stuff
             resign(resign, session);
         }
-        //each of these test the type using ugc
-        //then they turn that into the correct type
-        //add their data to the appropriate map
+
         //call function that I'll make outside this method that will send the right thing (LG, E, N) to WSFacade
         //function will send correct messages for each player depending on what's specified for each action
             //deal with facade stuff later, (WebSocketTests just tests this file's functionality, use it!)
@@ -98,19 +99,32 @@ public class WSServer {
 
 
     public void joinObserver(JoinObserver jo, Session session) throws IOException, DataAccessException {
-        //send LoadGame to root client
-        GameData game = gDataAccess.returnGames().get(jo.getID());
-        LoadGame lgame = new LoadGame(game.game());
-        String lg = new Gson().toJson(lgame);
-        session.getRemote().sendString(lg);
+        if (!aDataAccess.returnAuths().containsKey(jo.getAuthString())){
+            Error er = new Error("Invalid Auth Token");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+        }
+        else if (!gDataAccess.returnGames().containsKey(jo.getID())){
+            Error er = new Error("Game Does Not Exist");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+        }
+        else {
 
-        //send notification to others
-        ArrayList<String> people = games.get(jo.getID());
-        String user = getUsername(jo.getAuthString());
-        for (String person : people){
-            if (!person.equals(jo.getAuthString())) {
-                String sm = new Gson().toJson(new Notification(user + " has joined as an observer"));
-                sessions.get(person).getRemote().sendString(sm);
+            //send LoadGame to root client
+            GameData game = gDataAccess.returnGames().get(jo.getID());
+            LoadGame lgame = new LoadGame(game.game());
+            String lg = new Gson().toJson(lgame);
+            session.getRemote().sendString(lg);
+
+            //send notification to others
+            ArrayList<String> people = games.get(jo.getID());
+            String user = getUsername(jo.getAuthString());
+            for (String person : people) {
+                if (!person.equals(jo.getAuthString())) {
+                    String sm = new Gson().toJson(new Notification(user + " has joined as an observer"));
+                    sessions.get(person).getRemote().sendString(sm);
+                }
             }
         }
     }
@@ -153,6 +167,8 @@ public class WSServer {
                 sessions.get(person).getRemote().sendString(sm);
             }
         }
+        //notify if anyone in check
+        //or check mate
     }
 
     public void leave(Leave leave, Session session) throws IOException, DataAccessException {
