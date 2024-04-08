@@ -6,4 +6,8 @@ public class Leave extends UserGameCommand{
         super(authToken);
         this.gameID = gID;
     }
+
+    public Integer getID(){
+        return this.gameID;
+    }
 }

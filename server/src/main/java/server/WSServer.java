@@ -24,11 +24,18 @@ public class WSServer {
             games.put(joinO.getID(), new ArrayList<>()); //fix adding auth
 
             //function pass in joinO
+            joinObserver(joinO);
                 //send loadgame object to the observer that joined
-                //for auth in games loop through all except player that joined and send join notification
+                //for auth in games loop through all except observer that joined and send join notification
         } else if (msg.getCommandType().equals(UserGameCommand.CommandType.JOIN_PLAYER)) {
+            JoinPlayer joinP = new Gson().fromJson(message, JoinPlayer.class);
+            sessions.put(joinP.getAuthString(), session);
+            games.put(joinP.getID(), new ArrayList<>());
             //do stuff
+            joinPlayer(joinP);
         } else if (msg.getCommandType().equals(UserGameCommand.CommandType.MAKE_MOVE)) {
+            MakeMove makeM = new Gson().fromJson(message, MakeMove.class);
+
             //do stuff
         } else if (msg.getCommandType().equals(UserGameCommand.CommandType.LEAVE)) {
             //do stuff
@@ -47,11 +54,11 @@ public class WSServer {
         session.getRemote().sendString("WebSocket response: " + message); //this sends notifications
     }
 
-    public void joinObserver(){
+    public void joinObserver(JoinObserver jo){
         //do stuff
     }
 
-    public void joinPlayer(){
+    public void joinPlayer(JoinPlayer jp){
         //do stuff
     }
 
