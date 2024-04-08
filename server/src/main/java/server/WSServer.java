@@ -104,6 +104,7 @@ public class WSServer {
         String lg = new Gson().toJson(lgame);
         session.getRemote().sendString(lg);
 
+        //send notification to others
         ArrayList<String> people = games.get(jo.getID());
         String user = getUsername(jo.getAuthString());
         for (String person : people){
@@ -121,6 +122,7 @@ public class WSServer {
         String lg = new Gson().toJson(lgame);
         session.getRemote().sendString(lg);
 
+        //send notification to all others
         ArrayList<String> people = games.get(jp.getID());
         String user = getUsername(jp.getAuthString());
         for (String person : people){
@@ -135,13 +137,20 @@ public class WSServer {
         //validate move
         //update game to represent move
         //update game in DB
-        //send LoadGame to everyone
+
         ArrayList<String> people = games.get(move.getID());
         String user = getUsername(move.getAuthString());
         for (String person : people){
-            //send LoadGame
+            //send LoadGame to everyone
+            GameData game = gDataAccess.returnGames().get(move.getID());
+            LoadGame lgame = new LoadGame(game.game());
+            String lg = new Gson().toJson(lgame);
+            session.getRemote().sendString(lg);
+
+            //send notification to others
             if (!person.equals(move.getAuthString())) {
-                sessions.get(person).getRemote().sendString("WebSocket response: " + user + " has moved: " + move.getMove().toString());
+                String sm = new Gson().toJson(new Notification(user + " has moved: " + move.getMove().toString()));
+                sessions.get(person).getRemote().sendString(sm);
             }
         }
     }
@@ -149,11 +158,14 @@ public class WSServer {
     public void leave(Leave leave, Session session) throws IOException, DataAccessException {
         //remove root client
         //update game in DB
+
+        //send notification to everyone
         ArrayList<String> people = games.get(leave.getID());
         String user = getUsername(leave.getAuthString());
         for (String person : people){
             if (!person.equals(leave.getAuthString())) {
-                sessions.get(person).getRemote().sendString("WebSocket response: " + user + " has left the game");
+                String sm = new Gson().toJson(new Notification(user + " has left the game"));
+                sessions.get(person).getRemote().sendString(sm);
             }
         }
     }
@@ -161,11 +173,14 @@ public class WSServer {
     public void resign(Resign resign, Session session) throws IOException, DataAccessException {
         //mark game as over -- no more moves can be made
         //update game in DB
+
+        //send ze notification
         ArrayList<String> people = games.get(resign.getID());
         String user = getUsername(resign.getAuthString());
         for (String person : people){
             if (!person.equals(resign.getAuthString())) {
-                sessions.get(person).getRemote().sendString("WebSocket response: " + user + " has resigned");
+                String sm = new Gson().toJson(new Notification(user + " has resigned"));
+                sessions.get(person).getRemote().sendString(sm);
             }
         }
     }
