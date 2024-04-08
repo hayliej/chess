@@ -5,6 +5,7 @@ import org.eclipse.jetty.websocket.api.*;
 import spark.Spark;
 import webSocketMessages.userCommands.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,6 +13,8 @@ import java.util.HashMap;
 public class WSServer {
     HashMap<String, Session> sessions = new HashMap<>();
     HashMap<Integer, ArrayList<String>> games = new HashMap<>();
+    ArrayList<String> gamePeople = new ArrayList<>();
+
 
 
     @OnWebSocketMessage
@@ -21,25 +24,36 @@ public class WSServer {
         if (msg.getCommandType().equals(UserGameCommand.CommandType.JOIN_OBSERVER)){
             JoinObserver joinO = new Gson().fromJson(message, JoinObserver.class);
             sessions.put(joinO.getAuthString(),session);
-            games.put(joinO.getID(), new ArrayList<>()); //fix adding auth
+            if (games.containsKey(joinO.getID())){
+                games.get(joinO.getID()).add(joinO.getAuthString());
+            } else {
+                games.put(joinO.getID(), new ArrayList<>());
+                games.get(joinO.getID()).add(joinO.getAuthString());
+            }
 
-            //function pass in joinO
-            joinObserver(joinO);
-                //send loadgame object to the observer that joined
-                //for auth in games loop through all except observer that joined and send join notification
-        } else if (msg.getCommandType().equals(UserGameCommand.CommandType.JOIN_PLAYER)) {
+            joinObserver(joinO, session);
+        }
+        else if (msg.getCommandType().equals(UserGameCommand.CommandType.JOIN_PLAYER)) {
             JoinPlayer joinP = new Gson().fromJson(message, JoinPlayer.class);
             sessions.put(joinP.getAuthString(), session);
-            games.put(joinP.getID(), new ArrayList<>());
-            //do stuff
-            joinPlayer(joinP);
-        } else if (msg.getCommandType().equals(UserGameCommand.CommandType.MAKE_MOVE)) {
+            if (games.containsKey(joinP.getID())){
+                games.get(joinP.getID()).add(joinP.getAuthString());
+            } else {
+                games.put(joinP.getID(), new ArrayList<>());
+                games.get(joinP.getID()).add(joinP.getAuthString());
+            }
+
+            joinPlayer(joinP, session);
+        }
+        else if (msg.getCommandType().equals(UserGameCommand.CommandType.MAKE_MOVE)) {
             MakeMove makeM = new Gson().fromJson(message, MakeMove.class);
             //do stuff
-        } else if (msg.getCommandType().equals(UserGameCommand.CommandType.LEAVE)) {
+        }
+        else if (msg.getCommandType().equals(UserGameCommand.CommandType.LEAVE)) {
             Leave leave = new Gson().fromJson(message, Leave.class);
             //do stuff
-        } else if (msg.getCommandType().equals(UserGameCommand.CommandType.RESIGN)) {
+        }
+        else if (msg.getCommandType().equals(UserGameCommand.CommandType.RESIGN)) {
             Resign resign = new Gson().fromJson(message, Resign.class);
             //do stuff
         }
@@ -55,13 +69,28 @@ public class WSServer {
         session.getRemote().sendString("WebSocket response: " + message); //this sends notifications
     }
 
-    public void joinObserver(JoinObserver jo){
-        //do stuff
+    //send loadgame object to the observer that joined
+    //for auth in games loop through all except observer that joined and send join notification
+    public void joinObserver(JoinObserver jo, Session session) throws IOException {
+        //send LoadGame to root client
+        ArrayList<String> people = games.get(jo.getID());
+        for (String person : people){
+            if (!person.equals(jo.getAuthString())) {
+                session.getRemote().sendString("WebSocket response: " + "username" + " has joined as an observer");
+                //GET ACTUAL USERNAME FROM DB^^^
+            }
+        }
     }
 
-    public void joinPlayer(JoinPlayer jp){
-        //do stuff
-    }
+    public void joinPlayer(JoinPlayer jp, Session session) throws IOException {
+//send LoadGame to root client
+        ArrayList<String> people = games.get(jp.getID());
+        for (String person : people){
+            if (!person.equals(jp.getAuthString())) {
+                session.getRemote().sendString("WebSocket response: " + "username" + " has joined as " + jp.getColor());
+                //GET ACTUAL USERNAME FROM DB^^^
+            }
+        }    }
 
     public void makeMove(){
         //do stuff
