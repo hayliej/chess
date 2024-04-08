@@ -1,10 +1,16 @@
 package server;
 import chess.ChessMove;
 import com.google.gson.Gson;
+import dataAccess.*;
 import org.eclipse.jetty.websocket.api.annotations.*;
 import org.eclipse.jetty.websocket.api.*;
+import service.GameService;
 import spark.Spark;
+import webSocketMessages.serverMessages.LoadGame;
+import webSocketMessages.serverMessages.Notification;
+import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.*;
+import requests.GameData;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +21,25 @@ public class WSServer {
     HashMap<String, Session> sessions = new HashMap<>();
     HashMap<Integer, ArrayList<String>> games = new HashMap<>();
     ArrayList<String> gamePeople = new ArrayList<>();
+    private static AuthDAO aDataAccess;
 
+    static {
+        try {
+            aDataAccess = new SqlAuthDAO();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static GameDAO gDataAccess;
+
+    static {
+        try {
+            gDataAccess = new SqlGameDAO();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     @OnWebSocketMessage
@@ -69,34 +93,45 @@ public class WSServer {
             //deal with facade stuff later, (WebSocketTests just tests this file's functionality, use it!)
             //deal with repl later too
 
-        System.out.printf("Received: %s", message);
-        session.getRemote().sendString("WebSocket response: " + message); //this sends notifications
+//        System.out.printf("Received: %s", message);
     }
 
 
-    public void joinObserver(JoinObserver jo, Session session) throws IOException {
+    public void joinObserver(JoinObserver jo, Session session) throws IOException, DataAccessException {
         //send LoadGame to root client
+        GameData game = gDataAccess.returnGames().get(jo.getID());
+        LoadGame lgame = new LoadGame(game.game());
+        String lg = new Gson().toJson(lgame);
+        session.getRemote().sendString(lg);
+
         ArrayList<String> people = games.get(jo.getID());
         String user = getUsername(jo.getAuthString());
         for (String person : people){
             if (!person.equals(jo.getAuthString())) {
-                session.getRemote().sendString("WebSocket response: " + user + " has joined as an observer");
+                String sm = new Gson().toJson(new Notification(user + " has joined as an observer"));
+                sessions.get(person).getRemote().sendString(sm);
             }
         }
     }
 
-    public void joinPlayer(JoinPlayer jp, Session session) throws IOException {
+    public void joinPlayer(JoinPlayer jp, Session session) throws IOException, DataAccessException {
         //send LoadGame to root client
+        GameData game = gDataAccess.returnGames().get(jp.getID());
+        LoadGame lgame = new LoadGame(game.game());
+        String lg = new Gson().toJson(lgame);
+        session.getRemote().sendString(lg);
+
         ArrayList<String> people = games.get(jp.getID());
         String user = getUsername(jp.getAuthString());
         for (String person : people){
             if (!person.equals(jp.getAuthString())) {
-                session.getRemote().sendString("WebSocket response: " + user + " has joined as " + jp.getColor());
+                String sm = new Gson().toJson(new Notification(user + " has joined as " + jp.getColor()));
+                sessions.get(person).getRemote().sendString(sm);
             }
         }
     }
 
-    public void makeMove(MakeMove move, Session session) throws IOException {
+    public void makeMove(MakeMove move, Session session) throws IOException, DataAccessException {
         //validate move
         //update game to represent move
         //update game in DB
@@ -106,37 +141,36 @@ public class WSServer {
         for (String person : people){
             //send LoadGame
             if (!person.equals(move.getAuthString())) {
-                session.getRemote().sendString("WebSocket response: " + user + " has moved: " + move.getMove().toString());
+                sessions.get(person).getRemote().sendString("WebSocket response: " + user + " has moved: " + move.getMove().toString());
             }
         }
     }
 
-    public void leave(Leave leave, Session session) throws IOException {
+    public void leave(Leave leave, Session session) throws IOException, DataAccessException {
         //remove root client
         //update game in DB
         ArrayList<String> people = games.get(leave.getID());
         String user = getUsername(leave.getAuthString());
         for (String person : people){
             if (!person.equals(leave.getAuthString())) {
-                session.getRemote().sendString("WebSocket response: " + user + " has left the game");
+                sessions.get(person).getRemote().sendString("WebSocket response: " + user + " has left the game");
             }
         }
     }
 
-    public void resign(Resign resign, Session session) throws IOException {
+    public void resign(Resign resign, Session session) throws IOException, DataAccessException {
         //mark game as over -- no more moves can be made
         //update game in DB
         ArrayList<String> people = games.get(resign.getID());
         String user = getUsername(resign.getAuthString());
         for (String person : people){
             if (!person.equals(resign.getAuthString())) {
-                session.getRemote().sendString("WebSocket response: " + user + " has resigned");
+                sessions.get(person).getRemote().sendString("WebSocket response: " + user + " has resigned");
             }
         }
     }
 
-    public String getUsername(String auth){
-        //from DB get username based on authToken
-        return "";
+    public String getUsername(String auth) throws DataAccessException {
+        return aDataAccess.getVal(auth);
     }
 }
