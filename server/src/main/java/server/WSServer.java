@@ -73,8 +73,7 @@ public class WSServer {
         session.getRemote().sendString("WebSocket response: " + message); //this sends notifications
     }
 
-    //send loadgame object to the observer that joined
-    //for auth in games loop through all except observer that joined and send join notification
+
     public void joinObserver(JoinObserver jo, Session session) throws IOException {
         //send LoadGame to root client
         ArrayList<String> people = games.get(jo.getID());
@@ -99,7 +98,8 @@ public class WSServer {
 
     public void makeMove(MakeMove move, Session session) throws IOException {
         //validate move
-        //update game to represent move, update in DB
+        //update game to represent move
+        //update game in DB
         //send LoadGame to everyone
         ArrayList<String> people = games.get(move.getID());
         String user = getUsername(move.getAuthString());
