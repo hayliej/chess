@@ -1,4 +1,5 @@
 package server;
+import chess.ChessMove;
 import com.google.gson.Gson;
 import org.eclipse.jetty.websocket.api.annotations.*;
 import org.eclipse.jetty.websocket.api.*;
@@ -48,14 +49,17 @@ public class WSServer {
         else if (msg.getCommandType().equals(UserGameCommand.CommandType.MAKE_MOVE)) {
             MakeMove makeM = new Gson().fromJson(message, MakeMove.class);
             //do stuff
+            makeMove(makeM, session);
         }
         else if (msg.getCommandType().equals(UserGameCommand.CommandType.LEAVE)) {
             Leave leave = new Gson().fromJson(message, Leave.class);
             //do stuff
+            leave(leave, session);
         }
         else if (msg.getCommandType().equals(UserGameCommand.CommandType.RESIGN)) {
             Resign resign = new Gson().fromJson(message, Resign.class);
             //do stuff
+            resign(resign, session);
         }
         //each of these test the type using ugc
         //then they turn that into the correct type
@@ -74,33 +78,65 @@ public class WSServer {
     public void joinObserver(JoinObserver jo, Session session) throws IOException {
         //send LoadGame to root client
         ArrayList<String> people = games.get(jo.getID());
+        String user = getUsername(jo.getAuthString());
         for (String person : people){
             if (!person.equals(jo.getAuthString())) {
-                session.getRemote().sendString("WebSocket response: " + "username" + " has joined as an observer");
-                //GET ACTUAL USERNAME FROM DB^^^
+                session.getRemote().sendString("WebSocket response: " + user + " has joined as an observer");
             }
         }
     }
 
     public void joinPlayer(JoinPlayer jp, Session session) throws IOException {
-//send LoadGame to root client
+        //send LoadGame to root client
         ArrayList<String> people = games.get(jp.getID());
+        String user = getUsername(jp.getAuthString());
         for (String person : people){
             if (!person.equals(jp.getAuthString())) {
-                session.getRemote().sendString("WebSocket response: " + "username" + " has joined as " + jp.getColor());
-                //GET ACTUAL USERNAME FROM DB^^^
+                session.getRemote().sendString("WebSocket response: " + user + " has joined as " + jp.getColor());
             }
-        }    }
-
-    public void makeMove(){
-        //do stuff
+        }
     }
 
-    public void leave(){
-        //do stuff
+    public void makeMove(MakeMove move, Session session) throws IOException {
+        //validate move
+        //update game to represent move, update in DB
+        //send LoadGame to everyone
+        ArrayList<String> people = games.get(move.getID());
+        String user = getUsername(move.getAuthString());
+        for (String person : people){
+            //send LoadGame
+            if (!person.equals(move.getAuthString())) {
+                session.getRemote().sendString("WebSocket response: " + user + " has moved: " + move.getMove().toString());
+            }
+        }
     }
 
-    public void resign(){
-        //do stuff
+    public void leave(Leave leave, Session session) throws IOException {
+        //remove root client
+        //update game in DB
+        ArrayList<String> people = games.get(leave.getID());
+        String user = getUsername(leave.getAuthString());
+        for (String person : people){
+            if (!person.equals(leave.getAuthString())) {
+                session.getRemote().sendString("WebSocket response: " + user + " has left the game");
+            }
+        }
+    }
+
+    public void resign(Resign resign, Session session) throws IOException {
+        //mark game as over -- no more moves can be made
+        //update game in DB
+        ArrayList<String> people = games.get(resign.getID());
+        String user = getUsername(resign.getAuthString());
+        for (String person : people){
+            if (!person.equals(resign.getAuthString())) {
+                session.getRemote().sendString("WebSocket response: " + user + " has resigned");
+            }
+        }
+    }
+
+    public String getUsername(String auth){
+        //from DB get username based on authToken
+        return "";
     }
 }
