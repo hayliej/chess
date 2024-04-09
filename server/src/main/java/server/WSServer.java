@@ -275,32 +275,57 @@ public class WSServer {
             } else {
                 lgame = new LoadGame(gameD.game(), null);
             }
-            String lg = new Gson().toJson(lgame);
-            session.getRemote().sendString(lg);
+
+            if (session.isOpen()){
+                String lg = new Gson().toJson(lgame);
+                session.getRemote().sendString(lg);
+            } else {
+                sessions.remove(person);
+            }
 
             //send notification to others
             if (!person.equals(move.getAuthString())) {
-                String sm = new Gson().toJson(new Notification(user2 + " has moved: " + move.getMove().toString()));
-                sessions.get(person).getRemote().sendString(sm);
+                if (session.isOpen()){
+                    String sm = new Gson().toJson(new Notification(user2 + " has moved: " + move.getMove().toString()));
+                    sessions.get(person).getRemote().sendString(sm);
+                } else {
+                    sessions.remove(person);
+                }
             }
 
             //notify if anyone in check or checkmate
             if (game.isInCheck(ChessGame.TeamColor.WHITE)){
                 if (game.isInCheckmate(ChessGame.TeamColor.WHITE)){
-                    String sm = new Gson().toJson(new Notification(whitePlayer + " is in checkmate"));
-                    sessions.get(person).getRemote().sendString(sm);
+                    if (session.isOpen()){
+                        String sm = new Gson().toJson(new Notification(whitePlayer + " is in checkmate"));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
+                    }
                 } else {
-                    String sm = new Gson().toJson(new Notification(whitePlayer + " is in check"));
-                    sessions.get(person).getRemote().sendString(sm);
+                    if (session.isOpen()){
+                        String sm = new Gson().toJson(new Notification(whitePlayer + " is in check"));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
+                    }
                 }
             }
             if (game.isInCheck(ChessGame.TeamColor.BLACK)){
                 if (game.isInCheckmate(ChessGame.TeamColor.BLACK)){
-                    String sm = new Gson().toJson(new Notification(blackPlayer + " is in checkmate"));
-                    sessions.get(person).getRemote().sendString(sm);
+                    if (session.isOpen()){
+                        String sm = new Gson().toJson(new Notification(blackPlayer + " is in checkmate"));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
+                    }
                 } else {
-                    String sm = new Gson().toJson(new Notification(blackPlayer + " is in check"));
-                    sessions.get(person).getRemote().sendString(sm);
+                    if (session.isOpen()){
+                        String sm = new Gson().toJson(new Notification(blackPlayer + " is in check"));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
+                    }
                 }
             }
         }
@@ -315,8 +340,12 @@ public class WSServer {
         String user = getUsername(leave.getAuthString());
         for (String person : people){
             if (!person.equals(leave.getAuthString())) {
-                String sm = new Gson().toJson(new Notification(user + " has left the game"));
-                sessions.get(person).getRemote().sendString(sm);
+                if (session.isOpen()){
+                    String sm = new Gson().toJson(new Notification(user + " has left the game"));
+                    sessions.get(person).getRemote().sendString(sm);
+                } else {
+                    sessions.remove(person);
+                }
             }
         }
     }
@@ -330,8 +359,12 @@ public class WSServer {
         String user = getUsername(resign.getAuthString());
         for (String person : people){
             if (!person.equals(resign.getAuthString())) {
-                String sm = new Gson().toJson(new Notification(user + " has resigned"));
-                sessions.get(person).getRemote().sendString(sm);
+                if (session.isOpen()){
+                    String sm = new Gson().toJson(new Notification(user + " has resigned"));
+                    sessions.get(person).getRemote().sendString(sm);
+                } else {
+                    sessions.remove(person);
+                }
             }
         }
     }
