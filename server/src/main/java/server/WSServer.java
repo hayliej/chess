@@ -233,24 +233,22 @@ public class WSServer {
 
         ChessPosition start = move.getMove().getStartPosition();
 
-        //check correct turn
-//        if (!(game.getTeamTurn().equals(color))){
-//            Error er = new Error("Incorrect team turn");
-//            String error = new Gson().toJson(er);
-//            session.getRemote().sendString(error);
-//        }
-//        //check right team
-//        else if (!(game.getBoard().getPiece(start).getTeamColor().equals(color))) {
-//            Error er = new Error("Incorrect team piece, move a " + color + " piece");
-//            String error = new Gson().toJson(er);
-//            session.getRemote().sendString(error);
-//        }
-//        //check right piece
-//        else if (!(game.getBoard().getPiece(start).getPieceType().equals(move.getMove().getPromotionPiece()))) {
-//            Error er = new Error("Incorrect piece type");
-//            String error = new Gson().toJson(er);
-//            session.getRemote().sendString(error);
-//        }
+        //not observer
+        if (!whitePlayer.equals(username) && !blackPlayer.equals(username)){
+            Error er = new Error("Observer cannot move");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+            return;
+        }
+        //not wrong team
+        if (!(game.getBoard().getPiece(start)==null)) {
+            if (!(game.getBoard().getPiece(start).getTeamColor().equals(color))) {
+                Error er = new Error("Incorrect team piece, move a " + color + " piece");
+                String error = new Gson().toJson(er);
+                session.getRemote().sendString(error);
+                return;
+            }
+        }
 
         //validate move
         ChessGame updatedGame;
@@ -266,6 +264,29 @@ public class WSServer {
             session.getRemote().sendString(error);
             return;
         }
+
+        //check correct turn
+//        if (!(game.getTeamTurn().equals(color))){
+//            Error er = new Error("Incorrect team turn");
+//            String error = new Gson().toJson(er);
+//            session.getRemote().sendString(error);
+//        }
+        //check right team
+        //else
+//        if (!(game.getBoard().getPiece(start)==null)) {
+//            if (!(game.getBoard().getPiece(start).getTeamColor().equals(color))) {
+//                Error er = new Error("Incorrect team piece, move a " + color + " piece");
+//                String error = new Gson().toJson(er);
+//                session.getRemote().sendString(error);
+//                return;
+//            }
+//        }
+//        //check right piece
+//        else if (!(game.getBoard().getPiece(start).getPieceType().equals(move.getMove().getPromotionPiece()))) {
+//            Error er = new Error("Incorrect piece type");
+//            String error = new Gson().toJson(er);
+//            session.getRemote().sendString(error);
+//        }
 
         ArrayList<String> people = games.get(move.getID());
         String user2 = getUsername(move.getAuthString());
@@ -290,46 +311,56 @@ public class WSServer {
 
             //send notification to others
             if (!person.equals(move.getAuthString())) {
-                if (session.isOpen()){
-                    String sm = new Gson().toJson(new Notification(user2 + " has moved: " + move.getMove().toString()));
-                    sessions.get(person).getRemote().sendString(sm);
-                } else {
-                    sessions.remove(person);
+                if (sessions.containsKey(person)) {
+                    if (sessions.get(person).isOpen()) {
+                        String sm = new Gson().toJson(new Notification(user2 + " has moved: " + move.getMove().toString()));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
+                    }
                 }
             }
 
             //notify if anyone in check or checkmate
-            if (game.isInCheck(ChessGame.TeamColor.WHITE)){
-                if (game.isInCheckmate(ChessGame.TeamColor.WHITE)){
-                    if (session.isOpen()){
-                        String sm = new Gson().toJson(new Notification(whitePlayer + " is in checkmate"));
-                        sessions.get(person).getRemote().sendString(sm);
-                    } else {
-                        sessions.remove(person);
+            if (game.isInCheck(ChessGame.TeamColor.WHITE)) {
+                if (game.isInCheckmate(ChessGame.TeamColor.WHITE)) {
+                    if (sessions.containsKey(person)) {
+                        if (sessions.get(person).isOpen()) {
+                            String sm = new Gson().toJson(new Notification(whitePlayer + " is in checkmate"));
+                            sessions.get(person).getRemote().sendString(sm);
+                        } else {
+                            sessions.remove(person);
+                        }
                     }
                 } else {
-                    if (session.isOpen()){
-                        String sm = new Gson().toJson(new Notification(whitePlayer + " is in check"));
-                        sessions.get(person).getRemote().sendString(sm);
-                    } else {
-                        sessions.remove(person);
+                    if (sessions.containsKey(person)) {
+                        if (sessions.get(person).isOpen()) {
+                            String sm = new Gson().toJson(new Notification(whitePlayer + " is in check"));
+                            sessions.get(person).getRemote().sendString(sm);
+                        } else {
+                            sessions.remove(person);
+                        }
                     }
                 }
             }
-            if (game.isInCheck(ChessGame.TeamColor.BLACK)){
-                if (game.isInCheckmate(ChessGame.TeamColor.BLACK)){
-                    if (session.isOpen()){
-                        String sm = new Gson().toJson(new Notification(blackPlayer + " is in checkmate"));
-                        sessions.get(person).getRemote().sendString(sm);
-                    } else {
-                        sessions.remove(person);
+            if (game.isInCheck(ChessGame.TeamColor.BLACK)) {
+                if (game.isInCheckmate(ChessGame.TeamColor.BLACK)) {
+                    if (sessions.containsKey(person)) {
+                        if (sessions.get(person).isOpen()) {
+                            String sm = new Gson().toJson(new Notification(blackPlayer + " is in checkmate"));
+                            sessions.get(person).getRemote().sendString(sm);
+                        } else {
+                            sessions.remove(person);
+                        }
                     }
                 } else {
-                    if (session.isOpen()){
-                        String sm = new Gson().toJson(new Notification(blackPlayer + " is in check"));
-                        sessions.get(person).getRemote().sendString(sm);
-                    } else {
-                        sessions.remove(person);
+                    if (sessions.containsKey(person)) {
+                        if (sessions.get(person).isOpen()) {
+                            String sm = new Gson().toJson(new Notification(blackPlayer + " is in check"));
+                            sessions.get(person).getRemote().sendString(sm);
+                        } else {
+                            sessions.remove(person);
+                        }
                     }
                 }
             }
