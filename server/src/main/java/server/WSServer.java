@@ -1,4 +1,5 @@
 package server;
+import chess.ChessGame;
 import chess.ChessMove;
 import com.google.gson.Gson;
 import dataAccess.*;
@@ -130,25 +131,44 @@ public class WSServer {
     }
 
     public void joinPlayer(JoinPlayer jp, Session session) throws IOException, DataAccessException {
-        //send LoadGame to root client
-        GameData game = gDataAccess.returnGames().get(jp.getID());
-        LoadGame lgame = new LoadGame(game.game());
-        String lg = new Gson().toJson(lgame);
-        session.getRemote().sendString(lg);
+        if (!aDataAccess.returnAuths().containsKey(jp.getAuthString())){
+            Error er = new Error("Invalid Auth Token");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+        }
+        else if (!gDataAccess.returnGames().containsKey(jp.getID())){
+            Error er = new Error("Game Does Not Exist");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+        }
+        else {
+            if (jp.getColor().equals(ChessGame.TeamColor.WHITE)){
+                gDataAccess.updateGames(jp.getID(), "white", getUsername(jp.getAuthString()));
+            } else if (jp.getColor().equals(ChessGame.TeamColor.BLACK)){
+                gDataAccess.updateGames(jp.getID(), "black", getUsername(jp.getAuthString()));
+            }
 
-        //send notification to all others
-        ArrayList<String> people = games.get(jp.getID());
-        String user = getUsername(jp.getAuthString());
-        for (String person : people){
-            if (!person.equals(jp.getAuthString())) {
-                String sm = new Gson().toJson(new Notification(user + " has joined as " + jp.getColor()));
-                sessions.get(person).getRemote().sendString(sm);
+            //send LoadGame to root client
+            GameData game = gDataAccess.returnGames().get(jp.getID());
+            LoadGame lgame = new LoadGame(game.game());
+            String lg = new Gson().toJson(lgame);
+            session.getRemote().sendString(lg);
+
+            //send notification to all others
+            ArrayList<String> people = games.get(jp.getID());
+            String user = getUsername(jp.getAuthString());
+            for (String person : people) {
+                if (!person.equals(jp.getAuthString())) {
+                    String sm = new Gson().toJson(new Notification(user + " has joined as " + jp.getColor()));
+                    sessions.get(person).getRemote().sendString(sm);
+                }
             }
         }
     }
 
     public void makeMove(MakeMove move, Session session) throws IOException, DataAccessException {
         //validate move
+
         //update game to represent move
         //update game in DB
 
