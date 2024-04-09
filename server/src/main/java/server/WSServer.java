@@ -101,13 +101,14 @@ public class WSServer {
             Error er = new Error("Invalid Auth Token");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
+            return;
         }
         else if (!gDataAccess.returnGames().containsKey(jo.getID())){
             Error er = new Error("Game Does Not Exist");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
+            return;
         }
-        else {
 
             //send LoadGame to root client
             GameData game = gDataAccess.returnGames().get(jo.getID());
@@ -120,15 +121,17 @@ public class WSServer {
             String user = getUsername(jo.getAuthString());
             for (String person : people) {
                 if (!person.equals(jo.getAuthString())) {
-                    if (session.isOpen()){
-                        String sm = new Gson().toJson(new Notification(user + " has joined as an observer"));
-                        sessions.get(person).getRemote().sendString(sm);
-                    } else {
-                        sessions.remove(person);
+                    if (sessions.containsKey(person)) {
+                        if (sessions.get(person).isOpen()) {
+                            String sm = new Gson().toJson(new Notification(user + " has joined as an observer"));
+                            sessions.get(person).getRemote().sendString(sm);
+                        } else {
+                            sessions.remove(person);
+                        }
                     }
                 }
             }
-        }
+
     }
 
     public void joinPlayer(JoinPlayer jp, Session session) throws IOException, DataAccessException {
@@ -198,11 +201,13 @@ public class WSServer {
             String user2 = getUsername(jp.getAuthString());
             for (String person : people) {
                 if (!person.equals(jp.getAuthString())) {
-                    if (session.isOpen()){
-                        String sm = new Gson().toJson(new Notification(user2 + " has joined as " + jp.getColor()));
-                        sessions.get(person).getRemote().sendString(sm);
-                    } else {
-                        sessions.remove(person);
+                    if (sessions.containsKey(person)) {
+                        if (sessions.get(person).isOpen()) {
+                            String sm = new Gson().toJson(new Notification(user2 + " has joined as " + jp.getColor()));
+                            sessions.get(person).getRemote().sendString(sm);
+                        } else {
+                            sessions.remove(person);
+                        }
                     }
                 }
             }
