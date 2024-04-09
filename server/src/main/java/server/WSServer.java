@@ -143,6 +143,8 @@ public class WSServer {
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
         }
+        //else if (!jp.getColor() is in that game)
+        //else if (!jp.getColor()'s user doesn't match user associated with that color in game dao)
         else {
             if (jp.getColor().equals(ChessGame.TeamColor.WHITE)){
                 gDataAccess.updateGames(jp.getID(), "white", getUsername(jp.getAuthString()));
