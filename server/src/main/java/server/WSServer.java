@@ -1,6 +1,7 @@
 package server;
 import chess.ChessGame;
 import chess.ChessMove;
+import chess.ChessPiece;
 import com.google.gson.Gson;
 import dataAccess.*;
 import org.eclipse.jetty.websocket.api.annotations.*;
@@ -12,6 +13,7 @@ import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.*;
 import requests.GameData;
+import webSocketMessages.serverMessages.Error;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -168,7 +170,7 @@ public class WSServer {
 
     public void makeMove(MakeMove move, Session session) throws IOException, DataAccessException {
         //validate move
-
+        //ChessPiece.PieceType type = move.getMove().getStartPosition();
         //update game to represent move
         //update game in DB
 
