@@ -133,6 +133,10 @@ public class WSServer {
     }
 
     public void joinPlayer(JoinPlayer jp, Session session) throws IOException, DataAccessException {
+        String username  = String.valueOf(aDataAccess.returnAuths().get(jp.getAuthString()));
+        String whitePlayer = gDataAccess.returnGames().get(jp.getID()).whiteUsername();
+        String blackPlayer = gDataAccess.returnGames().get(jp.getID()).blackUsername();
+
         if (!aDataAccess.returnAuths().containsKey(jp.getAuthString())){
             Error er = new Error("Invalid Auth Token");
             String error = new Gson().toJson(er);
@@ -143,8 +147,28 @@ public class WSServer {
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
         }
-        //else if (!jp.getColor() is in that game)
-        //else if (!jp.getColor()'s user doesn't match user associated with that color in game dao)
+        else if (jp.getColor().equals(ChessGame.TeamColor.WHITE)){
+            if (whitePlayer==null){
+                Error er = new Error("No white player");
+                String error = new Gson().toJson(er);
+                session.getRemote().sendString(error);
+            } else if (!whitePlayer.equals(username)){
+                Error er = new Error("Incorrect player color");
+                String error = new Gson().toJson(er);
+                session.getRemote().sendString(error);
+            }
+        }
+        else if (jp.getColor().equals(ChessGame.TeamColor.BLACK)){
+            if (blackPlayer==null){
+                Error er = new Error("No black player");
+                String error = new Gson().toJson(er);
+                session.getRemote().sendString(error);
+            } else if (!blackPlayer.equals(username)){
+                Error er = new Error("Incorrect player color");
+                String error = new Gson().toJson(er);
+                session.getRemote().sendString(error);
+            }
+        }
         else {
             if (jp.getColor().equals(ChessGame.TeamColor.WHITE)){
                 gDataAccess.updateGames(jp.getID(), "white", getUsername(jp.getAuthString()));
