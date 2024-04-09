@@ -196,6 +196,9 @@ public class WSServer {
     public void makeMove(MakeMove move, Session session) throws IOException, DataAccessException {
         String username  = String.valueOf(aDataAccess.returnAuths().get(move.getAuthString()));
         ChessGame game = gDataAccess.returnGames().get(move.getID()).game();
+        if (game == null){
+            game = new ChessGame();
+        }
         String whitePlayer = gDataAccess.returnGames().get(move.getID()).whiteUsername();
         String blackPlayer = gDataAccess.returnGames().get(move.getID()).blackUsername();
         ChessGame.TeamColor color;

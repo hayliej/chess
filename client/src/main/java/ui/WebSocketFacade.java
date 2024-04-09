@@ -1,5 +1,8 @@
 package ui;
+import com.google.gson.Gson;
 import webSocketMessages.serverMessages.*;
+import webSocketMessages.userCommands.UserGameCommand;
+
 import javax.websocket.*;
 import java.net.URI;
 import java.util.Scanner;
@@ -21,7 +24,15 @@ public class WebSocketFacade extends Endpoint {
 
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
             public void onMessage(String message) {
-                //figure out type
+                //figure out type of ServerMessage
+                ServerMessage msg = new Gson().fromJson(message, ServerMessage.class);
+                if (msg.getServerMessageType().equals(ServerMessage.ServerMessageType.ERROR)){
+                    error();
+                } else if (msg.getServerMessageType().equals(ServerMessage.ServerMessageType.LOAD_GAME)){
+                    loadGame();
+                } else if (msg.getServerMessageType().equals(ServerMessage.ServerMessageType.NOTIFICATION)) {
+                    notification();
+                }
 //                ServerMessage msg = new ServerMessage(message); // needs type, but don't know type :/ ugh
 //                if (msg.getServerMessageType().equals(LOAD_GAME)){
 //                }
@@ -29,6 +40,18 @@ public class WebSocketFacade extends Endpoint {
                 System.out.println(message);
             }
         });
+    }
+
+    public void error(){
+
+    }
+
+    public void loadGame(){
+
+    }
+
+    public void notification(){
+
     }
 
     public void send(String msg) throws Exception {
