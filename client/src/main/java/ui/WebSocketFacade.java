@@ -50,7 +50,10 @@ public class WebSocketFacade extends Endpoint {
 
     public void loadGame(LoadGame msg){
         ChessGame.TeamColor color = msg.getColor();
-        System.out.println(msg.getGame().main(String.valueOf(color)));
+        if (msg.getColor() == null){
+            color = ChessGame.TeamColor.WHITE;
+        }
+        msg.drawBoard(color);
     }
 
     public void notification(Notification msg){

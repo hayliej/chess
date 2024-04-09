@@ -15,7 +15,7 @@ public class LoadGame extends ServerMessage {
     public ChessGame.TeamColor getColor(){
         return color;
     }
-    public DrawChessBoard getGame(){
-        return new DrawChessBoard(game.getBoard());
+    public void drawBoard(ChessGame.TeamColor color){
+        new DrawChessBoard(game.getBoard()).drawBoard(color);
     }
 }

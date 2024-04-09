@@ -30,15 +30,15 @@ public class DrawChessBoard {
         return this.board;
     }
 
-    public void main(String color) {
+    public void drawBoard(ChessGame.TeamColor color) {
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
         out.print(ERASE_SCREEN);
-        if (color.equals("black")) {
+        if (color.equals(ChessGame.TeamColor.BLACK)) {
             drawHeaders(out, "black");
             drawChessBoard(out, "black", getBoard());
             drawHeaders(out, "black");
-        } else if (color.equals("white")){
+        } else if (color.equals(ChessGame.TeamColor.WHITE)){
             drawHeaders(out, "white");
             drawChessBoard(out, "white", getBoard());
             drawHeaders(out, "white");
