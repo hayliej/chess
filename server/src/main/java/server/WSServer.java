@@ -91,11 +91,6 @@ public class WSServer {
             resign(resign, session);
         }
 
-        //call function that I'll make outside this method that will send the right thing (LG, E, N) to WSFacade
-        //function will send correct messages for each player depending on what's specified for each action
-            //deal with facade stuff later, (WebSocketTests just tests this file's functionality, use it!)
-            //deal with repl later too
-
 //        System.out.printf("Received: %s", message);
     }
 
@@ -115,7 +110,7 @@ public class WSServer {
 
             //send LoadGame to root client
             GameData game = gDataAccess.returnGames().get(jo.getID());
-            LoadGame lgame = new LoadGame(game.game());
+            LoadGame lgame = new LoadGame(game.game(), null);
             String lg = new Gson().toJson(lgame);
             session.getRemote().sendString(lg);
 
@@ -177,7 +172,7 @@ public class WSServer {
 
             //send LoadGame to root client
             GameData game = gDataAccess.returnGames().get(jp.getID());
-            LoadGame lgame = new LoadGame(game.game());
+            LoadGame lgame = new LoadGame(game.game(), jp.getColor());
             String lg = new Gson().toJson(lgame);
             session.getRemote().sendString(lg);
 
@@ -249,7 +244,14 @@ public class WSServer {
         for (String person : people){
             //send LoadGame to everyone
             GameData gameD = gDataAccess.returnGames().get(move.getID());
-            LoadGame lgame = new LoadGame(gameD.game());
+            LoadGame lgame;
+            if (aDataAccess.returnAuths().get(person).equals(blackPlayer)){
+                lgame = new LoadGame(gameD.game(), ChessGame.TeamColor.BLACK);
+            } else if (aDataAccess.returnAuths().get(person).equals(whitePlayer)){
+                lgame = new LoadGame(gameD.game(), ChessGame.TeamColor.WHITE);
+            } else {
+                lgame = new LoadGame(gameD.game(), null);
+            }
             String lg = new Gson().toJson(lgame);
             session.getRemote().sendString(lg);
 

@@ -49,9 +49,8 @@ public class WebSocketFacade extends Endpoint {
     }
 
     public void loadGame(LoadGame msg){
-        ChessGame.TeamColor color = ChessGame.TeamColor.WHITE;
-        //for each person in/observing game draw the board, if it's the black user change color to black
-        //System.out.println(msg.getGame().main(String.valueOf(color)));
+        ChessGame.TeamColor color = msg.getColor();
+        System.out.println(msg.getGame().main(String.valueOf(color)));
     }
 
     public void notification(Notification msg){
