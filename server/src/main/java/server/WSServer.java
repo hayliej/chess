@@ -2,6 +2,7 @@ package server;
 import chess.ChessGame;
 import chess.ChessMove;
 import chess.ChessPiece;
+import chess.ChessPosition;
 import com.google.gson.Gson;
 import dataAccess.*;
 import org.eclipse.jetty.websocket.api.annotations.*;
@@ -17,6 +18,7 @@ import webSocketMessages.serverMessages.Error;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 @WebSocket
@@ -195,6 +197,44 @@ public class WSServer {
     }
 
     public void makeMove(MakeMove move, Session session) throws IOException, DataAccessException {
+        String username  = String.valueOf(aDataAccess.returnAuths().get(move.getAuthString()));
+        ChessGame game = gDataAccess.returnGames().get(move.getID()).game();
+        String whitePlayer = gDataAccess.returnGames().get(move.getID()).whiteUsername();
+        String blackPlayer = gDataAccess.returnGames().get(move.getID()).blackUsername();
+        ChessGame.TeamColor color;
+        if (whitePlayer.equals(username)){
+            color = ChessGame.TeamColor.WHITE;
+        } else {
+            color = ChessGame.TeamColor.BLACK;
+        }
+
+        ChessPosition start = move.getMove().getStartPosition();
+        Collection<ChessMove> validMoves = ChessGame.validMoves(start);
+
+        //check correct turn
+        if (!(game.getTeamTurn().equals(ChessGame.TeamColor.WHITE) && whitePlayer.equals(username))){
+            Error er = new Error("Incorrect team turn, black's move");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+        } else if (!(game.getTeamTurn().equals(ChessGame.TeamColor.BLACK) && blackPlayer.equals(username))){
+            Error er = new Error("Incorrect team turn, white's move");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+        }
+        //check right team
+        else if (!game.getBoard().getPiece(start).getTeamColor().equals(color)) {
+            Error er = new Error("Incorrect team piece, move a " + color + " piece");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+        }
+        //check valid moves
+        else if (!validMoves.contains(move.getMove())){
+            Error er = new Error("Invalid move");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+        }
+
+
         //validate move
         //ChessPiece.PieceType type = move.getMove().getStartPosition();
         //update game to represent move
@@ -204,8 +244,8 @@ public class WSServer {
         String user = getUsername(move.getAuthString());
         for (String person : people){
             //send LoadGame to everyone
-            GameData game = gDataAccess.returnGames().get(move.getID());
-            LoadGame lgame = new LoadGame(game.game());
+            GameData gameD = gDataAccess.returnGames().get(move.getID());
+            LoadGame lgame = new LoadGame(gameD.game());
             String lg = new Gson().toJson(lgame);
             session.getRemote().sendString(lg);
 
