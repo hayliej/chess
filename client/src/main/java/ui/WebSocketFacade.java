@@ -1,6 +1,8 @@
 package ui;
+import chess.ChessGame;
 import com.google.gson.Gson;
 import webSocketMessages.serverMessages.*;
+import webSocketMessages.serverMessages.Error;
 import webSocketMessages.userCommands.UserGameCommand;
 
 import javax.websocket.*;
@@ -27,30 +29,32 @@ public class WebSocketFacade extends Endpoint {
                 //figure out type of ServerMessage
                 ServerMessage msg = new Gson().fromJson(message, ServerMessage.class);
                 if (msg.getServerMessageType().equals(ServerMessage.ServerMessageType.ERROR)){
-                    error();
+                    Error mesg = new Gson().fromJson(message, Error.class);
+                    error(mesg);
                 } else if (msg.getServerMessageType().equals(ServerMessage.ServerMessageType.LOAD_GAME)){
-                    loadGame();
+                    LoadGame mesg = new Gson().fromJson(message, LoadGame.class);
+                    loadGame(mesg);
                 } else if (msg.getServerMessageType().equals(ServerMessage.ServerMessageType.NOTIFICATION)) {
-                    notification();
+                    Notification mesg = new Gson().fromJson(message, Notification.class);
+                    notification(mesg);
                 }
-//                ServerMessage msg = new ServerMessage(message); // needs type, but don't know type :/ ugh
-//                if (msg.getServerMessageType().equals(LOAD_GAME)){
-//                }
                 //send to game ui (if needed) to handle
-                System.out.println(message);
+//                System.out.println(message);
             }
         });
     }
 
-    public void error(){
-
+    public void error(Error msg){
+        System.out.println(msg.getErrorMessage());
     }
 
-    public void loadGame(){
-
+    public void loadGame(LoadGame msg){
+        ChessGame.TeamColor color = ChessGame.TeamColor.WHITE;
+        //for each person in/observing game draw the board, if it's the black user change color to black
+        System.out.println(msg.getGame().main(color););
     }
 
-    public void notification(){
+    public void notification(Notification msg){
 
     }
 
