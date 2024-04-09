@@ -208,23 +208,19 @@ public class WSServer {
         ChessPosition start = move.getMove().getStartPosition();
 
         //check correct turn
-        if (!(game.getTeamTurn().equals(ChessGame.TeamColor.WHITE) && whitePlayer.equals(username))){
-            Error er = new Error("Incorrect team turn, black's move");
-            String error = new Gson().toJson(er);
-            session.getRemote().sendString(error);
-        } else if (!(game.getTeamTurn().equals(ChessGame.TeamColor.BLACK) && blackPlayer.equals(username))){
-            Error er = new Error("Incorrect team turn, white's move");
+        if (!(game.getTeamTurn().equals(color))){
+            Error er = new Error("Incorrect team turn");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
         }
         //check right team
-        else if (!game.getBoard().getPiece(start).getTeamColor().equals(color)) {
+        else if (!(game.getBoard().getPiece(start).getTeamColor().equals(color))) {
             Error er = new Error("Incorrect team piece, move a " + color + " piece");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
         }
         //check right piece
-        else if (!game.getBoard().getPiece(start).getPieceType().equals(move.getMove().getPromotionPiece())) {
+        else if (!(game.getBoard().getPiece(start).getPieceType().equals(move.getMove().getPromotionPiece()))) {
             Error er = new Error("Incorrect piece type");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
