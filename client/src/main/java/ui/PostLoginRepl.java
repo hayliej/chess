@@ -90,7 +90,7 @@ public class PostLoginRepl {
         new GameRepl().run();
     }
 
-    private static void joinGameObserver(String input) throws DataAccessException {
+    private static void joinGameObserver(String input) throws Exception {
         //parse out input to get ID and color
         String[] in = input.split(" <");
         String i = in[1];
@@ -99,8 +99,9 @@ public class PostLoginRepl {
         // call join game observer from server facade
         new ServerFacade("http://localhost:8080").observeGame(authToken, idNum);
         //DrawChessBoard.main(null);//get rid of this once ws implemented
-        //new.WebSocketFacade.joinPlayer();
-        new GameRepl().run();
+        WebSocketFacade wsf = new WebSocketFacade();
+
+        new GameRepl().run(); //pass session to game repl and then use that as the session
     }
 
     private static void printPrompt() {

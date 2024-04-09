@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import dataAccess.*;
 import org.eclipse.jetty.websocket.api.annotations.*;
 import org.eclipse.jetty.websocket.api.*;
+import requests.AuthData;
 import service.GameService;
 import spark.Spark;
 import webSocketMessages.serverMessages.LoadGame;
@@ -119,37 +120,51 @@ public class WSServer {
             String user = getUsername(jo.getAuthString());
             for (String person : people) {
                 if (!person.equals(jo.getAuthString())) {
-                    String sm = new Gson().toJson(new Notification(user + " has joined as an observer"));
-                    sessions.get(person).getRemote().sendString(sm);
+                    if (session.isOpen()){
+                        String sm = new Gson().toJson(new Notification(user + " has joined as an observer"));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
+                    }
                 }
             }
         }
     }
 
     public void joinPlayer(JoinPlayer jp, Session session) throws IOException, DataAccessException {
-        String username  = String.valueOf(aDataAccess.returnAuths().get(jp.getAuthString()));
-        String whitePlayer = gDataAccess.returnGames().get(jp.getID()).whiteUsername();
-        String blackPlayer = gDataAccess.returnGames().get(jp.getID()).blackUsername();
+
+        String whitePlayer;
+        String blackPlayer;
+        if (!gDataAccess.returnGames().containsKey(jp.getID())) {
+            Error er = new Error("Game Does Not Exist");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+            return;
+        } else {
+            whitePlayer = gDataAccess.returnGames().get(jp.getID()).whiteUsername();
+            blackPlayer = gDataAccess.returnGames().get(jp.getID()).blackUsername();
+        }
 
         if (!aDataAccess.returnAuths().containsKey(jp.getAuthString())){
             Error er = new Error("Invalid Auth Token");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
+            return;
         }
-        else if (!gDataAccess.returnGames().containsKey(jp.getID())){
-            Error er = new Error("Game Does Not Exist");
-            String error = new Gson().toJson(er);
-            session.getRemote().sendString(error);
-        }
-        else if (jp.getColor().equals(ChessGame.TeamColor.WHITE)){
+
+        AuthData user  = (AuthData) aDataAccess.returnAuths().get(jp.getAuthString());
+        String username = user.username();
+         if (jp.getColor().equals(ChessGame.TeamColor.WHITE)){
             if (whitePlayer==null){
                 Error er = new Error("No white player");
                 String error = new Gson().toJson(er);
                 session.getRemote().sendString(error);
+                return;
             } else if (!whitePlayer.equals(username)){
                 Error er = new Error("Incorrect player color");
                 String error = new Gson().toJson(er);
                 session.getRemote().sendString(error);
+                return;
             }
         }
         else if (jp.getColor().equals(ChessGame.TeamColor.BLACK)){
@@ -157,13 +172,15 @@ public class WSServer {
                 Error er = new Error("No black player");
                 String error = new Gson().toJson(er);
                 session.getRemote().sendString(error);
+                return;
             } else if (!blackPlayer.equals(username)){
                 Error er = new Error("Incorrect player color");
                 String error = new Gson().toJson(er);
                 session.getRemote().sendString(error);
+                return;
             }
         }
-        else {
+
             if (jp.getColor().equals(ChessGame.TeamColor.WHITE)){
                 gDataAccess.updateGames(jp.getID(), "white", getUsername(jp.getAuthString()));
             } else if (jp.getColor().equals(ChessGame.TeamColor.BLACK)){
@@ -178,22 +195,28 @@ public class WSServer {
 
             //send notification to all others
             ArrayList<String> people = games.get(jp.getID());
-            String user = getUsername(jp.getAuthString());
+            String user2 = getUsername(jp.getAuthString());
             for (String person : people) {
                 if (!person.equals(jp.getAuthString())) {
-                    String sm = new Gson().toJson(new Notification(user + " has joined as " + jp.getColor()));
-                    sessions.get(person).getRemote().sendString(sm);
+                    if (session.isOpen()){
+                        String sm = new Gson().toJson(new Notification(user2 + " has joined as " + jp.getColor()));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
+                    }
                 }
             }
-        }
+
     }
 
     public void makeMove(MakeMove move, Session session) throws IOException, DataAccessException {
-        String username  = String.valueOf(aDataAccess.returnAuths().get(move.getAuthString()));
+        //String username  = String.valueOf(aDataAccess.returnAuths().get(move.getAuthString()));
+        AuthData user  = (AuthData) aDataAccess.returnAuths().get(move.getAuthString());
+        String username = user.username();
         ChessGame game = gDataAccess.returnGames().get(move.getID()).game();
-        if (game == null){
-            game = new ChessGame();
-        }
+//        if (game == null){
+//            game = new ChessGame();
+//        }
         String whitePlayer = gDataAccess.returnGames().get(move.getID()).whiteUsername();
         String blackPlayer = gDataAccess.returnGames().get(move.getID()).blackUsername();
         ChessGame.TeamColor color;
@@ -206,23 +229,23 @@ public class WSServer {
         ChessPosition start = move.getMove().getStartPosition();
 
         //check correct turn
-        if (!(game.getTeamTurn().equals(color))){
-            Error er = new Error("Incorrect team turn");
-            String error = new Gson().toJson(er);
-            session.getRemote().sendString(error);
-        }
-        //check right team
-        else if (!(game.getBoard().getPiece(start).getTeamColor().equals(color))) {
-            Error er = new Error("Incorrect team piece, move a " + color + " piece");
-            String error = new Gson().toJson(er);
-            session.getRemote().sendString(error);
-        }
-        //check right piece
-        else if (!(game.getBoard().getPiece(start).getPieceType().equals(move.getMove().getPromotionPiece()))) {
-            Error er = new Error("Incorrect piece type");
-            String error = new Gson().toJson(er);
-            session.getRemote().sendString(error);
-        }
+//        if (!(game.getTeamTurn().equals(color))){
+//            Error er = new Error("Incorrect team turn");
+//            String error = new Gson().toJson(er);
+//            session.getRemote().sendString(error);
+//        }
+//        //check right team
+//        else if (!(game.getBoard().getPiece(start).getTeamColor().equals(color))) {
+//            Error er = new Error("Incorrect team piece, move a " + color + " piece");
+//            String error = new Gson().toJson(er);
+//            session.getRemote().sendString(error);
+//        }
+//        //check right piece
+//        else if (!(game.getBoard().getPiece(start).getPieceType().equals(move.getMove().getPromotionPiece()))) {
+//            Error er = new Error("Incorrect piece type");
+//            String error = new Gson().toJson(er);
+//            session.getRemote().sendString(error);
+//        }
 
         //validate move
         ChessGame updatedGame;
@@ -236,11 +259,11 @@ public class WSServer {
             Error er = new Error("Invalid move");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
-            //throw new RuntimeException(e);
+            return;
         }
 
         ArrayList<String> people = games.get(move.getID());
-        String user = getUsername(move.getAuthString());
+        String user2 = getUsername(move.getAuthString());
         for (String person : people){
             //send LoadGame to everyone
             GameData gameD = gDataAccess.returnGames().get(move.getID());
@@ -257,7 +280,7 @@ public class WSServer {
 
             //send notification to others
             if (!person.equals(move.getAuthString())) {
-                String sm = new Gson().toJson(new Notification(user + " has moved: " + move.getMove().toString()));
+                String sm = new Gson().toJson(new Notification(user2 + " has moved: " + move.getMove().toString()));
                 sessions.get(person).getRemote().sendString(sm);
             }
 

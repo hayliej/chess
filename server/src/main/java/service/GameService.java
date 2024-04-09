@@ -1,4 +1,5 @@
 package service;
+import chess.ChessBoard;
 import chess.ChessGame;
 import dataAccess.*;
 import requests.*;
@@ -62,7 +63,9 @@ public class GameService {
             return new CreateGameResult("Error: bad request", null);
         }
         Integer id = gDataAccess.getSize()+1;
-        gDataAccess.addGame(id, new GameData(id, null, null, newAuth.gameName(), new ChessGame()));
+        ChessGame b = new ChessGame();
+        b.getBoard().resetBoard();
+        gDataAccess.addGame(id, new GameData(id, null, null, newAuth.gameName(), b));
         return new CreateGameResult(null, id);
     }
 
