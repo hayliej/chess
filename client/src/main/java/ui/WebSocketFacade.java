@@ -51,11 +51,11 @@ public class WebSocketFacade extends Endpoint {
     public void loadGame(LoadGame msg){
         ChessGame.TeamColor color = ChessGame.TeamColor.WHITE;
         //for each person in/observing game draw the board, if it's the black user change color to black
-        System.out.println(msg.getGame().main(color););
+        //System.out.println(msg.getGame().main(String.valueOf(color)));
     }
 
     public void notification(Notification msg){
-
+        System.out.println(msg.getNotification());
     }
 
     public void send(String msg) throws Exception {
