@@ -1,7 +1,6 @@
 package ui;
 import chess.ChessGame;
 import com.google.gson.Gson;
-import server.WSServer;
 import webSocketMessages.serverMessages.*;
 import webSocketMessages.serverMessages.Error;
 import webSocketMessages.userCommands.JoinObserver;
@@ -67,7 +66,6 @@ public class WebSocketFacade extends Endpoint {
     }
 
     public void joinObserver(JoinObserver jo, Session session){
-        //new WSServer().joinObserver(jo, session);
         return;
     }
 
@@ -78,6 +76,5 @@ public class WebSocketFacade extends Endpoint {
 
 
     public void onOpen(Session session, EndpointConfig endpointConfig) {
-        //???
     }
 }

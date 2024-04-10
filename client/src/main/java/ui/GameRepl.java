@@ -1,10 +1,7 @@
 package ui;
 
-import chess.ChessMove;
 import dataAccess.DataAccessException;
-import server.WSServer;
-import webSocketMessages.userCommands.MakeMove;
-import webSocketMessages.userCommands.UserGameCommand;
+
 
 import java.util.Scanner;
 
@@ -76,8 +73,8 @@ public class GameRepl {
 //        new WSServer(session, ugc);
     }
 
-    private static void leave() {
-        WebSocketFacade.leave(authToken);
+    private void leave() {
+        //WebSocketFacade.send(msg);
     }
 
     private static void resign(String line) {
