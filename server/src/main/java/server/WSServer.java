@@ -373,19 +373,32 @@ public class WSServer {
     }
 
     public void resign(Resign resign, Session session) throws IOException, DataAccessException {
+        String user = getUsername(resign.getAuthString());
         //mark game as over -- no more moves can be made
+        //????
+
         //update game in DB
+        GameData gd = gDataAccess.returnGames().get(resign.getID());
+        if (gd.whiteUsername().equals(user)){
+            gd = new GameData(gd.gameID(), null, gd.blackUsername(), gd.gameName(), gd.game());
+        }
+        if (gd.blackUsername().equals(user)){
+            gd = new GameData(gd.gameID(), gd.whiteUsername(), null, gd.gameName(), gd.game());
+        }
+        gDataAccess.returnGames().remove(resign.getID());
+        gDataAccess.returnGames().put(resign.getID(), gd);
 
         //send ze notification
         ArrayList<String> people = games.get(resign.getID());
-        String user = getUsername(resign.getAuthString());
         for (String person : people){
             if (!person.equals(resign.getAuthString())) {
-                if (session.isOpen()){
-                    String sm = new Gson().toJson(new Notification(user + " has resigned"));
-                    sessions.get(person).getRemote().sendString(sm);
-                } else {
-                    sessions.remove(person);
+                if (sessions.containsKey(person)) {
+                    if (sessions.get(person).isOpen()) {
+                        String sm = new Gson().toJson(new Notification(user + " has resigned"));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
+                    }
                 }
             }
         }
