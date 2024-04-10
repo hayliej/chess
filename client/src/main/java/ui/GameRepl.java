@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import webSocketMessages.userCommands.Leave;
 import webSocketMessages.userCommands.MakeMove;
+import webSocketMessages.userCommands.Resign;
 
 
 import java.util.Scanner;
@@ -125,10 +126,13 @@ public class GameRepl {
         wsf.send(msg);
     }
 
-    private static void resign(String line) {
+    private void resign(String line) throws Exception {
+        Resign rm = new Resign(authToken, gameID);
+        String msg = new Gson().toJson(rm);
+        wsf.send(msg);
     }
 
-    private static void redraw() {
+    private void redraw() {
     }
 
     private static void highlight() {
