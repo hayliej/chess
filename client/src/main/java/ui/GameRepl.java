@@ -39,7 +39,7 @@ public class GameRepl {
                     //send back to post-login (main)
                     break;
                 } else if (line.startsWith("resign")) {
-                    resign(line);
+                    resign();
                     //send back to post-login (main)
                     break;
                 } else if (line.startsWith("redraw")){
@@ -133,15 +133,15 @@ public class GameRepl {
         wsf.send(msg);
     }
 
-    private void resign(String line) throws Exception {
+    private void resign() throws Exception {
         Resign rm = new Resign(authToken, gameID);
         String msg = new Gson().toJson(rm);
         wsf.send(msg);
     }
 
     private void redraw() {
-        LoadGame lgm = new LoadGame(, color);
-        wsf.loadGame(lgm);
+//        LoadGame lgm = new LoadGame(, color);
+//        wsf.loadGame(lgm);
     }
 
     private static void highlight() {
