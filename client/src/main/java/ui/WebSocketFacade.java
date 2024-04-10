@@ -67,7 +67,7 @@ public class WebSocketFacade extends Endpoint {
     }
 
     public void joinObserver(JoinObserver jo, Session session){
-        new WSServer().joinObserver(jo, session);
+        //new WSServer().joinObserver(jo, session);
         return;
     }
 

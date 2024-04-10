@@ -16,6 +16,7 @@ public class ChessGame {
     }
     private ChessBoard board = new ChessBoard();
     private TeamColor teamTurn = TeamColor.WHITE;
+    private boolean gameInProgress = true;
 
     /**
      * @return Which team's turn it is
@@ -31,6 +32,10 @@ public class ChessGame {
      */
     public void setTeamTurn(TeamColor team) {
         teamTurn = team;
+    }
+
+    public void resign(){
+        gameInProgress = false;
     }
 
     /**
@@ -96,6 +101,7 @@ public class ChessGame {
 
         ChessPiece p = board.getPiece(move.getStartPosition());
 
+
         if (p==null){
             throw new InvalidMoveException("No piece at start");
         }
@@ -128,6 +134,10 @@ public class ChessGame {
                     setTeamTurn(TeamColor.BLACK);
                 } else if (getTeamTurn().equals(TeamColor.BLACK)) {
                     setTeamTurn(TeamColor.WHITE);
+                }
+
+                if (isInCheckmate(teamTurn) || isInStalemate(teamTurn)){
+                    gameInProgress = false;
                 }
             }
         } else {

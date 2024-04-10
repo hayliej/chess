@@ -101,7 +101,7 @@ public class PostLoginRepl {
         new ServerFacade("http://localhost:8080").observeGame(authToken, idNum);
         //DrawChessBoard.main(null);//get rid of this once ws implemented
         WebSocketFacade wsf = new WebSocketFacade();
-        wsf.joinObserver(new JoinObserver(authToken, idNum), wsf); //what's this doing??
+        //wsf.joinObserver(new JoinObserver(authToken, idNum), wsf); //what's this doing??
         new GameRepl().run(); //pass session to game repl and then use that as the session
     }
 

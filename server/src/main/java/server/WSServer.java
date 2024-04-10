@@ -375,7 +375,7 @@ public class WSServer {
     public void resign(Resign resign, Session session) throws IOException, DataAccessException {
         String user = getUsername(resign.getAuthString());
         //mark game as over -- no more moves can be made
-        //????
+        gDataAccess.returnGames().get(resign.getID()).game().resign();
 
         //update game in DB
         GameData gd = gDataAccess.returnGames().get(resign.getID());
