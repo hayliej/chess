@@ -294,14 +294,15 @@ public class WSServer {
         for (String person : people){
             //send LoadGame to everyone
             GameData gameD = gDataAccess.returnGames().get(move.getID());
-            LoadGame lgame;
-            if (aDataAccess.returnAuths().get(person).equals(blackPlayer)){
-                lgame = new LoadGame(gameD.game(), ChessGame.TeamColor.BLACK);
-            } else if (aDataAccess.returnAuths().get(person).equals(whitePlayer)){
-                lgame = new LoadGame(gameD.game(), ChessGame.TeamColor.WHITE);
-            } else {
-                lgame = new LoadGame(gameD.game(), null);
+            LoadGame lgame = new LoadGame(gameD.game(), null);
+            if (aDataAccess.returnAuths().containsKey(person)) {
+                if (aDataAccess.returnAuths().get(person).equals(blackPlayer)) {
+                    lgame = new LoadGame(gameD.game(), ChessGame.TeamColor.BLACK);
+                } else if (aDataAccess.returnAuths().get(person).equals(whitePlayer)) {
+                    lgame = new LoadGame(gameD.game(), ChessGame.TeamColor.WHITE);
+                }
             }
+
 
             if (session.isOpen()){
                 String lg = new Gson().toJson(lgame);
