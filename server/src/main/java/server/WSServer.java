@@ -360,8 +360,7 @@ public class WSServer {
         if (gd.blackUsername().equals(user)){
             gd = new GameData(gd.gameID(), gd.whiteUsername(), null, gd.gameName(), gd.game());
         }
-        gDataAccess.returnGames().remove(leave.getID());
-        gDataAccess.returnGames().put(leave.getID(), gd);
+        gDataAccess.updateWholeGame(gd);
 
         //send notification to everyone
         ArrayList<String> people = games.get(leave.getID());
@@ -412,8 +411,7 @@ public class WSServer {
         if (gd.blackUsername().equals(user)){
             gd = new GameData(gd.gameID(), gd.whiteUsername(), null, gd.gameName(), game);
         }
-        gDataAccess.returnGames().remove(resign.getID());
-        gDataAccess.returnGames().put(resign.getID(), gd);
+        gDataAccess.updateWholeGame(gd);
 
         //send ze notification
         ArrayList<String> people = games.get(resign.getID());
