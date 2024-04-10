@@ -382,6 +382,18 @@ public class WSServer {
 
     public void resign(Resign resign, Session session) throws IOException, DataAccessException {
         String user = getUsername(resign.getAuthString());
+
+        String whitePlayer = gDataAccess.returnGames().get(resign.getID()).whiteUsername();
+        String blackPlayer = gDataAccess.returnGames().get(resign.getID()).blackUsername();
+
+        //not observer
+        if (!whitePlayer.equals(user) && !blackPlayer.equals(user)){
+            Error er = new Error("Observer cannot resign");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+            return;
+        }
+
         //mark game as over -- no more moves can be made
         ChessGame game = gDataAccess.returnGames().get(resign.getID()).game();
         game.resign();
