@@ -18,4 +18,8 @@ public class LoadGame extends ServerMessage {
     public void drawBoard(ChessGame.TeamColor color){
         new DrawChessBoard(game.getBoard()).drawBoard(color);
     }
+
+    public ChessGame getGame() {
+        return game;
+    }
 }

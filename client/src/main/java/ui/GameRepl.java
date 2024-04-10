@@ -6,7 +6,10 @@ import chess.ChessPiece;
 import chess.ChessPosition;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
+import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.LoadGame;
+import webSocketMessages.serverMessages.Notification;
+import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.Leave;
 import webSocketMessages.userCommands.MakeMove;
 import webSocketMessages.userCommands.Resign;
@@ -14,9 +17,9 @@ import webSocketMessages.userCommands.Resign;
 
 import java.util.Scanner;
 
-public class GameRepl {
-    public GameRepl(WebSocketFacade wsf) {
-        this.wsf = wsf;
+public class GameRepl implements NotificationHandler {
+    public GameRepl() throws Exception {
+        this.wsf = new WebSocketFacade(this);
     }
 
     WebSocketFacade wsf;
@@ -149,5 +152,30 @@ public class GameRepl {
 
     private static void printPrompt() {
         System.out.print("[GAMEPLAY] " + ">>> ");
+    }
+
+    @Override
+    public void notify(ServerMessage notification) {
+        switch (notification.getServerMessageType()){
+            case LOAD_GAME -> loadGame((LoadGame) notification);
+            case NOTIFICATION -> notification((Notification) notification);
+            case ERROR -> error((Error) notification);
+        }
+    }
+    public void error(Error msg){
+        System.out.println(msg.getErrorMessage());
+    }
+
+    public void loadGame(LoadGame msg){
+        ChessGame.TeamColor color = msg.getColor();
+        if (msg.getColor() == null){
+            color = ChessGame.TeamColor.WHITE;
+        }
+        msg.drawBoard(color);
+        setGame(msg.getGame());
+    }
+
+    public void notification(Notification msg){
+        System.out.println(msg.getNotification());
     }
 }
