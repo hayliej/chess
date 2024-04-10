@@ -88,6 +88,18 @@ public class SqlGameDAO implements GameDAO{
         }
     }
 
+    public void updateWholeGame(GameData gameData) throws DataAccessException {
+        var update = "UPDATE games SET game=? WHERE gameID=?";
+        try (PreparedStatement state = DatabaseManager.getConnection().prepareStatement(update)) {
+            String game = new Gson().toJson(gameData.game());
+            state.setString(1,game);
+            state.setInt(2, gameData.gameID());
+            state.executeUpdate();
+        }catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+    }
+
     @Override
     public int getSize() throws DataAccessException {
         return  returnGames().size();

@@ -259,8 +259,7 @@ public class WSServer {
             game.makeMove(move.getMove());
             //update game to represent move, update game in DB
             String name = gDataAccess.returnGames().get(move.getID()).gameName();
-            gDataAccess.returnGames().remove(move.getID());
-            gDataAccess.returnGames().put(move.getID(), new GameData(move.getID(), whitePlayer, blackPlayer, name, game));
+            gDataAccess.updateWholeGame( new GameData(move.getID(), whitePlayer, blackPlayer, name, game));
         } catch (InvalidMoveException e) {
             Error er = new Error("Invalid move");
             String error = new Gson().toJson(er);

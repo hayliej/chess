@@ -34,4 +34,9 @@ public class MemGameDAO implements GameDAO {
 
     }
 
+    @Override
+    public void updateWholeGame(GameData gameData) throws DataAccessException {
+
+    }
+
 }

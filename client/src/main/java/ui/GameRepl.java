@@ -5,6 +5,8 @@ import chess.ChessPiece;
 import chess.ChessPosition;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
+import webSocketMessages.userCommands.Leave;
+import webSocketMessages.userCommands.MakeMove;
 
 
 import java.util.Scanner;
@@ -45,9 +47,11 @@ public class GameRepl {
     }
 
     static String authToken = "";
+    static Integer gameID;
     public static void setAuth(String auth){
         authToken = auth;
     }
+    public static void setGameID(Integer id) { gameID = id; }
 
     private static void help() {
         System.out.print("\tredraw - chessboard \n");
@@ -103,14 +107,17 @@ public class GameRepl {
         }
 
         ChessMove cm = new ChessMove(cps, cpe, ptype);
-        String msg = new Gson().toJson(cm);
-        WebSocketFacade.send(msg); //??
+        MakeMove mm = new MakeMove(authToken, gameID, cm);
+        String msg = new Gson().toJson(mm);
+        //WebSocketFacade.send(msg); //??
 //        UserGameCommand ugc = new MakeMove(authToken, gIDNum, cm);
 //        //need to make into gson for server?
 //        new WSServer(session, ugc);
     }
 
     private void leave() {
+        Leave lm = new Leave(authToken, gameID);
+        String msg = new Gson().toJson(lm);
         //WebSocketFacade.send(msg);
     }
 
