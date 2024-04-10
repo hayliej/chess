@@ -12,6 +12,12 @@ import webSocketMessages.userCommands.MakeMove;
 import java.util.Scanner;
 
 public class GameRepl {
+    public GameRepl(WebSocketFacade wsf) {
+        this.wsf = wsf;
+    }
+
+    WebSocketFacade wsf;
+
     public void run() throws DataAccessException {
         //loadGame
         Scanner scanner = new Scanner(System.in);
@@ -48,6 +54,7 @@ public class GameRepl {
 
     static String authToken = "";
     static Integer gameID;
+    //game
     public static void setAuth(String auth){
         authToken = auth;
     }
@@ -63,7 +70,7 @@ public class GameRepl {
     }
 
     //SEND THE MESSAGES FROM HERE. THIS IS WHERE THE TYPE COMES FROM.
-    private static void makeMove(String input) throws Exception { //fix this later
+    private void makeMove(String input) throws Exception { //fix this later
         //parse out input to get ID and color
         String[] in = input.split(" <");
         for (String val : in){
@@ -109,16 +116,16 @@ public class GameRepl {
         ChessMove cm = new ChessMove(cps, cpe, ptype);
         MakeMove mm = new MakeMove(authToken, gameID, cm);
         String msg = new Gson().toJson(mm);
-        //WebSocketFacade.send(msg); //??
+        wsf.send(msg); //??
 //        UserGameCommand ugc = new MakeMove(authToken, gIDNum, cm);
 //        //need to make into gson for server?
 //        new WSServer(session, ugc);
     }
 
-    private void leave() {
+    private void leave() throws Exception {
         Leave lm = new Leave(authToken, gameID);
         String msg = new Gson().toJson(lm);
-        //WebSocketFacade.send(msg);
+        wsf.send(msg);
     }
 
     private static void resign(String line) {

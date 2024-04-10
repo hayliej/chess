@@ -5,6 +5,16 @@ import dataAccess.DataAccessException;
 import webSocketMessages.userCommands.JoinObserver;
 
 public class PostLoginRepl {
+    static WebSocketFacade wsf;
+
+    static {
+        try {
+            wsf = new WebSocketFacade();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void run() throws DataAccessException {
         System.out.println("You are logged in. Type help for options.");
 
@@ -76,6 +86,8 @@ public class PostLoginRepl {
         //send to game repl (next phase) ??
     }
 
+
+
     private static void joinGame(String input) throws DataAccessException {
         //parse out input to get ID and color
         String[] in = input.split(" <");
@@ -89,7 +101,7 @@ public class PostLoginRepl {
         new ServerFacade("http://localhost:8080").joinGame(authToken, idNum, color);
         //DrawChessBoard.main(null);//get rid of this once ws implemented
         //new.WebSocketFacade.joinPlayer();
-        new GameRepl().run();
+        new GameRepl(wsf).run();
     }
 
     private static void joinGameObserver(String input) throws Exception {
@@ -102,9 +114,8 @@ public class PostLoginRepl {
         // call join game observer from server facade
         new ServerFacade("http://localhost:8080").observeGame(authToken, idNum);
         //DrawChessBoard.main(null);//get rid of this once ws implemented
-        WebSocketFacade wsf = new WebSocketFacade();
         //wsf.joinObserver(new JoinObserver(authToken, idNum), wsf); //what's this doing??
-        new GameRepl().run(); //pass session to game repl and then use that as the session
+        new GameRepl(wsf).run(); //pass session to game repl and then use that as the session
     }
 
     private static void printPrompt() {

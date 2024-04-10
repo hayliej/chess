@@ -41,7 +41,7 @@ public class Main {
     }
 
     //login
-    private static void login(String input) throws DataAccessException {
+    private static void login(String input) throws Exception {
         //parse out input to get username and password
         String[] in = input.split(" <");
         String u = in[1];
@@ -59,7 +59,7 @@ public class Main {
     }
 
     //register
-    private static void register(String input) throws DataAccessException {
+    private static void register(String input) throws Exception {
         //parse input
         String[] in = input.split(" <");
         String u = in[1];
