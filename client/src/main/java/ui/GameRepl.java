@@ -171,8 +171,8 @@ public class GameRepl implements NotificationHandler {
         if (msg.getColor() == null){
             color = ChessGame.TeamColor.WHITE;
         }
-        msg.drawBoard(color);
         setGame(msg.getGame());
+        new DrawChessBoard(game.getBoard()).drawBoard(color);
     }
 
     public void notification(Notification msg){

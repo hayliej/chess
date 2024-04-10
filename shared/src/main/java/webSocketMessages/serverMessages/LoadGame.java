@@ -1,7 +1,6 @@
 package webSocketMessages.serverMessages;
 
 import chess.ChessGame;
-import ui.DrawChessBoard;
 
 public class LoadGame extends ServerMessage {
     ChessGame game;
@@ -14,9 +13,6 @@ public class LoadGame extends ServerMessage {
 
     public ChessGame.TeamColor getColor(){
         return color;
-    }
-    public void drawBoard(ChessGame.TeamColor color){
-        new DrawChessBoard(game.getBoard()).drawBoard(color);
     }
 
     public ChessGame getGame() {
