@@ -78,7 +78,6 @@ public class WSServer {
         }
         else if (msg.getCommandType().equals(UserGameCommand.CommandType.MAKE_MOVE)) {
             MakeMove makeM = new Gson().fromJson(message, MakeMove.class);
-            //do stuff
             makeMove(makeM, session);
         }
         else if (msg.getCommandType().equals(UserGameCommand.CommandType.LEAVE)) {
@@ -215,13 +214,10 @@ public class WSServer {
     }
 
     public void makeMove(MakeMove move, Session session) throws IOException, DataAccessException {
-        //String username  = String.valueOf(aDataAccess.returnAuths().get(move.getAuthString()));
         AuthData user  = (AuthData) aDataAccess.returnAuths().get(move.getAuthString());
         String username = user.username();
         ChessGame game = gDataAccess.returnGames().get(move.getID()).game();
-//        if (game == null){
-//            game = new ChessGame();
-//        }
+
         String whitePlayer = gDataAccess.returnGames().get(move.getID()).whiteUsername();
         String blackPlayer = gDataAccess.returnGames().get(move.getID()).blackUsername();
         ChessGame.TeamColor color;
@@ -251,10 +247,8 @@ public class WSServer {
         }
 
         //validate move
-        ChessGame updatedGame;
         try {
             game.makeMove(move.getMove());
-            //updatedGame = game;
             //update game to represent move, update game in DB
             String name = gDataAccess.returnGames().get(move.getID()).gameName();
             gDataAccess.returnGames().remove(move.getID());
@@ -265,29 +259,6 @@ public class WSServer {
             session.getRemote().sendString(error);
             return;
         }
-
-        //check correct turn
-//        if (!(game.getTeamTurn().equals(color))){
-//            Error er = new Error("Incorrect team turn");
-//            String error = new Gson().toJson(er);
-//            session.getRemote().sendString(error);
-//        }
-        //check right team
-        //else
-//        if (!(game.getBoard().getPiece(start)==null)) {
-//            if (!(game.getBoard().getPiece(start).getTeamColor().equals(color))) {
-//                Error er = new Error("Incorrect team piece, move a " + color + " piece");
-//                String error = new Gson().toJson(er);
-//                session.getRemote().sendString(error);
-//                return;
-//            }
-//        }
-//        //check right piece
-//        else if (!(game.getBoard().getPiece(start).getPieceType().equals(move.getMove().getPromotionPiece()))) {
-//            Error er = new Error("Incorrect piece type");
-//            String error = new Gson().toJson(er);
-//            session.getRemote().sendString(error);
-//        }
 
         ArrayList<String> people = games.get(move.getID());
         String user2 = getUsername(move.getAuthString());
