@@ -97,6 +97,7 @@ public class PostLoginRepl {
         String c = in[2];
         String color = c.replace(">", "");
         GameRepl.setGameID(idNum);
+        GameRepl.setColor(color);
         // call join game from server facade
         new ServerFacade("http://localhost:8080").joinGame(authToken, idNum, color);
         //DrawChessBoard.main(null);//get rid of this once ws implemented
@@ -111,6 +112,7 @@ public class PostLoginRepl {
         String id = i.replace(">", "");
         Integer idNum = Integer.valueOf(id);
         GameRepl.setGameID(idNum);
+        GameRepl.setColor(null);
         // call join game observer from server facade
         new ServerFacade("http://localhost:8080").observeGame(authToken, idNum);
         //DrawChessBoard.main(null);//get rid of this once ws implemented

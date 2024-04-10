@@ -1,10 +1,12 @@
 package ui;
 
+import chess.ChessGame;
 import chess.ChessMove;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
+import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.userCommands.Leave;
 import webSocketMessages.userCommands.MakeMove;
 import webSocketMessages.userCommands.Resign;
@@ -55,11 +57,15 @@ public class GameRepl {
 
     static String authToken = "";
     static Integer gameID;
-    //game
+    static ChessGame game;
+    static String color;
     public static void setAuth(String auth){
         authToken = auth;
     }
     public static void setGameID(Integer id) { gameID = id; }
+    public static void setColor(String c) { color = c; }
+    public static void setGame(ChessGame g) { game = g; }
+
 
     private static void help() {
         System.out.print("\tredraw - chessboard \n");
@@ -74,27 +80,16 @@ public class GameRepl {
     private void makeMove(String input) throws Exception { //fix this later
         //parse out input to get ID, start/end positions, pieceType
         String[] in = input.split(" <");
-        for (String val : in){
-            if (val.length()>2){
-                continue;
-            }
-            val.replace("a", "1");
-            val.replace("b", "2");
-            val.replace("c", "3");
-            val.replace("d", "4");
-            val.replace("e", "5");
-            val.replace("f", "6");
-            val.replace("g", "7");
-            val.replace("h", "8");
-        }
         String g = in[1];
         String gID = g.replace(">", "");
         Integer gIDNum = Integer.valueOf(gID);
         String s = in[2];
         String start = s.replace(">", "");
+        start = coordToPosition(start);
         ChessPosition cps = new ChessPosition(start.charAt(0), start.charAt(1));
         String e = in[2];
         String end = e.replace(">", "");
+        end = coordToPosition(end);
         ChessPosition cpe = new ChessPosition(end.charAt(0), end.charAt(1));
         String pt = in[2];
         String pieceType = pt.replace(">", "");
@@ -120,6 +115,18 @@ public class GameRepl {
         wsf.send(msg);
     }
 
+    public String coordToPosition(String in){
+        String out = in.replace("a", "1");
+        out = in.replace("b", "2");
+        out = in.replace("c", "3");
+        out = in.replace("d", "4");
+        out = in.replace("e", "5");
+        out = in.replace("f", "6");
+        out = in.replace("g", "7");
+        out = in.replace("h", "8");
+        return out;
+    }
+
     private void leave() throws Exception {
         Leave lm = new Leave(authToken, gameID);
         String msg = new Gson().toJson(lm);
@@ -133,6 +140,8 @@ public class GameRepl {
     }
 
     private void redraw() {
+        LoadGame lgm = new LoadGame(, color);
+        wsf.loadGame(lgm);
     }
 
     private static void highlight() {
