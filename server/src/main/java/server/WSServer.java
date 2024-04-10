@@ -360,11 +360,13 @@ public class WSServer {
         ArrayList<String> people = games.get(leave.getID());
         for (String person : people){
             if (!person.equals(leave.getAuthString())) {
-                if (session.isOpen()){
-                    String sm = new Gson().toJson(new Notification(user + " has left the game"));
-                    sessions.get(person).getRemote().sendString(sm);
-                } else {
-                    sessions.remove(person);
+                if (sessions.containsKey(person)) {
+                    if (sessions.get(person).isOpen()) {
+                        String sm = new Gson().toJson(new Notification(user + " has left the game"));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
+                    }
                 }
             }
         }
