@@ -1,8 +1,10 @@
 package ui;
 import chess.ChessGame;
 import com.google.gson.Gson;
+import server.WSServer;
 import webSocketMessages.serverMessages.*;
 import webSocketMessages.serverMessages.Error;
+import webSocketMessages.userCommands.JoinObserver;
 import webSocketMessages.userCommands.UserGameCommand;
 
 import javax.websocket.*;
@@ -63,6 +65,17 @@ public class WebSocketFacade extends Endpoint {
     public void send(String msg) throws Exception {
         this.session.getBasicRemote().sendText(msg);
     }
+
+    public void joinObserver(JoinObserver jo, Session session){
+        new WSServer().joinObserver(jo, session);
+        return;
+    }
+
+    public static void leave(String auth){
+        return;
+    }
+
+
 
     public void onOpen(Session session, EndpointConfig endpointConfig) {
         //???

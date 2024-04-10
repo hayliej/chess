@@ -28,6 +28,8 @@ public class GameRepl {
                     break;
                 } else if (line.startsWith("resign")) {
                     resign(line);
+                    //send back to post-login (main)
+                    break;
                 } else if (line.startsWith("redraw")){
                     redraw();
                 } else if (line.startsWith("highlight")){
@@ -75,6 +77,7 @@ public class GameRepl {
     }
 
     private static void leave() {
+        WebSocketFacade.leave(authToken);
     }
 
     private static void resign(String line) {
