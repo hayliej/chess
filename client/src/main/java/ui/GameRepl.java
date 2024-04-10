@@ -71,7 +71,7 @@ public class GameRepl {
 
     //SEND THE MESSAGES FROM HERE. THIS IS WHERE THE TYPE COMES FROM.
     private void makeMove(String input) throws Exception { //fix this later
-        //parse out input to get ID and color
+        //parse out input to get ID, start/end positions, pieceType
         String[] in = input.split(" <");
         for (String val : in){
             if (val.length()>2){
@@ -91,13 +91,13 @@ public class GameRepl {
         Integer gIDNum = Integer.valueOf(gID);
         String s = in[2];
         String start = s.replace(">", "");
-        ChessPosition cps = new ChessPosition(s.charAt(0), s.charAt(1));
+        ChessPosition cps = new ChessPosition(start.charAt(0), start.charAt(1));
         String e = in[2];
         String end = e.replace(">", "");
-        ChessPosition cpe = new ChessPosition(e.charAt(0), e.charAt(1));
+        ChessPosition cpe = new ChessPosition(end.charAt(0), end.charAt(1));
         String pt = in[2];
         String pieceType = pt.replace(">", "");
-        ChessPiece.PieceType ptype = ChessPiece.PieceType.PAWN;
+        ChessPiece.PieceType ptype = null;
         switch (pieceType){
             case "king":
                ptype = ChessPiece.PieceType.KING;
@@ -114,12 +114,9 @@ public class GameRepl {
         }
 
         ChessMove cm = new ChessMove(cps, cpe, ptype);
-        MakeMove mm = new MakeMove(authToken, gameID, cm);
+        MakeMove mm = new MakeMove(authToken, gIDNum, cm);
         String msg = new Gson().toJson(mm);
-        wsf.send(msg); //??
-//        UserGameCommand ugc = new MakeMove(authToken, gIDNum, cm);
-//        //need to make into gson for server?
-//        new WSServer(session, ugc);
+        wsf.send(msg);
     }
 
     private void leave() throws Exception {
