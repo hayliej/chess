@@ -39,7 +39,6 @@ public class WebSocketFacade extends Endpoint {
                     Notification mesg = new Gson().fromJson(message, Notification.class);
                     notification(mesg);
                 }
-                //send to game ui (if needed) to handle
 //                System.out.println(message);
             }
         });
@@ -64,16 +63,6 @@ public class WebSocketFacade extends Endpoint {
     public void send(String msg) throws Exception {
         this.session.getBasicRemote().sendText(msg);
     }
-
-    public void joinObserver(JoinObserver jo, Session session){
-        return;
-    }
-
-    public static void leave(String auth){
-        return;
-    }
-
-
 
     public void onOpen(Session session, EndpointConfig endpointConfig) {
     }
