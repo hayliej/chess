@@ -342,12 +342,22 @@ public class WSServer {
     }
 
     public void leave(Leave leave, Session session) throws IOException, DataAccessException {
+        String user = getUsername(leave.getAuthString());
         //remove root client
+        games.get(leave.getID()).remove(leave.getAuthString());
         //update game in DB
+        GameData gd = gDataAccess.returnGames().get(leave.getID());
+        if (gd.whiteUsername().equals(user)){
+            gd = new GameData(gd.gameID(), null, gd.blackUsername(), gd.gameName(), gd.game());
+        }
+        if (gd.blackUsername().equals(user)){
+            gd = new GameData(gd.gameID(), gd.whiteUsername(), null, gd.gameName(), gd.game());
+        }
+        gDataAccess.returnGames().remove(leave.getID());
+        gDataAccess.returnGames().put(leave.getID(), gd);
 
         //send notification to everyone
         ArrayList<String> people = games.get(leave.getID());
-        String user = getUsername(leave.getAuthString());
         for (String person : people){
             if (!person.equals(leave.getAuthString())) {
                 if (session.isOpen()){
