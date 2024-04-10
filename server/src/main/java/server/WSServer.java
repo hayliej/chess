@@ -303,12 +303,13 @@ public class WSServer {
                 }
             }
 
-
-            if (session.isOpen()){
-                String lg = new Gson().toJson(lgame);
-                session.getRemote().sendString(lg);
-            } else {
-                sessions.remove(person);
+            if (sessions.containsKey(person)) {
+                if (sessions.get(person).isOpen()) {
+                    String lg = new Gson().toJson(lgame);
+                    sessions.get(person).getRemote().sendString(lg);
+                } else {
+                    sessions.remove(person);
+                }
             }
 
             //send notification to others
