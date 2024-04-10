@@ -382,7 +382,7 @@ public class WSServer {
 
     public void resign(Resign resign, Session session) throws IOException, DataAccessException {
         String user = getUsername(resign.getAuthString());
-
+        ChessGame game = gDataAccess.returnGames().get(resign.getID()).game();
         String whitePlayer = gDataAccess.returnGames().get(resign.getID()).whiteUsername();
         String blackPlayer = gDataAccess.returnGames().get(resign.getID()).blackUsername();
 
@@ -394,8 +394,15 @@ public class WSServer {
             return;
         }
 
+        //check gameInProgress
+        if (!game.isInProgress()){
+            Error er = new Error("Game not in progress, cannot resign");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+            return;
+        }
+
         //mark game as over -- no more moves can be made
-        ChessGame game = gDataAccess.returnGames().get(resign.getID()).game();
         game.resign();
 
         //update game in DB
