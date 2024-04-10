@@ -34,6 +34,10 @@ public class ChessGame {
         teamTurn = team;
     }
 
+    public boolean isInProgress(){
+        return gameInProgress;
+    }
+
     public void resign(){
         gameInProgress = false;
     }

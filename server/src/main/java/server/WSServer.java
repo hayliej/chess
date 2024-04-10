@@ -229,6 +229,14 @@ public class WSServer {
 
         ChessPosition start = move.getMove().getStartPosition();
 
+        //check game over
+        if (!game.isInProgress()){
+            Error er = new Error("Game over, cannot move");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+            return;
+        }
+
         //not observer
         if (!whitePlayer.equals(username) && !blackPlayer.equals(username)){
             Error er = new Error("Observer cannot move");
@@ -375,15 +383,16 @@ public class WSServer {
     public void resign(Resign resign, Session session) throws IOException, DataAccessException {
         String user = getUsername(resign.getAuthString());
         //mark game as over -- no more moves can be made
-        gDataAccess.returnGames().get(resign.getID()).game().resign();
+        ChessGame game = gDataAccess.returnGames().get(resign.getID()).game();
+        game.resign();
 
         //update game in DB
         GameData gd = gDataAccess.returnGames().get(resign.getID());
         if (gd.whiteUsername().equals(user)){
-            gd = new GameData(gd.gameID(), null, gd.blackUsername(), gd.gameName(), gd.game());
+            gd = new GameData(gd.gameID(), null, gd.blackUsername(), gd.gameName(), game);
         }
         if (gd.blackUsername().equals(user)){
-            gd = new GameData(gd.gameID(), gd.whiteUsername(), null, gd.gameName(), gd.game());
+            gd = new GameData(gd.gameID(), gd.whiteUsername(), null, gd.gameName(), game);
         }
         gDataAccess.returnGames().remove(resign.getID());
         gDataAccess.returnGames().put(resign.getID(), gd);
@@ -391,14 +400,12 @@ public class WSServer {
         //send ze notification
         ArrayList<String> people = games.get(resign.getID());
         for (String person : people){
-            if (!person.equals(resign.getAuthString())) {
-                if (sessions.containsKey(person)) {
-                    if (sessions.get(person).isOpen()) {
-                        String sm = new Gson().toJson(new Notification(user + " has resigned"));
-                        sessions.get(person).getRemote().sendString(sm);
-                    } else {
-                        sessions.remove(person);
-                    }
+            if (sessions.containsKey(person)) {
+                if (sessions.get(person).isOpen()) {
+                    String sm = new Gson().toJson(new Notification(user + " has resigned"));
+                    sessions.get(person).getRemote().sendString(sm);
+                } else {
+                    sessions.remove(person);
                 }
             }
         }
