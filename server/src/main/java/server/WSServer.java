@@ -5,19 +5,16 @@ import dataAccess.*;
 import org.eclipse.jetty.websocket.api.annotations.*;
 import org.eclipse.jetty.websocket.api.*;
 import requests.AuthData;
-import service.GameService;
-import spark.Spark;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
-import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.*;
 import requests.GameData;
 import webSocketMessages.serverMessages.Error;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 @WebSocket
 public class WSServer {
@@ -95,13 +92,15 @@ public class WSServer {
 
 
     public void joinObserver(JoinObserver jo, Session session) throws IOException, DataAccessException {
+        Map<Integer, GameData> allGames = gDataAccess.returnGames();
+
         if (!aDataAccess.returnAuths().containsKey(jo.getAuthString())){
             Error er = new Error("Error: Invalid Auth Token");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
             return;
         }
-        else if (!gDataAccess.returnGames().containsKey(jo.getID())){
+        else if (!allGames.containsKey(jo.getID())){
             Error er = new Error("Error: Game Does Not Exist");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
@@ -109,7 +108,7 @@ public class WSServer {
         }
 
             //send LoadGame to root client
-            GameData game = gDataAccess.returnGames().get(jo.getID());
+            GameData game = allGames.get(jo.getID());
             LoadGame lgame = new LoadGame(game.game(), null);
             String lg = new Gson().toJson(lgame);
             session.getRemote().sendString(lg);
@@ -133,6 +132,7 @@ public class WSServer {
     }
 
     public void joinPlayer(JoinPlayer jp, Session session) throws IOException, DataAccessException {
+        Map<Integer, GameData> allGames = gDataAccess.returnGames();
 
         String whitePlayer;
         String blackPlayer;
@@ -143,14 +143,14 @@ public class WSServer {
             return;
         }
 
-        if (!gDataAccess.returnGames().containsKey(jp.getID())) {
+        if (!allGames.containsKey(jp.getID())) {
             Error er = new Error("Error: Game Does Not Exist");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
             return;
         } else {
-            whitePlayer = gDataAccess.returnGames().get(jp.getID()).whiteUsername();
-            blackPlayer = gDataAccess.returnGames().get(jp.getID()).blackUsername();
+            whitePlayer = allGames.get(jp.getID()).whiteUsername();
+            blackPlayer = allGames.get(jp.getID()).blackUsername();
         }
 
 
@@ -191,7 +191,7 @@ public class WSServer {
             }
 
             //send LoadGame to root client
-            GameData game = gDataAccess.returnGames().get(jp.getID());
+            GameData game = allGames.get(jp.getID());
             LoadGame lgame = new LoadGame(game.game(), jp.getColor());
             String lg = new Gson().toJson(lgame);
             session.getRemote().sendString(lg);
@@ -215,12 +215,18 @@ public class WSServer {
     }
 
     public void makeMove(MakeMove move, Session session) throws IOException, DataAccessException {
-        AuthData user  = (AuthData) aDataAccess.returnAuths().get(move.getAuthString());
+        Map<Object, Object> allAuth = aDataAccess.returnAuths();
+        AuthData user  = (AuthData) allAuth.get(move.getAuthString());
         String username = user.username();
-        ChessGame game = gDataAccess.returnGames().get(move.getID()).game();
+        Map<Integer, GameData> allGames = gDataAccess.returnGames();
+        GameData gameData = allGames.get(move.getID());
+        ChessGame game = gameData.game();
+        //ChessGame game = gDataAccess.returnGames().get(move.getID()).game();
 
-        String whitePlayer = gDataAccess.returnGames().get(move.getID()).whiteUsername();
-        String blackPlayer = gDataAccess.returnGames().get(move.getID()).blackUsername();
+        String whitePlayer = gameData.whiteUsername();
+        String blackPlayer = gameData.blackUsername();
+//        String whitePlayer = gDataAccess.returnGames().get(move.getID()).whiteUsername();
+//        String blackPlayer = gDataAccess.returnGames().get(move.getID()).blackUsername();
         ChessGame.TeamColor color;
         if (whitePlayer.equals(username)){
             color = ChessGame.TeamColor.WHITE;
@@ -259,7 +265,7 @@ public class WSServer {
         try {
             game.makeMove(move.getMove());
             //update game to represent move, update game in DB
-            String name = gDataAccess.returnGames().get(move.getID()).gameName();
+            String name = gameData.gameName();
             gDataAccess.updateWholeGame( new GameData(move.getID(), whitePlayer, blackPlayer, name, game));
         } catch (InvalidMoveException e) {
             Error er = new Error("Error: Invalid move");
@@ -272,13 +278,13 @@ public class WSServer {
         String user2 = getUsername(move.getAuthString());
         for (String person : people){
             //send LoadGame to everyone
-            GameData gameD = gDataAccess.returnGames().get(move.getID());
-            LoadGame lgame = new LoadGame(gameD.game(), null);
-            if (aDataAccess.returnAuths().containsKey(person)) {
-                if (aDataAccess.returnAuths().get(person).equals(blackPlayer)) {
-                    lgame = new LoadGame(gameD.game(), ChessGame.TeamColor.BLACK);
-                } else if (aDataAccess.returnAuths().get(person).equals(whitePlayer)) {
-                    lgame = new LoadGame(gameD.game(), ChessGame.TeamColor.WHITE);
+            //GameData gameD = gDataAccess.returnGames().get(move.getID());
+            LoadGame lgame = new LoadGame(gameData.game(), null);
+            if (allAuth.containsKey(person)) {
+                if (allAuth.get(person).equals(blackPlayer)) {
+                    lgame = new LoadGame(gameData.game(), ChessGame.TeamColor.BLACK);
+                } else if (allAuth.get(person).equals(whitePlayer)) {
+                    lgame = new LoadGame(gameData.game(), ChessGame.TeamColor.WHITE);
                 }
             }
 

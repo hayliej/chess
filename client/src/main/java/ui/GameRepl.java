@@ -59,7 +59,7 @@ public class GameRepl implements NotificationHandler {
 
         Scanner scanner = new Scanner(System.in);
         var line = "";
-        while (!line.equals("quit")){
+        while (!line.equals("leave")){
             printPrompt();
 
             line = scanner.nextLine();
@@ -88,12 +88,10 @@ public class GameRepl implements NotificationHandler {
     }
 
 
-
-
     private static void help() {
         System.out.print("\tredraw - chessboard \n");
         System.out.print("\tleave - the game \n");
-        System.out.print("\tmove <gameID no decimal> <start position> <end position> <PIECE TYPE>- a piece \n");
+        System.out.print("\tmove <start position> <end position> <piece type lowercase>- a piece \n");
         System.out.print("\tresign - forfeit the game \n");
         System.out.print("\thighlight - legal moves \n");
         System.out.print("\thelp - with possible commands \n");
@@ -103,51 +101,54 @@ public class GameRepl implements NotificationHandler {
     private void makeMove(String input) throws Exception { //fix this later
         //parse out input to get ID, start/end positions, pieceType
         String[] in = input.split(" <");
-        String g = in[1];
-        String gID = g.replace(">", "");
-        Integer gIDNum = Integer.valueOf(gID);
-        String s = in[2];
+        String s = in[1];
         String start = s.replace(">", "");
         start = coordToPosition(start);
-        ChessPosition cps = new ChessPosition(start.charAt(0), start.charAt(1));
+        String[] startP = start.split("");
+        Integer startRow = Integer.valueOf(startP[0]);
+        Integer startCol = Integer.valueOf(startP[1]);
+        ChessPosition cps = new ChessPosition(startRow, startCol);
         String e = in[2];
         String end = e.replace(">", "");
         end = coordToPosition(end);
-        ChessPosition cpe = new ChessPosition(end.charAt(0), end.charAt(1));
-        String pt = in[2];
+        String[] endP = end.split("");
+        Integer endRow = Integer.valueOf(endP[0]);
+        Integer endCol = Integer.valueOf(endP[1]);
+        ChessPosition cpe = new ChessPosition(endRow, endCol);
+        String pt = in[3];
         String pieceType = pt.replace(">", "");
         ChessPiece.PieceType ptype = null;
-        switch (pieceType){
-            case "king":
-               ptype = ChessPiece.PieceType.KING;
-            case "knight":
-                ptype = ChessPiece.PieceType.KNIGHT;
-            case "queen":
-                ptype = ChessPiece.PieceType.QUEEN;
-            case "rook":
-                ptype = ChessPiece.PieceType.ROOK;
-            case "pawn":
-                ptype = ChessPiece.PieceType.PAWN;
-            case "bishop":
-                ptype = ChessPiece.PieceType.BISHOP;
+
+        if (pieceType.equals("king")){
+            ptype = ChessPiece.PieceType.KING;
+        } else if (pieceType.equals("knight")){
+            ptype = ChessPiece.PieceType.KNIGHT;
+        } else if (pieceType.equals("queen")){
+            ptype = ChessPiece.PieceType.QUEEN;
+        } else if (pieceType.equals("rook")){
+            ptype = ChessPiece.PieceType.ROOK;
+        } else if (pieceType.equals("pawn")){
+            ptype = ChessPiece.PieceType.PAWN;
+        } else if (pieceType.equals("bishop")){
+            ptype = ChessPiece.PieceType.BISHOP;
         }
 
         ChessMove cm = new ChessMove(cps, cpe, ptype);
-        MakeMove mm = new MakeMove(authToken, gIDNum, cm);
+        MakeMove mm = new MakeMove(authToken, gameID, cm);
         String msg = new Gson().toJson(mm);
         wsf.send(msg);
     }
 
     public String coordToPosition(String in){
-        String out = in.replace("a", "1");
-        out = in.replace("b", "2");
-        out = in.replace("c", "3");
-        out = in.replace("d", "4");
-        out = in.replace("e", "5");
-        out = in.replace("f", "6");
-        out = in.replace("g", "7");
-        out = in.replace("h", "8");
-        return out;
+        String a = in.replace("a", "1");
+        String b = a.replace("b", "2");
+        String c = b.replace("c", "3");
+        String d = c.replace("d", "4");
+        String e = d.replace("e", "5");
+        String f = e.replace("f", "6");
+        String g = f.replace("g", "7");
+        String h = g.replace("h", "8");
+        return h;
     }
 
     private void leave() throws Exception {
