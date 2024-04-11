@@ -19,6 +19,10 @@ public class SqlUserDAO implements UserDAO {
             """
     };
     private static void configureDatabase() throws DataAccessException {
+        configureDatabase(createStatements);
+    }
+
+    static void configureDatabase(String[] createStatements) throws DataAccessException {
         DatabaseManager.createDatabase();
         try (var conn = DatabaseManager.getConnection()) {
             for (var statement : createStatements) {
