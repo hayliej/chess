@@ -1,5 +1,4 @@
 package service;
-import chess.ChessBoard;
 import chess.ChessGame;
 import dataAccess.*;
 import requests.*;
@@ -9,24 +8,23 @@ import results.LogoutResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GameService {
-    private static UserDAO uDataAccess;
+    private static UserDAO uDataAccessGame;
 
     static {
         try {
-            uDataAccess = new SqlUserDAO();
+            uDataAccessGame = new SqlUserDAO();
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static AuthDAO aDataAccess;
+    private static AuthDAO aDataAccessGame;
 
     static {
         try {
-            aDataAccess = new SqlAuthDAO();
+            aDataAccessGame = new SqlAuthDAO();
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
@@ -45,7 +43,7 @@ public class GameService {
 
     //listGames
     public ListGamesResult listGames(String auth) throws DataAccessException {
-        if (!(aDataAccess.returnAuths().containsKey(auth))){
+        if (!(aDataAccessGame.returnAuths().containsKey(auth))){
             return new ListGamesResult("Error: unauthorized", null);
         }
         List games = new ArrayList();
@@ -57,7 +55,7 @@ public class GameService {
 
     //createGame
     public CreateGameResult createGame(AuthNewGame newAuth) throws DataAccessException {
-        if (!(aDataAccess.returnAuths().containsKey(newAuth.authToken()))){
+        if (!(aDataAccessGame.returnAuths().containsKey(newAuth.authToken()))){
             return new CreateGameResult("Error: unauthorized", null);
         } else if (newAuth.authToken()==null || newAuth.gameName()==null){
             return new CreateGameResult("Error: bad request", null);
@@ -71,7 +69,7 @@ public class GameService {
 
     //join game
     public LogoutResult joinGame(AuthJoinGame join) throws DataAccessException {
-        if (!(aDataAccess.returnAuths().containsKey(join.authToken()))){
+        if (!(aDataAccessGame.returnAuths().containsKey(join.authToken()))){
             return new LogoutResult("Error: unauthorized");
         } else if (join.authToken()==null || join.gameID()==null){
             return new LogoutResult("Error: bad request");
@@ -89,8 +87,8 @@ public class GameService {
             GameData old = gDataAccess.returnGames().get(join.gameID());
 //            GameData replace = new GameData(old.gameID(), ADataAccess.getVal(join.authToken()),
 //                    null, GDataAccess.returnGames().get(join.gameID()).gameName());
-            GameData newgd = new GameData(old.gameID(), aDataAccess.getVal(join.authToken()), old.blackUsername(), old.gameName(), old.game());
-            gDataAccess.updateGames(join.gameID(), "white", aDataAccess.getVal(join.authToken()));
+            GameData newgd = new GameData(old.gameID(), aDataAccessGame.getVal(join.authToken()), old.blackUsername(), old.gameName(), old.game());
+            gDataAccess.updateGames(join.gameID(), "white", aDataAccessGame.getVal(join.authToken()));
         }
         if (join.playerColor().equals("BLACK")) {
             if (!(gDataAccess.returnGames().get(join.gameID()).blackUsername()==null)){
@@ -99,8 +97,8 @@ public class GameService {
             GameData old = gDataAccess.returnGames().get(join.gameID());
 //            GameData replace = new GameData(join.gameID(), null, ADataAccess.getVal(join.authToken()),
 //                    GDataAccess.returnGames().get(join.gameID()).gameName());
-            GameData newgd = new GameData(old.gameID(), old.whiteUsername(), aDataAccess.getVal(join.authToken()), old.gameName(), old.game());
-            gDataAccess.updateGames(join.gameID(), "black", aDataAccess.getVal(join.authToken()));
+            GameData newgd = new GameData(old.gameID(), old.whiteUsername(), aDataAccessGame.getVal(join.authToken()), old.gameName(), old.game());
+            gDataAccess.updateGames(join.gameID(), "black", aDataAccessGame.getVal(join.authToken()));
         }
         return new LogoutResult(null);
     }
@@ -108,7 +106,7 @@ public class GameService {
     //clearDB
     public void clear() throws DataAccessException {
         gDataAccess.clear();
-        aDataAccess.clear();
-        uDataAccess.clear();
+        aDataAccessGame.clear();
+        uDataAccessGame.clear();
     }
 }

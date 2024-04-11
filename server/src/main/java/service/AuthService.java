@@ -9,21 +9,21 @@ import java.util.UUID;
 
 public class AuthService {
 
-    private static UserDAO uDataAccess;
+    private static UserDAO uDataAccessAuth;
 
     static {
         try {
-            uDataAccess = new SqlUserDAO();
+            uDataAccessAuth = new SqlUserDAO();
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static AuthDAO aDataAccess;
+    private static AuthDAO aDataAccessAuth;
 
     static {
         try {
-            aDataAccess = new SqlAuthDAO();
+            aDataAccessAuth = new SqlAuthDAO();
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
@@ -33,34 +33,34 @@ public class AuthService {
     public static RegisterResult login(LoginRequest logReq) throws DataAccessException {
         if (logReq.username() ==null || logReq.password()==null){
             return new RegisterResult("Error: unauthorized", null, null);
-        } else if (!(uDataAccess.returnUsers().containsKey(logReq.username()))){
+        } else if (!(uDataAccessAuth.returnUsers().containsKey(logReq.username()))){
             return new RegisterResult("Error: unauthorized", null, null);
-        } else if (uDataAccess.returnUsers().containsKey(logReq.username())){
-            if (!(uDataAccess.returnUsers().get(logReq.username()).password().equals(logReq.password()))) {
+        } else if (uDataAccessAuth.returnUsers().containsKey(logReq.username())){
+            if (!(uDataAccessAuth.returnUsers().get(logReq.username()).password().equals(logReq.password()))) {
             return new RegisterResult("Error: unauthorized", null, null);
             }
         }
         String authToken = UUID.randomUUID().toString();
-        aDataAccess.addAuth(new AuthData(authToken, logReq.username()));
+        aDataAccessAuth.addAuth(new AuthData(authToken, logReq.username()));
         return new RegisterResult(null, logReq.username(), authToken);
     }
 
     public static LogoutResult logout(String authTok) throws DataAccessException {
-        if (!(aDataAccess.returnAuths().containsKey(authTok))){
+        if (!(aDataAccessAuth.returnAuths().containsKey(authTok))){
             return new LogoutResult("Error: unauthorized");
         }
-        aDataAccess.removeAuth(authTok);
+        aDataAccessAuth.removeAuth(authTok);
         return new LogoutResult("");
     }
 
     public void clear() throws DataAccessException {
-        uDataAccess.clear();
-        aDataAccess.clear();
+        uDataAccessAuth.clear();
+        aDataAccessAuth.clear();
     }
 
     //for unit test
     public Map<Object, Object> getMap() throws DataAccessException {
-        return aDataAccess.returnAuths();
+        return aDataAccessAuth.returnAuths();
     }
 }
 
