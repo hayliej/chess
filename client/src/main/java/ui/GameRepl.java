@@ -146,6 +146,15 @@ public class GameRepl implements NotificationHandler {
         wsf.send(msg);
     }
 
+    public void drawBoard(LoadGame lg){
+        ChessGame.TeamColor c = ChessGame.TeamColor.WHITE;
+        if (color.equals("black")){
+            c = ChessGame.TeamColor.BLACK;
+        }
+        setGame(lg.getGame());
+        new DrawChessBoard(game.getBoard()).drawBoard(c);
+    }
+
     private void redraw() {
         ChessGame.TeamColor c = ChessGame.TeamColor.WHITE;
         if (color.equals("black")){
@@ -172,11 +181,6 @@ public class GameRepl implements NotificationHandler {
     }
     public void error(Error msg){
         System.out.println(msg.getErrorMessage());
-    }
-
-    public void drawBoard(LoadGame lg){
-        setGame(lg.getGame());
-        new DrawChessBoard(game.getBoard()).drawBoard(lg.getColor());
     }
 
     public void loadGame(LoadGame msg){

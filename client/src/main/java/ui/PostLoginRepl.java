@@ -110,7 +110,7 @@ public class PostLoginRepl {
         String id = i.replace(">", "");
         Integer idNum = Integer.valueOf(id);
         GameRepl.setGameID(idNum);
-        GameRepl.setColor(null);
+        GameRepl.setColor("white");
         // call join game observer from server facade
         new ServerFacade("http://localhost:8080").observeGame(authToken, idNum);
         //DrawChessBoard.main(null);//get rid of this once ws implemented
