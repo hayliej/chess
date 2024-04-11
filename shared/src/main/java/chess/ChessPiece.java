@@ -326,19 +326,15 @@ public class ChessPiece {
     public Collection<ChessMove> pawnMove(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> pawn = new ArrayList<>();
         ChessPiece p = board.getPiece(new ChessPosition(myPosition.getRow(),myPosition.getColumn()));
-
         //check if it's on starting line, white row 2, black row 7
         if (p.getTeamColor().equals(ChessGame.TeamColor.WHITE)) {
-            if (myPosition.getRow() == 2) {
-                //2 spaces
+            if (myPosition.getRow() == 2) { //2 spaces
                 if ((myPosition.getRow() + 2 >= 1 & myPosition.getRow() + 2 <= 8) & (myPosition.getColumn() >= 1 & myPosition.getColumn() <= 8)) {
                     ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()));
                     ChessPiece p2 = board.getPiece(new ChessPosition(myPosition.getRow() + 2, myPosition.getColumn()));
                     if (p1 == null && p2 ==null) {
                         pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 2, myPosition.getColumn()), null));
-                    }
-                }
-            }
+                    }}}
             //1 space
             if ((myPosition.getRow() + 1 >= 1 & myPosition.getRow() + 1 <= 8) & (myPosition.getColumn() >= 1 & myPosition.getColumn() <= 8)) {
                 ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()));
@@ -350,10 +346,7 @@ public class ChessPiece {
                         pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()), PieceType.QUEEN));
                     } else {
                         pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()), null));
-                    }
-                }
-            }
-
+                    }}}
             //check for attacking
             if ((myPosition.getRow() + 1 >= 1 & myPosition.getRow() + 1 <= 8) & (myPosition.getColumn() + 1 >= 1 & myPosition.getColumn() + 1 <= 8)) {
                 ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1));
@@ -366,10 +359,7 @@ public class ChessPiece {
                             pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1), PieceType.QUEEN));
                         } else {
                             pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1), null));
-                        }
-                    }
-                }
-            }
+                        }}}}
             if ((myPosition.getRow() + 1 >= 1 & myPosition.getRow() + 1 <= 8) & (myPosition.getColumn() - 1 >= 1 & myPosition.getColumn() - 1 <= 8)) {
                 ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1));
                 if (p1 != null) {
@@ -381,12 +371,7 @@ public class ChessPiece {
                             pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1), PieceType.QUEEN));
                         } else {
                         pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1), null));
-                        }
-                    }
-                }
-            }
-        }
-
+                        }}}}}
         if (p.getTeamColor().equals(ChessGame.TeamColor.BLACK)){
             if (myPosition.getRow() == 7) {
                 //2 spaces
@@ -395,9 +380,7 @@ public class ChessPiece {
                     ChessPiece p2 = board.getPiece(new ChessPosition(myPosition.getRow() - 2, myPosition.getColumn()));
                     if (p1 == null && p2 == null) {
                         pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 2, myPosition.getColumn()), null));
-                    }
-                }
-            }
+                    }}}
             //1 space
             if ((myPosition.getRow() - 1 >= 1 & myPosition.getRow() - 1 <= 8) & (myPosition.getColumn() >= 1 & myPosition.getColumn() <= 8)) {
                 ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()));
@@ -409,10 +392,7 @@ public class ChessPiece {
                         pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()), PieceType.QUEEN));
                     } else {
                         pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()), null));
-                    }
-                }
-            }
-
+                    }}}
             //check for attacking
             if ((myPosition.getRow() - 1 >= 1 & myPosition.getRow() - 1 <= 8) & (myPosition.getColumn() + 1 >= 1 & myPosition.getColumn() + 1 <= 8)) {
                 ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 1));
@@ -425,10 +405,7 @@ public class ChessPiece {
                             pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 1), PieceType.QUEEN));
                         } else {
                             pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 1), null));
-                        }
-                    }
-                }
-            }
+                        }}}}
             if ((myPosition.getRow() - 1 >= 1 & myPosition.getRow() - 1 <= 8) & (myPosition.getColumn() - 1 >= 1 & myPosition.getColumn() - 1 <= 8)) {
                 ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1));
                 if (p1 != null) {
@@ -440,17 +417,10 @@ public class ChessPiece {
                             pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1), PieceType.QUEEN));
                         } else {
                             pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1), null));
-                        }
-                    }
-                }
-            }
-        }
+                        }}}}}
         //function to check end of board and right color, add promotions
-
-
         //promotion piece, if it gets to other side change type, 4 moves one to end and become ___
         //go through all and add to separate collection
-
         //return list of all options myPosition +/- 1-2 row(s) depending on color, & diagonal attack moves;
         return pawn;
     }
@@ -486,9 +456,7 @@ public class ChessPiece {
     public Collection<ChessMove> queenMove(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> queen = new ArrayList<>();
         ChessPiece p = board.getPiece(new ChessPosition(myPosition.getRow(),myPosition.getColumn()));
-
-        //moves like rook
-        //increasing row
+        //moves like rook  //increasing row
         for (int i = 1; i<=8; i++){
             //check if in bounds
             if ((myPosition.getRow()+i >=1 & myPosition.getRow()+i <=8) & (myPosition.getColumn() >=1 & myPosition.getColumn() <=8)) {
@@ -499,10 +467,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
-
+                }}}
         //decreasing row
         for (int i = 1; i<=8; i++){
             //check if in bounds
@@ -514,10 +479,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
-
+                }}}
         //increasing col
         for (int i = 1; i<=8; i++){
             //check if in bounds
@@ -529,10 +491,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
-
+                }}}
         //decreasing col
         for (int i = 1; i<=8; i++){
             //check if in bounds
@@ -544,10 +503,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
-
+                }}}
         //moves like bishop
         for (int i = 1; i<=8; i++) {
             //check if in bounds
@@ -560,10 +516,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
-
+                }}}
         for (int i = 1; i<=8; i++) {
             if ((myPosition.getRow() + i >= 1 & myPosition.getRow() + i <= 8) &
                     (myPosition.getColumn() - i >= 1 & myPosition.getColumn() - i <= 8)) {
@@ -574,10 +527,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
-
+                }}}
         for (int i = 1; i<=8; i++) {
             if ((myPosition.getRow() - i >= 1 & myPosition.getRow() - i <= 8) &
                     (myPosition.getColumn() + i >= 1 & myPosition.getColumn() + i <= 8)) {
@@ -588,10 +538,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
-
+                }}}
         for (int i = 1; i<=8; i++){
             if ((myPosition.getRow()-i >=1 & myPosition.getRow()-i <=8) &
                     (myPosition.getColumn()-i >=1 & myPosition.getColumn()-i <=8)) {
@@ -602,11 +549,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
+                }}}
         //return list of all options myPosition +/- row & column row and column adding or subtracting equal #s;
         return queen;
-    }
-
-}
+    }}
