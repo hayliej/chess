@@ -97,13 +97,13 @@ public class WSServer {
 
     public void joinObserver(JoinObserver jo, Session session) throws IOException, DataAccessException {
         if (!aDataAccess.returnAuths().containsKey(jo.getAuthString())){
-            Error er = new Error("Invalid Auth Token");
+            Error er = new Error("Error: Invalid Auth Token");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
             return;
         }
         else if (!gDataAccess.returnGames().containsKey(jo.getID())){
-            Error er = new Error("Game Does Not Exist");
+            Error er = new Error("Error: Game Does Not Exist");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
             return;
@@ -138,7 +138,7 @@ public class WSServer {
         String whitePlayer;
         String blackPlayer;
         if (!gDataAccess.returnGames().containsKey(jp.getID())) {
-            Error er = new Error("Game Does Not Exist");
+            Error er = new Error("Error: Game Does Not Exist");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
             return;
@@ -148,7 +148,7 @@ public class WSServer {
         }
 
         if (!aDataAccess.returnAuths().containsKey(jp.getAuthString())){
-            Error er = new Error("Invalid Auth Token");
+            Error er = new Error("Error: Invalid Auth Token");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
             return;
@@ -158,12 +158,12 @@ public class WSServer {
         String username = user.username();
          if (jp.getColor().equals(ChessGame.TeamColor.WHITE)){
             if (whitePlayer==null){
-                Error er = new Error("No white player");
+                Error er = new Error("Error: No white player");
                 String error = new Gson().toJson(er);
                 session.getRemote().sendString(error);
                 return;
             } else if (!whitePlayer.equals(username)){
-                Error er = new Error("Incorrect player color");
+                Error er = new Error("Error: Incorrect player color");
                 String error = new Gson().toJson(er);
                 session.getRemote().sendString(error);
                 return;
@@ -171,12 +171,12 @@ public class WSServer {
         }
         else if (jp.getColor().equals(ChessGame.TeamColor.BLACK)){
             if (blackPlayer==null){
-                Error er = new Error("No black player");
+                Error er = new Error("Error: No black player");
                 String error = new Gson().toJson(er);
                 session.getRemote().sendString(error);
                 return;
             } else if (!blackPlayer.equals(username)){
-                Error er = new Error("Incorrect player color");
+                Error er = new Error("Error: Incorrect player color");
                 String error = new Gson().toJson(er);
                 session.getRemote().sendString(error);
                 return;
@@ -231,7 +231,7 @@ public class WSServer {
 
         //check game over
         if (!game.isInProgress()){
-            Error er = new Error("Game over, cannot move");
+            Error er = new Error("Error: Game over, cannot move");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
             return;
@@ -239,7 +239,7 @@ public class WSServer {
 
         //not observer
         if (!whitePlayer.equals(username) && !blackPlayer.equals(username)){
-            Error er = new Error("Observer cannot move");
+            Error er = new Error("Error: Observer cannot move");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
             return;
@@ -247,7 +247,7 @@ public class WSServer {
         //not wrong team
         if (!(game.getBoard().getPiece(start)==null)) {
             if (!(game.getBoard().getPiece(start).getTeamColor().equals(color))) {
-                Error er = new Error("Incorrect team piece, move a " + color + " piece");
+                Error er = new Error("Error: Incorrect team piece, move a " + color + " piece");
                 String error = new Gson().toJson(er);
                 session.getRemote().sendString(error);
                 return;
@@ -261,7 +261,7 @@ public class WSServer {
             String name = gDataAccess.returnGames().get(move.getID()).gameName();
             gDataAccess.updateWholeGame( new GameData(move.getID(), whitePlayer, blackPlayer, name, game));
         } catch (InvalidMoveException e) {
-            Error er = new Error("Invalid move");
+            Error er = new Error("Error: Invalid move");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
             return;
@@ -390,7 +390,7 @@ public class WSServer {
 
         //not observer
         if (!whitePlayer.equals(user) && !blackPlayer.equals(user)){
-            Error er = new Error("Observer cannot resign");
+            Error er = new Error("Error: Observer cannot resign");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
             return;
@@ -398,7 +398,7 @@ public class WSServer {
 
         //check gameInProgress
         if (!game.isInProgress()){
-            Error er = new Error("Game not in progress, cannot resign");
+            Error er = new Error("Error: Game not in progress, cannot resign");
             String error = new Gson().toJson(er);
             session.getRemote().sendString(error);
             return;
