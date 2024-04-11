@@ -37,7 +37,9 @@ public class GameRepl implements NotificationHandler {
 
     public void run() throws DataAccessException {
         //loadGame
-        redraw();
+        if (!(game==null)){
+            redraw();
+        }
 
         Scanner scanner = new Scanner(System.in);
         var line = "";
