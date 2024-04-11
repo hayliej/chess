@@ -7,13 +7,6 @@ import javax.websocket.*;
 import java.net.URI;
 
 public class WebSocketFacade extends Endpoint {
-//    public static void main(String[] args) throws Exception {
-//        var ws = new WebSocketFacade();
-//        Scanner scanner = new Scanner(System.in);
-//
-//        while (true) ws.send(scanner.nextLine());
-//    }
-
     public Session session;
 
     public WebSocketFacade(NotificationHandler notificationHandler) throws Exception {
