@@ -29,7 +29,6 @@ public class WebSocketFacade extends Endpoint {
                     Notification mesg = new Gson().fromJson(message, Notification.class);
                     notificationHandler.notify(mesg);
                 }
-//                System.out.println(message);
             }
         });
     }
