@@ -1,5 +1,9 @@
 package ui;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import dataAccess.DataAccessException;
 import webSocketMessages.userCommands.JoinObserver;
@@ -57,8 +61,11 @@ public class PostLoginRepl {
     private static void list() throws DataAccessException {
         String auth = authToken;
         // call logout from server facade
-        System.out.print(new ServerFacade("http://localhost:8080").listGames(auth).games());
-        System.out.println();
+        ServerFacade sf = new ServerFacade("http://localhost:8080");
+        for (Object game : sf.listGames(auth).games()){
+            System.out.print(game);
+            System.out.println();
+        }
     }
 
     private static void logout() throws DataAccessException {
