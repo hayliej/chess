@@ -41,9 +41,9 @@ public class GameRepl implements NotificationHandler {
 
     public void joinPlayer() throws Exception {
         ChessGame.TeamColor c = null;
-        if (color.equals("white")){
+        if (color.equals("WHITE")){
             c = ChessGame.TeamColor.WHITE;
-        } else if (color.equals("black")){
+        } else if (color.equals("BLACK")){
             c = ChessGame.TeamColor.BLACK;
         }
         JoinPlayer mm = new JoinPlayer(authToken, gameID, c);
@@ -164,7 +164,7 @@ public class GameRepl implements NotificationHandler {
 
     public void drawBoard(LoadGame lg){
         ChessGame.TeamColor c = ChessGame.TeamColor.WHITE;
-        if (color.equals("black")){
+        if (color.equals("BLACK")){
             c = ChessGame.TeamColor.BLACK;
         }
         setGame(lg.getGame());
@@ -173,7 +173,7 @@ public class GameRepl implements NotificationHandler {
 
     private void redraw() {
         ChessGame.TeamColor c = ChessGame.TeamColor.WHITE;
-        if (color.equals("black")){
+        if (color.equals("BLACK")){
             c = ChessGame.TeamColor.BLACK;
         }
         LoadGame lgm = new LoadGame(game, c);
