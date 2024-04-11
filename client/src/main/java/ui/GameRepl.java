@@ -18,6 +18,17 @@ import webSocketMessages.userCommands.Resign;
 import java.util.Scanner;
 
 public class GameRepl implements NotificationHandler {
+
+    static String authToken = "";
+    static Integer gameID;
+    static ChessGame game;
+    static String color;
+    public static void setAuth(String auth){
+        authToken = auth;
+    }
+    public static void setGameID(Integer id) { gameID = id; }
+    public static void setColor(String c) { color = c; }
+    public static void setGame(ChessGame g) { game = g; }
     public GameRepl() throws Exception {
         this.wsf = new WebSocketFacade(this);
     }
@@ -26,6 +37,8 @@ public class GameRepl implements NotificationHandler {
 
     public void run() throws DataAccessException {
         //loadGame
+        redraw();
+
         Scanner scanner = new Scanner(System.in);
         var line = "";
         while (!line.equals("quit")){
@@ -58,16 +71,7 @@ public class GameRepl implements NotificationHandler {
         System.out.println();
     }
 
-    static String authToken = "";
-    static Integer gameID;
-    static ChessGame game;
-    static String color;
-    public static void setAuth(String auth){
-        authToken = auth;
-    }
-    public static void setGameID(Integer id) { gameID = id; }
-    public static void setColor(String c) { color = c; }
-    public static void setGame(ChessGame g) { game = g; }
+
 
 
     private static void help() {

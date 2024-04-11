@@ -92,7 +92,6 @@ public class PostLoginRepl {
         // call join game from server facade
         new ServerFacade("http://localhost:8080").joinGame(authToken, idNum, color);
         //DrawChessBoard.main(null);//get rid of this once ws implemented
-        //new.WebSocketFacade.joinPlayer();
         GameRepl gpr = new GameRepl();
         gpr.run();
     }
@@ -109,7 +108,8 @@ public class PostLoginRepl {
         new ServerFacade("http://localhost:8080").observeGame(authToken, idNum);
         //DrawChessBoard.main(null);//get rid of this once ws implemented
         //wsf.joinObserver(new JoinObserver(authToken, idNum), wsf); //what's this doing??
-        //new GameRepl(wsf).run(); //pass session to game repl and then use that as the session
+        GameRepl gpr = new GameRepl();
+        gpr.run();
     }
 
     private static void printPrompt() {

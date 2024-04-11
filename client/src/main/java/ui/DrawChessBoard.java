@@ -66,18 +66,6 @@ public class DrawChessBoard {
         out.println();
     }
 
-//    private static void drawHeadersReverse(PrintStream out) {
-//
-//        setBlack(out);
-//
-//        String[] headers = { "   h ", " g ", " f ", " e ", " d ", " c ", " b ", " a " };
-//        for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
-//            drawHeader(out, headers[boardCol]);
-//        }
-//
-//        out.println();
-//    }
-
     private static void drawHeader(PrintStream out, String headerText) {
         printHeaderText(out, headerText);
     }
@@ -125,29 +113,6 @@ public class DrawChessBoard {
         }
     }
 
-//    private static void drawChessBoardReverse(PrintStream out) {
-//        boolean startWhite = true;
-//        int row = 1;
-//        for (int boardRow = 0; boardRow < BOARD_SIZE_IN_SQUARES; ++boardRow) {
-//            if (startWhite) {
-//                drawRowOfSquaresReverse(out, true, row);
-//
-//            } else {
-//                drawRowOfSquaresReverse(out, false, row);
-//            }
-//
-//            if (boardRow < BOARD_SIZE_IN_SQUARES - 1) {
-//                setBlack(out);
-//            }
-//            if (startWhite) {
-//                startWhite = false;
-//            } else {
-//                startWhite = true;
-//            }
-//
-//            row = row +1;
-//        }
-//    }
 
     private static void drawRowOfSquares(PrintStream out, boolean tf, int row, String color, ChessBoard board) {
         boolean white = tf;
@@ -210,42 +175,6 @@ public class DrawChessBoard {
         }
     }
 
-//    private static void drawRowOfSquaresReverse(PrintStream out, boolean tf, int row) {
-//        boolean white = tf;
-//        ChessBoard board = new ChessBoard();
-//        board.resetBoard();
-//
-//        for (int squareRow = 0; squareRow < SQUARE_SIZE_IN_CHARS; ++squareRow) {
-//            out.print(SET_BG_COLOR_BLACK);
-//            out.print(SET_TEXT_COLOR_WHITE);
-//            out.print(row + " ");
-//            for (int boardCol = 8; boardCol > 0; --boardCol) {
-//                if (white) {
-//                    setWhite(out);
-//                } else {
-//                    setBlack(out);
-//                }
-//
-//                if (squareRow == SQUARE_SIZE_IN_CHARS / 2) {
-//                    //print out chess piece letter here
-//                    printPlayer(out, board.getPiece(new ChessPosition(row, boardCol)));
-//                } else {
-//                    out.print(EMPTY.repeat(SQUARE_SIZE_IN_CHARS));
-//                }
-//
-//                if (white) {
-//                    white = false;
-//                } else {
-//                    white = true;
-//                }
-//            }
-//            out.print(SET_BG_COLOR_BLACK);
-//            out.print(SET_TEXT_COLOR_WHITE);
-//            out.print(" " + row);
-//
-//            out.println();
-//        }
-//    }
 
     private static void setWhite(PrintStream out) {
         out.print(SET_BG_COLOR_WHITE);

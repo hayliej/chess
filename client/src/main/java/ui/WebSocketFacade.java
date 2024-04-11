@@ -1,10 +1,7 @@
 package ui;
-import chess.ChessGame;
 import com.google.gson.Gson;
 import webSocketMessages.serverMessages.*;
 import webSocketMessages.serverMessages.Error;
-import webSocketMessages.userCommands.JoinObserver;
-import webSocketMessages.userCommands.UserGameCommand;
 
 import javax.websocket.*;
 import java.net.URI;
