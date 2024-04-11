@@ -94,13 +94,10 @@ public class ChessPiece {
         }
         return new ArrayList<>();
     }
-
-
     //BISHOP MOVEMENT
     public Collection<ChessMove> bishopMove(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> bishop = new ArrayList<>();
         ChessPiece p = board.getPiece(new ChessPosition(myPosition.getRow(),myPosition.getColumn()));
-
         //for loop of all valid moves, check if no piece already there break
         for (int i = 1; i<=8; i++) {
             //check if in bounds
@@ -113,10 +110,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
-
+                }}}
             for (int i = 1; i<=8; i++) {
                 if ((myPosition.getRow() + i >= 1 & myPosition.getRow() + i <= 8) &
                         (myPosition.getColumn() - i >= 1 & myPosition.getColumn() - i <= 8)) {
@@ -127,10 +121,7 @@ public class ChessPiece {
                     }
                     if (p1 != null){
                         break;
-                    }
-                }
-            }
-
+                    }}}
         for (int i = 1; i<=8; i++) {
             if ((myPosition.getRow() - i >= 1 & myPosition.getRow() - i <= 8) &
                     (myPosition.getColumn() + i >= 1 & myPosition.getColumn() + i <= 8)) {
@@ -141,10 +132,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
-
+                }}}
         for (int i = 1; i<=8; i++){
             if ((myPosition.getRow()-i >=1 & myPosition.getRow()-i <=8) &
                     (myPosition.getColumn()-i >=1 & myPosition.getColumn()-i <=8)) {
@@ -155,19 +143,13 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
+                }}}
         //return list of all options myPosition +/- row & column row and column adding or subtracting equal #s;
-    return bishop;
-    }
-
-
+    return bishop;  }
     //ROOK MOVEMENT
     public Collection<ChessMove> rookMove(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> rook = new ArrayList<>();
         ChessPiece p = board.getPiece(new ChessPosition(myPosition.getRow(), myPosition.getColumn()));
-
         //increasing row
         for (int i = 1; i<=8; i++){
             //check if in bounds
@@ -179,10 +161,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
-
+                }}}
         //decreasing row
         for (int i = 1; i<=8; i++){
             //check if in bounds
@@ -194,10 +173,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
-
+                }}}
         //increasing col
         for (int i = 1; i<=8; i++){
             //check if in bounds
@@ -209,10 +185,7 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
-
+                }}}
         //decreasing col
         for (int i = 1; i<=8; i++){
             //check if in bounds
@@ -224,19 +197,13 @@ public class ChessPiece {
                 }
                 if (p1 != null){
                     break;
-                }
-            }
-        }
+                }}}
         //return list of all options myPosition +/- row or +/- column;
-        return rook;
-    }
-
-
+        return rook;  }
     //KNIGHT MOVEMENT
     public Collection<ChessMove> knightMove(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> knight = new ArrayList<>();
         ChessPiece p = board.getPiece(new ChessPosition(myPosition.getRow(), myPosition.getColumn()));
-
         //row +2, col +1
         //check if in bounds
         if ((myPosition.getRow()+2 >=1 & myPosition.getRow()+2 <=8) & (myPosition.getColumn()+1 >=1 & myPosition.getColumn()+1 <=8)) {
@@ -244,9 +211,7 @@ public class ChessPiece {
             //check if moving to empty space or enemy piece
             if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
                 knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+2, myPosition.getColumn()+1), null));
-            }
-        }
-
+            }}
         //row +2, col -1
         //check if in bounds
         if ((myPosition.getRow()+2 >=1 & myPosition.getRow()+2 <=8) & (myPosition.getColumn()-1 >=1 & myPosition.getColumn()-1 <=8)) {
@@ -254,9 +219,7 @@ public class ChessPiece {
             //check if moving to empty space or enemy piece
             if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
                 knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+2, myPosition.getColumn()-1), null));
-            }
-        }
-
+            }}
         //row -2, col +1
         //check if in bounds
         if ((myPosition.getRow()-2 >=1 & myPosition.getRow()-2 <=8) & (myPosition.getColumn()+1 >=1 & myPosition.getColumn()+1 <=8)) {
@@ -264,9 +227,7 @@ public class ChessPiece {
             //check if moving to empty space or enemy piece
             if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
                 knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-2, myPosition.getColumn()+1), null));
-            }
-        }
-
+            }}
         //row -2, col -1
         //check if in bounds
         if ((myPosition.getRow()-2 >=1 & myPosition.getRow()-2 <=8) & (myPosition.getColumn()-1 >=1 & myPosition.getColumn()-1 <=8)) {
@@ -274,9 +235,7 @@ public class ChessPiece {
             //check if moving to empty space or enemy piece
             if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
                 knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-2, myPosition.getColumn()-1), null));
-            }
-        }
-
+            }}
         //row +1, col +2
         //check if in bounds
         if ((myPosition.getRow()+1 >=1 & myPosition.getRow()+1 <=8) & (myPosition.getColumn()+2 >=1 & myPosition.getColumn()+2 <=8)) {
@@ -284,9 +243,7 @@ public class ChessPiece {
             //check if moving to empty space or enemy piece
             if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
                 knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()+2), null));
-            }
-        }
-
+            }}
         //row +1, col -2
         //check if in bounds
         if ((myPosition.getRow()+1 >=1 & myPosition.getRow()+1 <=8) & (myPosition.getColumn()-2 >=1 & myPosition.getColumn()-2 <=8)) {
@@ -294,9 +251,7 @@ public class ChessPiece {
             //check if moving to empty space or enemy piece
             if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
                 knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-2), null));
-            }
-        }
-
+            }}
         //row -1, col +2
         //check if in bounds
         if ((myPosition.getRow()-1 >=1 & myPosition.getRow()-1 <=8) & (myPosition.getColumn()+2 >=1 & myPosition.getColumn()+2 <=8)) {
@@ -304,9 +259,7 @@ public class ChessPiece {
             //check if moving to empty space or enemy piece
             if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
                 knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+2), null));
-            }
-        }
-
+            }}
         //row -1, col -2
         //check if in bounds
         if ((myPosition.getRow()-1 >=1 & myPosition.getRow()-1 <=8) & (myPosition.getColumn()-2 >=1 & myPosition.getColumn()-2 <=8)) {
@@ -314,14 +267,9 @@ public class ChessPiece {
             //check if moving to empty space or enemy piece
             if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
                 knight.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()-2), null));
-            }
-        }
-
+            }}
         //return list of all options myPosition +/- row & column row and column adding or subtracting equal 2 in one direction and 1 in the others;
-        return knight;
-    }
-
-
+        return knight; }
     //PAWN MOVEMENT
     public Collection<ChessMove> pawnMove(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> pawn = new ArrayList<>();
@@ -418,40 +366,23 @@ public class ChessPiece {
                         } else {
                             pawn.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1), null));
                         }}}}}
-        //function to check end of board and right color, add promotions
-        //promotion piece, if it gets to other side change type, 4 moves one to end and become ___
-        //go through all and add to separate collection
         //return list of all options myPosition +/- 1-2 row(s) depending on color, & diagonal attack moves;
-        return pawn;
-    }
-
-
-
+        return pawn;}
     //KING MOVEMENT
     public Collection<ChessMove> kingMove(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> king = new ArrayList<>();
         ChessPiece p = board.getPiece(new ChessPosition(myPosition.getRow(),myPosition.getColumn()));
-
         for (int i = -1; i<2; i++) {
-            for (int j=-1; j<2; j++) {
-                //make sure it moves at least somewhere
-                if (!(i == 0 & j == 0)) {
-                    //check if in bounds
+            for (int j=-1; j<2; j++) { //make sure it moves at least somewhere
+                if (!(i == 0 & j == 0)) { //check if in bounds
                     if ((myPosition.getRow()+i >=1 & myPosition.getRow()+i <=8) & (myPosition.getColumn()+j >=1 & myPosition.getColumn()+j <=8)) {
                         ChessPiece p1 = board.getPiece(new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() + j));
                         //check if moving to empty space or enemy piece
                         if (p1 == null || !p1.getTeamColor().equals(p.getTeamColor())) {
                             king.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() + j), null));
-                        }
-                    }
-                }
-            }
-        }
-        return king;
-        //return list of all options myPosition +/-1 row &/or column ;
-    }
-
-
+                        }}}}}
+        return king;   //return list of all options myPosition +/-1 row &/or column ;
+         }
     //QUEEN MOVEMENT
     public Collection<ChessMove> queenMove(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> queen = new ArrayList<>();
@@ -551,5 +482,4 @@ public class ChessPiece {
                     break;
                 }}}
         //return list of all options myPosition +/- row & column row and column adding or subtracting equal #s;
-        return queen;
-    }}
+        return queen; }}
