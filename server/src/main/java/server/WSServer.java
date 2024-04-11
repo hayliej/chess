@@ -303,45 +303,49 @@ public class WSServer {
             }
 
             //notify if anyone in check or checkmate
-            if (game.isInCheck(ChessGame.TeamColor.WHITE)) {
-                if (game.isInCheckmate(ChessGame.TeamColor.WHITE)) {
-                    if (sessions.containsKey(person)) {
-                        if (sessions.get(person).isOpen()) {
-                            String sm = new Gson().toJson(new Notification(whitePlayer + " is in checkmate"));
-                            sessions.get(person).getRemote().sendString(sm);
-                        } else {
-                            sessions.remove(person);
-                        }
+            sendCheckNotification(game, person, whitePlayer, blackPlayer);
+        }
+    }
+
+    public void sendCheckNotification(ChessGame game, String person, String whitePlayer, String blackPlayer) throws IOException {
+        if (game.isInCheck(ChessGame.TeamColor.WHITE)) {
+            if (game.isInCheckmate(ChessGame.TeamColor.WHITE)) {
+                if (sessions.containsKey(person)) {
+                    if (sessions.get(person).isOpen()) {
+                        String sm = new Gson().toJson(new Notification(whitePlayer + " is in checkmate"));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
                     }
-                } else {
-                    if (sessions.containsKey(person)) {
-                        if (sessions.get(person).isOpen()) {
-                            String sm = new Gson().toJson(new Notification(whitePlayer + " is in check"));
-                            sessions.get(person).getRemote().sendString(sm);
-                        } else {
-                            sessions.remove(person);
-                        }
+                }
+            } else {
+                if (sessions.containsKey(person)) {
+                    if (sessions.get(person).isOpen()) {
+                        String sm = new Gson().toJson(new Notification(whitePlayer + " is in check"));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
                     }
                 }
             }
-            if (game.isInCheck(ChessGame.TeamColor.BLACK)) {
-                if (game.isInCheckmate(ChessGame.TeamColor.BLACK)) {
-                    if (sessions.containsKey(person)) {
-                        if (sessions.get(person).isOpen()) {
-                            String sm = new Gson().toJson(new Notification(blackPlayer + " is in checkmate"));
-                            sessions.get(person).getRemote().sendString(sm);
-                        } else {
-                            sessions.remove(person);
-                        }
+        }
+        if (game.isInCheck(ChessGame.TeamColor.BLACK)) {
+            if (game.isInCheckmate(ChessGame.TeamColor.BLACK)) {
+                if (sessions.containsKey(person)) {
+                    if (sessions.get(person).isOpen()) {
+                        String sm = new Gson().toJson(new Notification(blackPlayer + " is in checkmate"));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
                     }
-                } else {
-                    if (sessions.containsKey(person)) {
-                        if (sessions.get(person).isOpen()) {
-                            String sm = new Gson().toJson(new Notification(blackPlayer + " is in check"));
-                            sessions.get(person).getRemote().sendString(sm);
-                        } else {
-                            sessions.remove(person);
-                        }
+                }
+            } else {
+                if (sessions.containsKey(person)) {
+                    if (sessions.get(person).isOpen()) {
+                        String sm = new Gson().toJson(new Notification(blackPlayer + " is in check"));
+                        sessions.get(person).getRemote().sendString(sm);
+                    } else {
+                        sessions.remove(person);
                     }
                 }
             }
