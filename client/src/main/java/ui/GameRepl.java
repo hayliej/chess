@@ -74,8 +74,6 @@ public class GameRepl implements NotificationHandler {
                     break;
                 } else if (line.startsWith("resign")) {
                     resign();
-                    //send back to post-login (main)
-                    break;
                 } else if (line.startsWith("redraw")){
                     redraw();
                 } else if (line.startsWith("highlight")){
