@@ -148,7 +148,7 @@ public class GameRepl implements NotificationHandler {
 
     private void redraw() {
         ChessGame.TeamColor c = ChessGame.TeamColor.WHITE;
-        if (color == "black"){
+        if (color.equals("black")){
             c = ChessGame.TeamColor.BLACK;
         }
         LoadGame lgm = new LoadGame(game, c);
@@ -172,6 +172,11 @@ public class GameRepl implements NotificationHandler {
     }
     public void error(Error msg){
         System.out.println(msg.getErrorMessage());
+    }
+
+    public void drawBoard(LoadGame lg){
+        setGame(lg.getGame());
+        new DrawChessBoard(game.getBoard()).drawBoard(lg.getColor());
     }
 
     public void loadGame(LoadGame msg){

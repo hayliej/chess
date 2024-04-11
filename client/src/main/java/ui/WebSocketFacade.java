@@ -23,7 +23,7 @@ public class WebSocketFacade extends Endpoint {
                     notificationHandler.notify(mesg);
                 } else if (msg.getServerMessageType().equals(ServerMessage.ServerMessageType.LOAD_GAME)){
                     LoadGame mesg = new Gson().fromJson(message, LoadGame.class);
-                    notificationHandler.notify(mesg);
+                    notificationHandler.drawBoard(mesg);
                 } else if (msg.getServerMessageType().equals(ServerMessage.ServerMessageType.NOTIFICATION)) {
                     Notification mesg = new Gson().fromJson(message, Notification.class);
                     notificationHandler.notify(mesg);
