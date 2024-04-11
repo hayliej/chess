@@ -8,7 +8,6 @@ import webSocketMessages.userCommands.UserGameCommand;
 
 import javax.websocket.*;
 import java.net.URI;
-import java.util.Scanner;
 
 public class WebSocketFacade extends Endpoint {
 //    public static void main(String[] args) throws Exception {
@@ -43,22 +42,6 @@ public class WebSocketFacade extends Endpoint {
             }
         });
     }
-
-//    public void error(Error msg){
-//        System.out.println(msg.getErrorMessage());
-//    }
-//
-//    public void loadGame(LoadGame msg){
-//        ChessGame.TeamColor color = msg.getColor();
-//        if (msg.getColor() == null){
-//            color = ChessGame.TeamColor.WHITE;
-//        }
-//        msg.drawBoard(color);
-//    }
-//
-//    public void notification(Notification msg){
-//        System.out.println(msg.getNotification());
-//    }
 
     public void send(String msg) throws Exception {
         this.session.getBasicRemote().sendText(msg);
