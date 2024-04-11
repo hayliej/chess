@@ -143,8 +143,12 @@ public class GameRepl implements NotificationHandler {
     }
 
     private void redraw() {
-//        LoadGame lgm = new LoadGame(, color);
-//        wsf.loadGame(lgm);
+        ChessGame.TeamColor c = ChessGame.TeamColor.WHITE;
+        if (color == "black"){
+            c = ChessGame.TeamColor.BLACK;
+        }
+        LoadGame lgm = new LoadGame(game, c);
+        loadGame(lgm);
     }
 
     private static void highlight() {
