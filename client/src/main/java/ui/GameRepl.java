@@ -10,9 +10,7 @@ import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
-import webSocketMessages.userCommands.Leave;
-import webSocketMessages.userCommands.MakeMove;
-import webSocketMessages.userCommands.Resign;
+import webSocketMessages.userCommands.*;
 
 
 import java.util.Scanner;
@@ -34,6 +32,24 @@ public class GameRepl implements NotificationHandler {
     }
 
     WebSocketFacade wsf;
+
+    public void joinObserver() throws Exception {
+        JoinObserver mm = new JoinObserver(authToken, gameID);
+        String msg = new Gson().toJson(mm);
+        wsf.send(msg);
+    }
+
+    public void joinPlayer() throws Exception {
+        ChessGame.TeamColor c = null;
+        if (color.equals("white")){
+            c = ChessGame.TeamColor.WHITE;
+        } else if (color.equals("black")){
+            c = ChessGame.TeamColor.BLACK;
+        }
+        JoinPlayer mm = new JoinPlayer(authToken, gameID, c);
+        String msg = new Gson().toJson(mm);
+        wsf.send(msg);
+    }
 
     public void run() throws DataAccessException {
         //loadGame

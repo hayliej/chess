@@ -100,6 +100,7 @@ public class PostLoginRepl {
         new ServerFacade("http://localhost:8080").joinGame(authToken, idNum, color);
         //DrawChessBoard.main(null);//get rid of this once ws implemented
         GameRepl gpr = new GameRepl();
+        gpr.joinPlayer();
         gpr.run();
     }
 
@@ -116,6 +117,7 @@ public class PostLoginRepl {
         //DrawChessBoard.main(null);//get rid of this once ws implemented
         //wsf.joinObserver(new JoinObserver(authToken, idNum), wsf); //what's this doing??
         GameRepl gpr = new GameRepl();
+        gpr.joinObserver();
         gpr.run();
     }
 
