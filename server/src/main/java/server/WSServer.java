@@ -23,7 +23,6 @@ import java.util.HashMap;
 public class WSServer {
     HashMap<String, Session> sessions = new HashMap<>();
     HashMap<Integer, ArrayList<String>> games = new HashMap<>();
-    ArrayList<String> gamePeople = new ArrayList<>();
     private static AuthDAO aDataAccess;
 
     static {
@@ -58,7 +57,7 @@ public class WSServer {
             if (games.containsKey(joinO.getID())){
                 games.get(joinO.getID()).add(joinO.getAuthString());
             } else {
-                games.put(joinO.getID(), gamePeople);
+                games.put(joinO.getID(), new ArrayList<>());
                 games.get(joinO.getID()).add(joinO.getAuthString());
             }
 
@@ -70,7 +69,7 @@ public class WSServer {
             if (games.containsKey(joinP.getID())){
                 games.get(joinP.getID()).add(joinP.getAuthString());
             } else {
-                games.put(joinP.getID(), gamePeople);
+                games.put(joinP.getID(), new ArrayList<>());
                 games.get(joinP.getID()).add(joinP.getAuthString());
             }
 
