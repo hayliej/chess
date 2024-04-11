@@ -137,6 +137,13 @@ public class WSServer {
 
         String whitePlayer;
         String blackPlayer;
+        if (!aDataAccess.returnAuths().containsKey(jp.getAuthString())){
+            Error er = new Error("Error: Invalid Auth Token");
+            String error = new Gson().toJson(er);
+            session.getRemote().sendString(error);
+            return;
+        }
+
         if (!gDataAccess.returnGames().containsKey(jp.getID())) {
             Error er = new Error("Error: Game Does Not Exist");
             String error = new Gson().toJson(er);
@@ -147,12 +154,7 @@ public class WSServer {
             blackPlayer = gDataAccess.returnGames().get(jp.getID()).blackUsername();
         }
 
-        if (!aDataAccess.returnAuths().containsKey(jp.getAuthString())){
-            Error er = new Error("Error: Invalid Auth Token");
-            String error = new Gson().toJson(er);
-            session.getRemote().sendString(error);
-            return;
-        }
+
 
         AuthData user  = (AuthData) aDataAccess.returnAuths().get(jp.getAuthString());
         String username = user.username();
