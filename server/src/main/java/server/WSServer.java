@@ -78,16 +78,12 @@ public class WSServer {
         }
         else if (msg.getCommandType().equals(UserGameCommand.CommandType.LEAVE)) {
             Leave leave = new Gson().fromJson(message, Leave.class);
-            //do stuff
             leave(leave, session);
         }
         else if (msg.getCommandType().equals(UserGameCommand.CommandType.RESIGN)) {
             Resign resign = new Gson().fromJson(message, Resign.class);
-            //do stuff
             resign(resign, session);
         }
-
-//        System.out.printf("Received: %s", message);
     }
 
 
@@ -221,12 +217,9 @@ public class WSServer {
         Map<Integer, GameData> allGames = gDataAccess.returnGames();
         GameData gameData = allGames.get(move.getID());
         ChessGame game = gameData.game();
-        //ChessGame game = gDataAccess.returnGames().get(move.getID()).game();
 
         String whitePlayer = gameData.whiteUsername();
         String blackPlayer = gameData.blackUsername();
-//        String whitePlayer = gDataAccess.returnGames().get(move.getID()).whiteUsername();
-//        String blackPlayer = gDataAccess.returnGames().get(move.getID()).blackUsername();
         ChessGame.TeamColor color;
         if (whitePlayer.equals(username)){
             color = ChessGame.TeamColor.WHITE;
@@ -278,7 +271,6 @@ public class WSServer {
         String user2 = getUsername(move.getAuthString());
         for (String person : people){
             //send LoadGame to everyone
-            //GameData gameD = gDataAccess.returnGames().get(move.getID());
             LoadGame lgame = new LoadGame(gameData.game(), null);
             if (allAuth.containsKey(person)) {
                 if (allAuth.get(person).equals(blackPlayer)) {
